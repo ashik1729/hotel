@@ -1,0 +1,74 @@
+Options +FollowSymlinks
+Options -Indexes
+
+RewriteEngine on
+# deal with admin first
+RewriteCond %{REQUEST_URI} ^/hotel/(admin)
+RewriteRule ^admin/assets/(.*)$ backend/web/assets/$1 [L]
+RewriteRule ^admin/css/(.*)$ backend/web/css/$1 [L]
+RewriteRule ^admin/demo/(.*)$ backend/web/demo/$1 [L]
+RewriteRule ^admin/font-awesome/(.*)$ backend/web/font-awesome/$1 [L]
+RewriteRule ^admin/fonts/(.*)$ backend/web/fonts/$1 [L]
+RewriteRule ^admin/plugins/(.*)$ backend/web/plugins/$1 [L]
+RewriteRule ^admin/js/(.*)$ backend/web/js/$1 [L]
+RewriteRule ^admin/images/(.*)$ backend/web/images/$1 [L]
+RewriteRule ^admin/img/(.*)$ backend/web/img/$1 [L]
+RewriteRule ^admin/vendor/(.*)$ backend/web/vendor/$1 [L]
+
+
+RewriteCond %{REQUEST_URI} ^/hotel/(merchant)
+RewriteRule ^merchant/assets/(.*)$ merchant/web/assets/$1 [L]
+RewriteRule ^merchant/css/(.*)$ backend/web/css/$1 [L]
+RewriteRule ^merchant/font-awesome/(.*)$ merchant/web/font-awesome/$1 [L]
+RewriteRule ^merchant/fonts/(.*)$ merchant/web/fonts/$1 [L]
+RewriteRule ^merchant/plugins/(.*)$ merchant/web/plugins/$1 [L]
+RewriteRule ^merchant/js/(.*)$ backend/web/js/$1 [L]
+RewriteRule ^merchant/images/(.*)$ merchant/web/images/$1 [L]
+RewriteRule ^merchant/img/(.*)$ backend/web/img/$1 [L]
+RewriteRule ^merchant/vendor/(.*)$ merchant/web/vendor/$1 [L]
+
+
+RewriteCond %{REQUEST_URI} ^/hotel/(franchise)
+RewriteRule ^franchise/assets/(.*)$ franchise/web/assets/$1 [L]
+RewriteRule ^franchise/css/(.*)$ backend/web/css/$1 [L]
+RewriteRule ^franchise/font-awesome/(.*)$ backend/web/font-awesome/$1 [L]
+RewriteRule ^franchise/fonts/(.*)$ backend/web/fonts/$1 [L]
+RewriteRule ^franchise/plugins/(.*)$ franchise/web/plugins/$1 [L]
+RewriteRule ^franchise/js/(.*)$ backend/web/js/$1 [L]
+RewriteRule ^franchise/images/(.*)$ backend/web/images/$1 [L]
+RewriteRule ^franchise/img/(.*)$ backend/web/img/$1 [L]
+RewriteRule ^franchise/vendor/(.*)$ franchise/web/vendor/$1 [L]
+
+RewriteCond %{REQUEST_URI} ^/hotel/(uploads)
+RewriteRule ^(uploads)($|/) - [L]
+RewriteCond %{REQUEST_URI} !^/hotel/backend/web/(assets|css|plugins|js|images|img|fonts|demo)/
+RewriteCond %{REQUEST_URI} ^/hotel/(admin)
+RewriteRule ^.*$ backend/web/index.php [L]
+
+
+RewriteCond %{REQUEST_URI} !^/hotel/merchant/web/(assets|css|plugins|js|images|img|fonts)/
+RewriteCond %{REQUEST_URI} ^/hotel/(merchant)
+RewriteRule ^.*$ merchant/web/index.php [L]
+
+RewriteCond %{REQUEST_URI} !^/hotel/franchise/web/(assets|css|plugins|js|images|img|fonts)/
+RewriteCond %{REQUEST_URI} ^/hotel/(franchise)
+RewriteRule ^.*$ franchise/web/index.php [L]
+
+
+
+RewriteCond %{REQUEST_URI} ^/hotel/(assets|css|js|images|img|fonts|map|vendors)
+RewriteRule ^assets/(.*)$ frontend/web/assets/$1 [L]
+RewriteRule ^css/(.*)$ frontend/web/css/$1 [L]
+RewriteRule ^js/(.*)$ frontend/web/js/$1 [L]
+RewriteRule ^images/(.*)$ frontend/web/images/$1 [L]
+RewriteRule ^img/(.*)$ frontend/web/img/$1 [L]
+RewriteRule ^vendors/(.*)$ frontend/web/vendors/$1 [L]
+RewriteRule ^fonts/(.*)$ frontend/web/fonts/$1 [L]
+RewriteRule ^demo/(.*)$ frontend/web/demo/$1 [L]
+
+
+RewriteCond %{REQUEST_URI} !^/hotel/(frontend|backend|merchant|franchise)/web/(assets|css|images|img|fonts|map|js|vendors)/
+RewriteCond %{REQUEST_URI} !index.php
+RewriteCond %{REQUEST_FILENAME} !-f [OR]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^.*$ frontend/web/index.php
