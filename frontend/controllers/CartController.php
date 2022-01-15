@@ -77,7 +77,7 @@ class CartController extends Controller {
     }
 
     public function actionIndex() {
-
+$a=12;
         $name = "Partners";
         header('Content-type:appalication/json'); //Header content set to json
         $headers = Yii::$app->request->headers;
