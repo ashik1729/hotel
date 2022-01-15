@@ -22,6 +22,7 @@ return [
 //                '@backend/views/site/index.php' => 'Index View',
 //            ],
         ],
+        //ok
         'order' => [
             'class' => 'backend\modules\order\Module',
             'layout' => '@backend/views/layouts/main',
