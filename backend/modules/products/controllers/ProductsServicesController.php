@@ -461,9 +461,13 @@ class ProductsServicesController extends Controller {
         $product_attribute = new \common\models\ProductAttributesValue();
         $attribute = new \common\models\Attributes();
         $languages = \common\models\Language::find()->where(['status' => 1])->all();
+        $implode_search_tag = "";
+        $related_products   = "";
 
         if ($model->load(Yii::$app->request->post())) {
-            $canon_name = strtolower($model->product_name_en . ' ' . $model->category->category_name . ' ' . $model->merchant->id);
+           // echo '<pre/>';print_r(Yii::$app->request->post());exit;
+       //    echo '<pre/>';print_r($model->category);exit;
+            $canon_name = strtolower($model->product_name_en . ' ' . $model->category->category_name);
             $canonical_name = str_replace(' ', '-', $canon_name); // Replaces all spaces with hyphens.
             $canonical_name = preg_replace('/[^A-Za-z0-9\-]/', '', $canonical_name); // Removes special chars.
             $model->canonical_name = preg_replace('/-+/', '-', $canonical_name);
@@ -485,34 +489,35 @@ class ProductsServicesController extends Controller {
             $model->created_by = yii::$app->user->identity->id;
             $model->updated_by = yii::$app->user->identity->id;
             $model->status = 1;
-            $model->title = $model->product_name_en;
+           // $model->title = $model->product_name_en;
             $file = UploadedFile::getInstance($model, 'image');
             $gallery = UploadedFile::getInstances($model, 'gallery');
+            //echo '<pre/>';print_r($gallery);exit;
             $name = md5(microtime());
             $profile_name = 'image' . $name;
             if ($file) {
                 $model->image = $profile_name . '.' . $file->extension;
             }
-
-            $model->gallery = "";
+            
+             $model->gallery = "";
             $transaction = Yii::$app->db->beginTransaction();
             try {
 
-
+                
                 if ($model->save()) {
 
-                    $model->sku = Yii::$app->params['sku_prefix'] . 'M' . $model->merchant_id . 'PS' . $model->id;
+                  //  $model->sku = Yii::$app->params['sku_prefix'] . 'M' . $model->merchant_id . 'PS' . $model->id;
                     $model->save(FALSE);
                     if ($file) {
-                        if (!$model->uploadFile($file, $profile_name, 'products/' . base64_encode($model->sku) . '/image')) {
+                        if (!$model->uploadFile($file, $profile_name, 'products/' . base64_encode($model->id) . '/image')) {
                             $transaction->rollBack();
                         }
                     }
                     if ($gallery != NULL) {
-                        if (!$model->uploadMultipleImage($gallery, $model->id, $name, 'products/' . base64_encode($model->sku) . '/gallery')) {
+                        if (!$model->uploadMultipleImage($gallery, $model->id, $name, 'products/' . base64_encode($model->id) . '/gallery')) {
                             $transaction->rollBack();
                         }
-                    }
+                    } 
                     if (Yii::$app->request->post('ProductAttributesValue') && Yii::$app->request->post('ProductAttributesValue') != NULL) {
                         $manageAttribute = $this->newmanageAttribute($model, Yii::$app->request->post('ProductAttributesValue'));
 
@@ -652,13 +657,14 @@ class ProductsServicesController extends Controller {
 //        echo "<pre/>";
 //        print_r($attributes);
 //        exit;
-        $attr_id = $attributes['attribute_id'];
-        $get_count = count($attr_id);
+        // $attr_id = $attributes['attribute_id'];
+        // $get_count = count($attr_id);
         $result = [];
         $error = [];
+        $price = 0;
         if ($model != NULL) {
             if ($attributes != NULL) {
-                if ($get_count > 0) {
+            /*    if ($get_count > 0) {
                     for ($i = 0; $i < $get_count; $i++) {
                         if ($attributes['attribute_id'][$i] && $attributes['attribute_id'][$i] != NULL && $attributes['attribute_id'][$i] != "") {
 
@@ -729,7 +735,7 @@ class ProductsServicesController extends Controller {
                             }
                         }
                     }
-                }
+                } */
             } else {
 
                 $error[] = "Attribute Need to restart";
@@ -827,7 +833,7 @@ class ProductsServicesController extends Controller {
             $model->created_by = yii::$app->user->identity->id;
             $model->updated_by = yii::$app->user->identity->id;
             $model->status = 1;
-            $model->title = $model->product_name_en;
+         //   $model->title = $model->product_name_en;
             $file = UploadedFile::getInstance($model, 'image');
             $gallery = UploadedFile::getInstances($model, 'gallery');
             $name = md5(microtime());

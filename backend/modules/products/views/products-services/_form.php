@@ -102,58 +102,7 @@ JS;
             <div class="tab-content" id="pills-tabContent">
                 <!--<div class="tab-pane fade show active" id="pills-general" role="tabpanel" aria-labelledby="pills-general-tab">-->
                 <div class="tab-pane fade  show active box_item" id="pills-general" role="tabpanel" aria-labelledby="pills-general-tab">
-                    <div class="col-sm-12">
-                        <!--<hr/>-->
-
-                        <ul class="nav nav-pills pills-language-tab" id="pills-language-tab" role="tablist">
-                            <?php if ($languages != NULL) { ?>
-
-                                <?php foreach ($languages as $key => $language) { ?>
-                                    <li class="nav-item">
-                                        <a class="nav-link <?= $key == 0 ? 'active' : ''; ?>" id="pills-<?php echo $language->shortcode; ?>-tab" data-toggle="pill" href="#pills-<?php echo $language->shortcode; ?>" role="tab" aria-controls="pills-<?php echo $language->shortcode; ?>" aria-selected="true"><?php echo $language->name; ?></a>
-                                    </li>
-                                <?php } ?>
-                            <?php } ?>
-
-                        </ul>
-                        <div class="tab-content  pills-language-content" id="pills-tab-content">
-
-                            <?php if ($languages != NULL) { ?>
-                                <?php foreach ($languages as $key => $language) { ?>
-
-
-                                    <div class="tab-pane fade <?= $key == 0 ? 'show active' : ''; ?> " id="pills-<?php echo $language->shortcode; ?>" role="tabpanel" aria-labelledby="pills-<?php echo $language->shortcode; ?>-tab">
-                                        <div class="row">
-                                            <div class="col-sm-2">
-                                                <div class="form-group bmd-form-group">
-                                                    <?= $form->field($model, 'product_name_' . strtolower($language->shortcode))->textInput(['maxlength' => true]) ?>
-
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-5">
-                                                <div class="form-group bmd-form-group">
-                                                    <?= $form->field($model, 'short_description_' . strtolower($language->shortcode))->textarea(['rows' => 1]) ?>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-5">
-                                                <div class="form-group bmd-form-group">
-                                                    <?= $form->field($model, 'long_description_' . strtolower($language->shortcode))->textarea(['rows' => 1]) ?>
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                <?php } ?>
-                            <?php } ?>
-
-
-
-                            <hr/>
-
-                        </div>
-
-                    </div>
-
+                    
                     <div class="row">
                         <?php
                         $merchant = [];
@@ -204,29 +153,19 @@ JS;
                         ?>
                         <div class="col-sm-3">
                             <div class="form-group bmd-form-group">
-                                <?= $form->field($model, 'type')->dropDownList(['1' => 'Product', '2' => 'Shop Service', '3' => 'Home Service']) ?>
+                                <?= $form->field($model, 'product_name_en')->textInput(['maxlength' => true]) ?>                             
                             </div>
                         </div>
                         <div class="col-sm-3">
+                            <div class="form-group bmd-form-group">
+                                <?= $form->field($model, 'short_description_en')->textarea(['rows' => 1]) ?>
+                            </div>
+                        </div>
+                       
+                        <div class="col-sm-4">
 
                             <div class="form-group bmd-form-group">
-                                <label class="control-label" for="productsservices-merchant_id">Merchant
-                                </label>
-                                <?php
-                                echo Select2::widget([
-                                    'model' => $model,
-                                    'attribute' => 'merchant_id',
-                                    'data' => $merchant,
-                                    'disabled' => $disable,
-                                    'theme' => Select2::THEME_MATERIAL,
-                                    'options' => ['placeholder' => 'Select a  Merchant.', 'class' => 'merchant_change'],
-                                    'pluginOptions' => [
-                                        'allowClear' => true,
-                                        'tokenSeparators' => [',', ' '],
-                                        'maximumInputLength' => 20
-                                    ],
-                                ]);
-                                ?>
+                                <?= $form->field($model, 'long_description_en')->textarea(['rows' => 1]) ?>
                             </div>
                         </div>
                         <div class="col-sm-3">
@@ -304,13 +243,8 @@ JS;
 
 
 
-                        <div class="col-sm-3">
-                            <div class="form-group bmd-form-group">
-                                <?= $form->field($model, 'status')->dropDownList(['1' => 'Enable', '0' => 'Disable']) ?>
-
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
+                       
+                     <?php /*   <div class="col-sm-3">
                             <div class="form-group bmd-form-group">
                                 <?= $form->field($model, 'sort_order')->textInput() ?>
 
@@ -342,9 +276,9 @@ JS;
                                     $related_products[$get_product->id] = $get_product->product_name_en;
                                 }
                             }
-                        }
+                        } */
                         ?>
-                        <div class="col-sm-3">
+                     <?php /*   <div class="col-sm-3">
 
                             <div class="form-group bmd-form-group">
                                 <label>Search Tags</label>
@@ -364,8 +298,8 @@ JS;
                                 ]);
                                 ?>
                             </div>
-                        </div>
-                        <div class="col-sm-3">
+                        </div> */ ?>
+                   <?php /*     <div class="col-sm-3">
 
                             <div class="form-group bmd-form-group">
                                 <label>Related Products</label>
@@ -386,15 +320,20 @@ JS;
                                 ]);
                                 ?>
                             </div>
+                        </div> */ ?>
+                        <div class="col-sm-3">
+                            <div class="form-group bmd-form-group">
+                                <?= $form->field($model, 'status')->dropDownList(['1' => 'Enable', '0' => 'Disable']) ?>
+
+                            </div>
                         </div>
 
-
-                        <div class="col-sm-3">
+                      <?php /*  <div class="col-sm-3">
                             <div class="form-group bmd-form-group">
                                 <?= $form->field($model, 'is_admin_approved')->dropDownList(['1' => 'Yes', '0' => 'No']) ?>
 
                             </div>
-                        </div>
+                        </div> */ ?>
 
 
 
@@ -499,17 +438,17 @@ JS;
                         </div>
 
 
-                        <div class="col-sm-3">
+                    <?php /*    <div class="col-sm-3">
                             <div class="form-group bmd-form-group">
                                 <?= $form->field($model, 'discount_id')->dropDownList($discount, ['prompt' => 'Choose a Coupon', 'class' => 'form-control discount_change'])->label("Coupon"); ?>
                             </div>
-                        </div>
+                        </div> 
                         <div class="col-sm-3">
                             <div class="form-group bmd-form-group">
                                 <?= $form->field($model, 'tax_applicable')->dropDownList(['1' => 'Yes', '0' => 'No'], ['prompt' => 'Choose']) ?>
 
                             </div>
-                        </div>
+                        </div> 
 
                         <div class="col-sm-3">
                             <div class="form-group bmd-form-group">
@@ -528,7 +467,7 @@ JS;
                                 <?= $form->field($model, 'min_quantity')->textInput(['value' => 1, 'min' => 1]) ?>
 
                             </div>
-                        </div>
+                        </div> */?>
 
                         <div class="col-sm-3">
                             <div class="form-group bmd-form-group">
@@ -537,12 +476,12 @@ JS;
                             </div>
                         </div>
 
-                        <div class="col-sm-3">
+                    <?php /*    <div class="col-sm-3">
                             <div class="form-group bmd-form-group">
                                 <?= $form->field($model, 'requires_shipping')->dropDownList(['1' => 'Yes', '0' => 'No']) ?>
 
                             </div>
-                        </div>
+                        </div>  */?>
 
                         <!--                        <div class="col-sm-3">
                                                     <div class="form-group bmd-form-group">
@@ -571,7 +510,7 @@ JS;
 
                                                     </div>
                                                 </div>-->
-                        <div class="col-sm-3">
+                    <?php /*    <div class="col-sm-3">
                             <div class="form-group bmd-form-group">
                                 <?php echo $form->field($model, 'discount_type')->dropDownList(['1' => 'Flat Rate', '2' => 'Percentage'], ['prompt' => 'Select Discount Type']) ?>
 
@@ -597,13 +536,13 @@ JS;
                                 <?php echo $form->field($model, 'discount_to')->textInput(['type' => 'date']) ?>
 
                             </div>
-                        </div>
+                        </div> */ ?>
+ 
 
 
 
 
-
-                        <div class="col-sm-3">
+                    <?php /*    <div class="col-sm-3">
                             <div class="form-group bmd-form-group">
                                 <?= $form->field($model, 'is_featured')->dropDownList(['1' => 'Yes', '0' => 'No']) ?>
 
@@ -621,7 +560,7 @@ JS;
                                 <?= $form->field($model, 'weight')->textInput(['maxlength' => true]) ?>
 
                             </div>
-                        </div>
+                        </div> */ ?>
                     </div>
                 </div>
                 <div class="tab-pane fade box_item" id="pills-attributes" role="tabpanel" aria-labelledby="pills-attributes-tab">
@@ -822,8 +761,8 @@ JS;
                                                         </h5>
                                                     </div>
                                                     <div class="col-sm-4 attr_parent">
-                                                        <?= $form->field($product_attribute, 'attribute_id[attcnt][en]')->textInput(['lang' => 1, 'value' => $attr_list_data->name, 'class' => 'form-control mt-4 change_attr_name attr_en'])->label('English'); ?>
-                                                        <?= $form->field($product_attribute, 'product_attributes_id[attcnt]')->hiddenInput(['class' => 'form-control '])->label(false); ?>
+                                                      <?php /*  <?= $form->field($product_attribute, 'attribute_id[attcnt][en]')->textInput(['lang' => 1, 'value' => $attr_list_data->name, 'class' => 'form-control mt-4 change_attr_name attr_en'])->label('English'); ?>
+                                                        <?= $form->field($product_attribute, 'product_attributes_id[attcnt]')->hiddenInput(['class' => 'form-control '])->label(false); ?> */ ?>
 
                                                         <div class="pop_over_content ">
                                                             <div class="loader_wrapper ">
@@ -836,7 +775,7 @@ JS;
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-4 attr_parent ar">
-                                                        <?= $form->field($product_attribute, 'attribute_id[attcnt][ar]')->textInput(['lang' => 2, 'value' => $attr_list_data->name_ar, 'class' => 'form-control mt-4 change_attr_name attr_ar'])->label('عربي'); ?>
+                                                        <?php /* <?= $form->field($product_attribute, 'attribute_id[attcnt][ar]')->textInput(['lang' => 2, 'value' => $attr_list_data->name_ar, 'class' => 'form-control mt-4 change_attr_name attr_ar'])->label('عربي'); ?>  */ ?>
                                                         <div class="pop_over_content ">
                                                             <div class="loader_wrapper ">
                                                                 <div class="loader">
@@ -875,8 +814,8 @@ JS;
                                                                     </div>
                                                                     <div class="col-sm-4 attr_val_parent">
                                                                         <div class="attr_value_data position-relative">
-                                                                            <?= $form->field($product_attribute, 'attribute_value[attcnt][en][]')->textInput(['lang' => 1, 'value' => $attr_list_value_data->attributesValue->value, 'class' => 'form-control mt-4 attr_value_en change_attr_value_name'])->label('English'); ?>
-                                                                            <?= $form->field($product_attribute, 'id[attcnt][]')->hiddenInput(['class' => 'form-control '])->label(false); ?>
+                                                                         <?php /*   <?= $form->field($product_attribute, 'attribute_value[attcnt][en][]')->textInput(['lang' => 1, 'value' => $attr_list_value_data->attributesValue->value, 'class' => 'form-control mt-4 attr_value_en change_attr_value_name'])->label('English'); ?>
+                                                                            <?= $form->field($product_attribute, 'id[attcnt][]')->hiddenInput(['class' => 'form-control '])->label(false); ?> */?>
 
                                                                             <div class="pop_over_content ">
                                                                                 <div class="loader_wrapper ">
@@ -890,7 +829,7 @@ JS;
                                                                         </div>
                                                                     </div>
                                                                     <div class="col-sm-4 attr_val_parent ar">
-                                                                        <?= $form->field($product_attribute, 'attribute_value[attcnt][ar][]')->textInput(['lang' => 2, 'value' => $attr_list_value_data->attributesValue->value_ar, 'class' => 'form-control mt-4 attr_value_ar change_attr_value_name'])->label('عربي'); ?>
+                                                                      <?php /*  <?= $form->field($product_attribute, 'attribute_value[attcnt][ar][]')->textInput(['lang' => 2, 'value' => $attr_list_value_data->attributesValue->value_ar, 'class' => 'form-control mt-4 attr_value_ar change_attr_value_name'])->label('عربي'); ?>  */ ?>
                                                                         <div class="pop_over_content ">
                                                                             <div class="loader_wrapper ">
                                                                                 <div class="loader">
