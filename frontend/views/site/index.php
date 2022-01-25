@@ -1,5 +1,6 @@
 <section class="slider">
 	<!-- <ashik></ashik> -->
+	<!-- <ashik></ashik> -->
 			<section id="demos">
 				<div class="home-slider owl-carousel owl-theme">
 					<div class="item">
