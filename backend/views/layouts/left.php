@@ -224,6 +224,126 @@
                     </ul>
                 </div>
             </li>
+            <li class="nav-item ">
+                <a class="nav-link" data-toggle="collapse" href="#visa" aria-expanded="false">
+
+                    <i class="material-icons">shopping_cart</i>
+
+                    <p>Visa
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse" id="visa">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= \yii\helpers\Url::to(['/visa/index']); ?>">
+                                <i class="material-icons">image</i>
+
+                                <span class="sidebar-normal">Visa Contents</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= \yii\helpers\Url::to(['/visa-option/index']); ?>">
+                                <i class="material-icons">image</i>
+
+                                <span class="sidebar-normal">Visa Options</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= \yii\helpers\Url::to(['/processing-type/index']); ?>">
+                                <i class="material-icons">image</i>
+
+                                <span class="sidebar-normal">Processing Type</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= \yii\helpers\Url::to(['/visa-faq/index']); ?>">
+                                <i class="material-icons">image</i>
+
+                                <span class="sidebar-normal">Visa Faq</span>
+                            </a>
+                        </li>
+                       
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" data-toggle="collapse" href="#images" aria-expanded="false">
+
+                    <i class="material-icons">image</i>
+
+                    <p>Cars 
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse" id="images">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= \yii\helpers\Url::to(['/cars/index']); ?>">
+                                <i class="material-icons">shopping_cart</i>
+                                <span class="sidebar-normal">Manage Cars</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= \yii\helpers\Url::to(['/rental-enquiry/index']); ?>">
+                                <i class="material-icons">shopping_cart</i>
+                                <span class="sidebar-normal">Rental Requests</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item ">
+                <a class="nav-link" data-toggle="collapse" href="#masters" aria-expanded="false">
+
+                    <i class="material-icons">shopping_cart</i>
+
+                    <p>Master Datas
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse" id="masters">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= \yii\helpers\Url::to(['/brands/index']); ?>">
+                                <i class="material-icons">shopping_cart</i>
+                                <span class="sidebar-normal">Car Brands</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= \yii\helpers\Url::to(['/car-option-master/index']); ?>">
+                                <i class="material-icons">shopping_cart</i>
+                                <span class="sidebar-normal">Car Options</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= \yii\helpers\Url::to(['/documents-master/index']); ?>">
+                                <i class="material-icons">shopping_cart</i>
+                                <span class="sidebar-normal">Document Required Master</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= \yii\helpers\Url::to(['/extras-master/index']); ?>">
+                                <i class="material-icons">shopping_cart</i>
+                                <span class="sidebar-normal">Extras Master</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= \yii\helpers\Url::to(['/general-information-master/index']); ?>">
+                                <i class="material-icons">shopping_cart</i>
+                                <span class="sidebar-normal">General Inforamtion Master</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= \yii\helpers\Url::to(['/type-of-car/index']); ?>">
+                                <i class="material-icons">shopping_cart</i>
+                                <span class="sidebar-normal">Type Of Cars</span>
+                            </a>
+                        </li>
+
+                    </ul>
+                </div>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="<?= \yii\helpers\Url::to(['/events/index']); ?>">
                     <i class="material-icons">image</i>
@@ -294,6 +414,13 @@
                         </li>
                     </ul>
                 </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?= \yii\helpers\Url::to(['/cms-content/index']); ?>">
+                    <i class="material-icons">image</i>
+
+                    <span class="sidebar-normal">Page Contents</span>
+                </a>
             </li>
 
             <li class="nav-item ">

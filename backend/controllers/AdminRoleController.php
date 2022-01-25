@@ -227,6 +227,8 @@ class AdminRoleController extends Controller {
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id) {
+        ini_set('max_execution_time', '300'); //300 seconds = 5 minutes
+
         $model = $this->findModel($id);
         $role = new \common\models\AdminRoleLocation();
 

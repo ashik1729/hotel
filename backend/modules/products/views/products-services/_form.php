@@ -238,7 +238,6 @@ JS;
                                 <?php Pjax::begin(['id' => 'product_service']) ?>
                                 <?php
                                 //  $datas = [];
-                                $options = array();
 //                        if (!$model->isNewRecord) {
 //                            $merchant = \common\models\Merchant::findOne(['id' => $model->merchant_id]);
 //                            if ($merchant != NULL) {
@@ -260,6 +259,7 @@ JS;
 //                                    $options[$get_category->id] = $get_category->category_name;
 //                                }
 //                            }
+                                $options = array();
 
                                 $datas = \common\models\Category::find()->all();
                                 if ($datas != NULL) {
