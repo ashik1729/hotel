@@ -9,8 +9,6 @@ use Yii;
  *
  * @property int $id
  * @property int $category_id
- * @property int $merchant_id
- * @property string $sku
  * @property string $product_name
  * @property string $canonical_name
  * @property string $image
@@ -19,7 +17,6 @@ use Yii;
  * @property float $price
  * @property int $discount_type
  * @property float $discount_rate
- * @property int $requires_shipping
  * @property string $new_from
  * @property string $new_to
  * @property string $sale_from
@@ -27,10 +24,8 @@ use Yii;
  * @property string $discount_from
  * @property string $discount_to
  * @property string $search_tag
- * @property string $related_products
  * @property int $stock_availability
  * @property int $is_featured
- * @property int $is_admin_approved
  * @property string $created_at
  * @property string $updated_at
  * @property int $updated_by
@@ -39,15 +34,9 @@ use Yii;
  * @property string $meta_title
  * @property string $meta_description
  * @property string $meta_keywords
- * @property int $tax_applicable
- * @property float $tax_amount
- * @property int $min_quantity
  * @property int $quantity
- * @property int $weight_class
- * @property float $weight
  * @property string $short_description
  * @property string $long_description
- * @property int $type
  *
  * @property Cart[] $carts
  * @property OrderHistory[] $orderHistories
@@ -65,7 +54,7 @@ class ProductsServices extends \yii\db\ActiveRecord {
      * {@inheritdoc}
      */
     public static function tableName() {
-        return 'products_services';
+        return 'packages';
     }
 
     public $store;
@@ -75,17 +64,18 @@ class ProductsServices extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['category_id', 'merchant_id', 'price', 'requires_shipping', 'updated_by', 'created_by', 'quantity', 'type', 'product_name_en', 'product_name_ar'], 'required'],
-            [['category_id', 'merchant_id', 'sort_order', 'discount_type', 'requires_shipping', 'stock_availability', 'is_featured', 'is_admin_approved', 'updated_by', 'created_by', 'status', 'tax_applicable', 'min_quantity', 'quantity', 'weight_class', 'type'], 'integer'],
-            [['gallery', 'search_tag', 'related_products', 'meta_description', 'meta_keywords', 'short_description_en', 'long_description_en'], 'string'],
-            [['price', 'discount_rate', 'tax_amount', 'weight'], 'number'],
-            [['new_from', 'new_to', 'sale_from', 'sale_to', 'discount_from', 'discount_to', 'created_at', 'updated_at', 'created_at', 'field', 'sku', 'canonical_name', 'updated_at', 'title', 'short_description_en', 'short_description_ar', 'long_description_en', 'long_description_ar', 'discount_type', 'discount_rate', 'new_from', 'new_to', 'sale_from', 'sale_to', 'discount_from', 'discount_to', 'meta_title', 'meta_description', 'meta_keywords', 'weight_class', 'weight', 'tax_amount', 'sort_order', 'image', 'gallery', 'discount_id', 'store'], 'safe'],
-            [['sku'], 'string', 'max' => 50],
+            // [['category_id', 'merchant_id', 'price', 'requires_shipping', 'updated_by', 'created_by', 'quantity', 'type', 'product_name_en', 'product_name_ar'], 'required'],
+            [['category_id', 'sort_order', 'discount_type', 'is_featured',  'updated_by', 'created_by', 'status', 'quantity'], 'integer'],
+            [['gallery', 'search_tag', 'meta_description', 'meta_keywords', 'short_description_en', 'long_description_en'], 'string'],
+            [['price', 'discount_rate'], 'number'],
+            [['gallery','short_description_en', 'long_description_en'], 'string'],
+            [['new_from', 'new_to', 'sale_from', 'sale_to', 'discount_from', 'discount_to', 'created_at', 'updated_at', 'created_at', 'field', 'canonical_name', 'updated_at', 'title', 'short_description_en', 'short_description_ar', 'long_description_en', 'long_description_ar', 'discount_type', 'discount_rate', 'new_from', 'new_to', 'sale_from', 'sale_to', 'discount_from', 'discount_to', 'meta_title', 'meta_description', 'meta_keywords','sort_order', 'image', 'gallery', 'discount_id', 'store'], 'safe'],
+            
             [['product_name_en', 'canonical_name', 'meta_title'], 'string', 'max' => 255],
             [['image'], 'string', 'max' => 100],
-            [['sku'], 'unique'],
+            // [['sku'], 'unique'],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
-            [['merchant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Merchant::className(), 'targetAttribute' => ['merchant_id' => 'id']],
+            // [['merchant_id'], 'exist', 'skipOnError' => true, 'targetClass' => Merchant::className(), 'targetAttribute' => ['merchant_id' => 'id']],
         ];
     }
 
@@ -96,9 +86,8 @@ class ProductsServices extends \yii\db\ActiveRecord {
         return [
             'id' => 'ID',
             'category_id' => 'Category ID',
-            'merchant_id' => 'Merchant ID',
-            'sku' => 'Sku',
-            'product_name_en' => 'Product Name English',
+           // 'merchant_id' => 'Merchant ID',
+            'product_name_en' => 'Package Name ',
             'canonical_name' => 'Canonical Name',
             'image' => 'Image',
             'gallery' => 'Gallery',
@@ -106,7 +95,6 @@ class ProductsServices extends \yii\db\ActiveRecord {
             'price' => 'Price',
             'discount_type' => 'Discount Type',
             'discount_rate' => 'Discount Rate',
-            'requires_shipping' => 'Requires Shipping',
             'new_from' => 'New From',
             'new_to' => 'New To',
             'sale_from' => 'Sale From',
@@ -114,10 +102,7 @@ class ProductsServices extends \yii\db\ActiveRecord {
             'discount_from' => 'Discount From',
             'discount_to' => 'Discount To',
             'search_tag' => 'Search Tag',
-            'related_products' => 'Related Products',
-            'stock_availability' => 'Stock Availability',
             'is_featured' => 'Is Featured',
-            'is_admin_approved' => 'Is Admin Approved',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
@@ -127,14 +112,10 @@ class ProductsServices extends \yii\db\ActiveRecord {
             'meta_description' => 'Meta Description',
             'meta_keywords' => 'Meta Keywords',
             'tax_applicable' => 'Tax Applicable',
-            'tax_amount' => 'Tax Amount',
-            'min_quantity' => 'Min Quantity',
             'quantity' => 'Quantity',
             'weight_class' => 'Weight Class',
-            'weight' => 'Weight',
-            'short_description_en' => 'Short Description English',
+            'short_description_en' => 'Description',
             'long_description_en' => 'Long Description',
-            'type' => 'Type',
         ];
     }
 

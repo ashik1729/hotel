@@ -114,7 +114,7 @@ if ($franchise != NULL) {
                                 'filterModel' => $searchModel,
                                 'columns' => [
                                     ['class' => 'yii\grid\SerialColumn'],
-                                    [
+                                /*    [
                                         'attribute' => 'image',
                                         'header' => 'Image',
                                         'value' => function($model) {
@@ -126,54 +126,54 @@ if ($franchise != NULL) {
                                             return $imgPath;
                                         },
                                         'format' => ['image', ['width' => '80', 'height' => '80']],
-                                    ],
+                                    ], */
                                     'id',
 //                                    'category_id',
-                                    'sku',
-                                    'title',
+                                    // 'sku',
+                                    // 'title',
                                     [
                                         'attribute' => 'category_id',
                                         'header' => 'Category',
                                         'filter' => Html::activeDropDownList($searchModel, 'category_id', $options, ['class' => 'form-control ashik ', 'prompt' => 'All']),
                                         'value' => function($model) {
-                                            if ($model->category->parent != $model->category->id) {
+                                        //   /  if ($model->category->parent != $model->category->id) {
 
-                                                $html = '<nav aria-label = "breadcrumb"> <ol class = "breadcrumb">';
-                                                $catmodel = \common\models\Category::find()->where(['id' => $model->category_id])->one();
+                                        //         $html = '<nav aria-label = "breadcrumb"> <ol class = "breadcrumb">';
+                                        //         $catmodel = \common\models\Category::find()->where(['id' => $model->category_id])->one();
 
-                                                $option_items = Yii::$app->SelectCategory->selectCategories($catmodel);
-                                                $option_data = explode('-', $option_items);
-                                                $option_data_array = array_reverse($option_data);
-                                                if ($option_data_array != NULL) {
-                                                    $i = 1;
-                                                    $count = count($option_data_array);
-                                                    foreach ($option_data_array as $option_data_arr) {
-                                                        $option_cat = \common\models\Category::find()->where(['id' => $option_data_arr])->one();
-                                                        $caturl = Yii::$app->request->baseUrl . '/category/view?id=' . $option_data_arr;
+                                        //         $option_items = Yii::$app->SelectCategory->selectCategories($catmodel);
+                                        //         $option_data = explode('-', $option_items);
+                                        //         $option_data_array = array_reverse($option_data);
+                                        //         if ($option_data_array != NULL) {
+                                        //             $i = 1;
+                                        //             $count = count($option_data_array);
+                                        //             foreach ($option_data_array as $option_data_arr) {
+                                        //                 $option_cat = \common\models\Category::find()->where(['id' => $option_data_arr])->one();
+                                        //                 $caturl = Yii::$app->request->baseUrl . '/category/view?id=' . $option_data_arr;
 
-                                                        if ($option_cat != NULL) {
-                                                            if ($i == $count) {
-                                                                $html .= '<li class="breadcrumb-item active" aria-current="page"><a href = "' . $caturl . '">' . $option_cat->category_name . '</a></li>';
-                                                            } else {
-                                                                $html .= '<li class = "breadcrumb-item"><a href = "' . $caturl . '">' . $option_cat->category_name . '</a></li>';
-                                                            }
-                                                            $i++;
-                                                        }
-                                                    }
-                                                }
+                                        //                 if ($option_cat != NULL) {
+                                        //                     if ($i == $count) {
+                                        //                         $html .= '<li class="breadcrumb-item active" aria-current="page"><a href = "' . $caturl . '">' . $option_cat->category_name . '</a></li>';
+                                        //                     } else {
+                                        //                         $html .= '<li class = "breadcrumb-item"><a href = "' . $caturl . '">' . $option_cat->category_name . '</a></li>';
+                                        //                     }
+                                        //                     $i++;
+                                        //                 }
+                                        //             }
+                                        //         }
 
-                                                $html .= '</ol></nav>';
-                                                return $html;
-                                            } else {
-                                                $caturl = Yii::$app->request->baseUrl . '/category/view?id=' . $model->category->id;
+                                        //         $html .= '</ol></nav>';
+                                        //         return $html;
+                                        //     } else {
+                                        //         $caturl = Yii::$app->request->baseUrl . '/category/view?id=' . $model->category->id;
 
-                                                return '<a href = "' . $caturl . '">' . $model->category->category_name . '</a>';
-                                            }
-//                                            return "<span style=' text-transform: capitalize'>" . $model->franchise->first_name . ' ' . $model->franchise->last_name . '(' . $gfranchise->country0->country_name . ')' . "</span>";
+                                        //         return '<a href = "' . $caturl . '">' . $model->category->category_name . '</a>';
+                                        //     } 
+                                         // return "<span style=' text-transform: capitalize'>" . $model->franchise->first_name . ' ' . $model->franchise->last_name . '(' . $gfranchise->country0->country_name . ')' . "</span>";
                                         },
                                         'format' => 'html',
                                     ],
-                                    [
+                               /*     [
                                         'attribute' => 'merchant_id',
                                         'header' => 'Merchants',
                                         'filter' => Html::activeDropDownList($searchModel, 'merchant_id', $merchant_list, ['class' => 'form-control ashik ', 'prompt' => 'All']),
@@ -182,7 +182,7 @@ if ($franchise != NULL) {
                                         },
                                         'format' => 'html',
                                         'visible' => \Yii::$app->user->identity->interface != 'merchant' ? true : false
-                                    ],
+                                    ], 
                                     [
                                         'attribute' => 'store',
                                         'label' => 'Store(Franchise)',
@@ -191,7 +191,7 @@ if ($franchise != NULL) {
                                             return "<span style=' text-transform: capitalize'>" . $model->merchant->franchise->first_name . ' ' . $model->merchant->franchise->last_name . '(' . $model->merchant->franchise->country0->country_name . ')' . "</span>";
                                         },
                                         'format' => 'html',
-                                    ],
+                                    ], */
                                     //'canonical_name',
                                     //'image',
                                     //'gallery:ntext',

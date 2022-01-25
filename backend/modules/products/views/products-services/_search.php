@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
     <div class="data-filters">
         <div class="row">
             <div class="col-sm-2">
-                <?= $form->field($model, 'type')->dropDownList(['1' => 'Product', '2' => 'Shop Service', '3' => 'Home Service']) ?>
+                <? /* <?= $form->field($model, 'type')->dropDownList(['1' => 'Product', '2' => 'Shop Service', '3' => 'Home Service']) ?> */ ?>
             </div>
 
             <?php
@@ -51,7 +51,7 @@ use yii\widgets\ActiveForm;
                 <div class="form-group bmd-form-group">
                     <label class="control-label" for="productsservices-merchant_id">Merchant
                     </label>
-                    <?php
+                    <?php /*
                     echo kartik\select2\Select2::widget([
                         'model' => $model,
                         'attribute' => 'merchant_id',
@@ -64,17 +64,17 @@ use yii\widgets\ActiveForm;
                             'tokenSeparators' => [',', ' '],
                             'maximumInputLength' => 20
                         ],
-                    ]);
+                    ]); */
                     ?>
                 </div>
             </div>
             <div class="col-sm-2">
-                <?= $form->field($model, 'stock_availability')->dropDownList(['1' => 'Yes', '0' => 'No']) ?>
+              <?php /*  <?= $form->field($model, 'stock_availability')->dropDownList(['1' => 'Yes', '0' => 'No']) ?>  */ ?>
 
             </div>
 
             <div class="col-sm-2">
-                <?= $form->field($model, 'is_admin_approved')->dropDownList(['1' => 'Yes', '0' => 'No']) ?>
+              <?php /*  <?= $form->field($model, 'is_admin_approved')->dropDownList(['1' => 'Yes', '0' => 'No']) ?> */?>
 
             </div>
 
