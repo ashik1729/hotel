@@ -12,16 +12,23 @@ class AppAsset extends AssetBundle {
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        'css/site.css',
-        'vendors/bootstrap/css/bootstrap.min.css',
-        'fonts/font-awesome-4.7.0/css/font-awesome.min.css',
-        'css/util.css',
-        'css/main.css',
+        'css/animate.min.css',
+        'css/bootstrap@5.0.2/css/bootstrap.min.css',
+        'css/owlcarousel/css/owl.carousel.min.css',
+        'css/owlcarousel/css/owl.theme.default.min.css',
+        'css/style.css',
+        'css/responsive.css',
     ];
     public $js = [
-        'vendors/jquery/jquery-3.2.1.min.js',
-        'vendors/bootstrap/js/popper.js',
-        'vendors/bootstrap/js/bootstrap.min.js'
+        'https://kit.fontawesome.com/df7cb1b087.js',
+        'js/counter/ajax-jquery.min.js',
+        'js/counter/counter-waypoints.min.js',
+        'js/counter/js-counter.js',
+        'css/owlcarousel/js/owl.carousel.js',
+        'js/core.js',
+        'js/wow.min.js',
+        'js/jquery.fittext.js',
+        'css/bootstrap@5.0.2/js/bootstrap.bundle.min.js', 
     ];
     public $depends = [
         'yii\web\YiiAsset',
