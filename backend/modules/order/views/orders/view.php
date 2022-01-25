@@ -557,7 +557,7 @@ JS;
                                     ['class' => 'yii\grid\SerialColumn'],
 //                                    'id',
 //                                    'order_id',
-                                    [
+                                /*    [
                                         'attribute' => 'product_id',
                                         'value' => function ($data) {
                                             if ($data->product_id != 0) {
@@ -567,7 +567,7 @@ JS;
                                             }
                                         },
                                         'format' => 'raw'
-                                    ],
+                                    ], */
                                     [
                                         'attribute' => 'product_id',
                                         'label' => 'Options',
@@ -597,19 +597,19 @@ JS;
                                         },
                                         'format' => 'raw'
                                     ],
-                                    [
-                                        'attribute' => 'product_id',
+                                  /*   [
+                                       'attribute' => 'product_id',
                                         'label' => 'Sku',
                                         'value' => function ($data) {
                                             if ($data->product_id != 0) {
-                                                return $data->product->sku;
+                                                return $data->product->product_id;
                                             } else {
                                                 return '';
                                             }
                                         },
                                         'format' => 'raw'
-                                    ],
-                                    [
+                                    ], */
+                              /*      [
                                         'attribute' => 'product_id',
                                         'label' => 'Item Type',
                                         'value' => function ($data) {
@@ -620,7 +620,7 @@ JS;
                                             }
                                         },
                                         'format' => 'raw'
-                                    ],
+                                    ], */
                                     [
                                         'attribute' => 'merchant_id',
                                         'label' => 'Merchant',
@@ -908,8 +908,8 @@ JS;
                                                                 </tr>
                                                                 <?php foreach ($orderProductsDatas as $orderProductsData) { ?>
                                                                     <tr>
-                                                                        <td><?= $orderProductsData->product->product_name_en; ?> </td>
-                                                                        <td><?= $orderProductsData->product->sku; ?></td>
+                                                                      <?php /*  <td><?= $orderProductsData->product->product_name_en; ?> </td>
+                                                                        <td><?= $orderProductsData->product->sku; ?></td>  */?>
                                                                         <td><?= $orderProductsData->quantity; ?></td>
 
                                                                     </tr>

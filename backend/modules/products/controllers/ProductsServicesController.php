@@ -5,6 +5,8 @@ namespace backend\modules\products\controllers;
 use Yii;
 use common\models\ProductsServices;
 use common\models\ProductsServicesSearch;
+use backend\models\PackagesDate;
+use backend\models\PackagesPrice;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -82,11 +84,15 @@ class ProductsServicesController extends Controller {
      */
     public function actionIndex() {
 
-        $searchModel = new ProductsServicesSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $searchModel     = new ProductsServicesSearch();
+        $package_model   = new PackagesDate();
+        $pkg_price_model = new PackagesPrice();
+        $dataProvider  = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
+                    'package_model' => $package_model,
                     'searchModel' => $searchModel,
+                    'pkg_price_model' => $pkg_price_model,
                     'dataProvider' => $dataProvider,
         ]);
     }
@@ -206,6 +212,26 @@ class ProductsServicesController extends Controller {
             echo json_encode($array);
             exit;
         }
+    }
+    public function actionAddPackageDetails(){
+        $model  = new PackagesDate();
+        $log = [];
+        if($model->load(Yii::$app->request->post())) {
+            $model->created_at = date('Y-m-d H:i:s');
+            $model->updated_at = date('Y-m-d H:i:s');
+            if($model->save()) {
+                $log['status'] = 200;
+                $log['error']  = '';
+
+            } else {
+                $log['status'] = 201;
+                $log['error']  = $model->errors;
+            }
+
+        }
+        echo json_encode($log);
+        exit;
+
     }
 
     public function actionGetAttrValues() {
@@ -537,7 +563,7 @@ class ProductsServicesController extends Controller {
 //                $long_name = $this->addlanguage(1, $languages, $model->id, $model, 'long_description');
 
 
-                    return $this->redirect(['view', 'id' => $model->id]);
+                    return $this->redirect(['index']);
                 } else {
                     $transaction->rollBack();
                     print_r($model->errors);
@@ -790,6 +816,7 @@ class ProductsServicesController extends Controller {
      */
     public function actionUpdate($id) {
         $model = $this->findModel($id);
+        $implode_search_tag = "";
         if (Yii::$app->user->identity->interface == 'merchant') {
             if ($model->merchant_id != Yii::$app->user->identity->id) {
                 throw new \yii\web\ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
@@ -808,10 +835,10 @@ class ProductsServicesController extends Controller {
         $languages = \common\models\Language::find()->where(['status' => 1])->all();
         $exist_image = $model->image;
         $exist_gal_image = $model->gallery;
-        $sku = $model->sku;
+        $id = $model->id;
         if ($model->load(Yii::$app->request->post())) {
 
-            $canon_name = strtolower($model->product_name_en . ' ' . $model->category->category_name . ' ' . $model->merchant->id);
+            $canon_name = strtolower($model->product_name_en . ' ' . $model->category->category_name);
             $canonical_name = str_replace(' ', '-', $canon_name); // Replaces all spaces with hyphens.
             $canonical_name = preg_replace('/[^A-Za-z0-9\-]/', '', $canonical_name); // Removes special chars.
             $model->canonical_name = preg_replace('/-+/', '-', $canonical_name);
@@ -827,9 +854,9 @@ class ProductsServicesController extends Controller {
             if ($implode_search_tag != '') {
                 $model->search_tag = $implode_search_tag;
             }
-            if ($related_products != '') {
-                $model->related_products = $related_products;
-            }
+            // if ($related_products != '') {
+            //     $model->related_products = $related_products;
+            // }
             $model->created_by = yii::$app->user->identity->id;
             $model->updated_by = yii::$app->user->identity->id;
             $model->status = 1;
@@ -851,12 +878,12 @@ class ProductsServicesController extends Controller {
 
                 if ($model->save()) {
 
-                    $model->sku = Yii::$app->params['sku_prefix'] . 'M' . $model->merchant_id . 'PS' . $model->id;
+                    //$model->id = Yii::$app->params['sku_prefix'] . 'M' . $model->merchant_id . 'PS' . $model->id;
                     $model->save(FALSE);
 
-                    if ($sku != $model->sku) {
-                        $oldfolder = 'products/' . base64_encode($sku);
-                        $newfolder = 'products/' . base64_encode($model->sku);
+                    if ($id != $model->id) {
+                        $oldfolder = 'products/' . base64_encode($id);
+                        $newfolder = 'products/' . base64_encode($model->id);
                         $targetFolder = \yii::$app->basePath . '/../uploads/' . $oldfolder . '/';
                         $newtargetFolder = \yii::$app->basePath . '/../uploads/' . $newfolder . '/';
                         if (file_exists($targetFolder)) {
@@ -864,13 +891,13 @@ class ProductsServicesController extends Controller {
                         }
                     }
                     if ($file) {
-                        if (!$model->uploadFile($file, $profile_name, 'products/' . base64_encode($model->sku) . '/image')) {
+                        if (!$model->uploadFile($file, $profile_name, 'products/' . base64_encode($model->id) . '/image')) {
 
                             $transaction->rollBack();
                         }
                     }
                     if ($gallery != NULL) {
-                        if (!$model->uploadMultipleImage($gallery, $model->id, $name, 'products/' . base64_encode($model->sku) . '/gallery')) {
+                        if (!$model->uploadMultipleImage($gallery, $model->id, $name, 'products/' . base64_encode($model->id) . '/gallery')) {
 
                             $transaction->rollBack();
                         }
@@ -892,7 +919,7 @@ class ProductsServicesController extends Controller {
 
                     Yii::$app->session->setFlash('success', "Products updated successfully.");
 
-                    return $this->redirect(['view', 'id' => $model->id]);
+                    return $this->redirect(['create', 'id' => $model->id]);
                 } else {
                     $transaction->rollBack();
                     print_r($model->errors);
@@ -943,8 +970,8 @@ class ProductsServicesController extends Controller {
         $id = $_GET['id'];
         $model = $this->findModel($id);
 
-        if (is_dir(Yii::$app->basePath . '/../uploads/products/' . base64_encode($model->sku) . '/gallery')) {
-            chmod(Yii::$app->basePath . '/../uploads/products/' . base64_encode($model->sku) . '/gallery', 0777);
+        if (is_dir(Yii::$app->basePath . '/../uploads/products/' . base64_encode($model->id) . '/gallery')) {
+            chmod(Yii::$app->basePath . '/../uploads/products/' . base64_encode($model->id) . '/gallery', 0777);
 
             $data = Yii::$app->basePath . '/../uploads/products/' . $model->id . '/gallery/' . $image;
             $small = Yii::$app->basePath . '/../uploads/products/' . $model->id . '/gallery/small/' . $image;
