@@ -1,0 +1,1813 @@
+@media only screen and (max-width: 1500.00px)
+	{
+		.package__section-itembox
+			{
+				position: relative;
+				min-height: 570px;
+			}
+
+		.package__section-itembox .pricing-area .pricing-box
+			{
+				margin: 0 0 10px 0;
+				padding: 10px 0;
+				font-size: 14px;
+			}
+
+		.package__section-itembox .pricing-area .pricing-box:last-child
+			{
+				margin-bottom: 0px;
+			}
+
+		/**********************/
+
+		.filter__search-area .all-in-one
+			{
+				width: 100%;
+			}
+
+		.filter__search-area
+			{
+				margin: 0 50px 0 0;
+				padding: 0;
+				width: 23%;
+			}
+
+		.package__listing-area
+			{
+				width: 77%;
+				padding: 0px;
+			}
+
+		.package__listing-area .package__section-itembox
+			{
+				min-height: 530px;
+			}
+
+		.package__listing-area .package__section-itembox .item-title
+			{
+				font-size: 13px;
+				padding:8px 10px;
+			}
+
+		.package__listing-area .package__section-itembox .pricing-area .pricing-box
+			{
+				padding: 5px 0;
+				font-size: 14px;
+			}
+
+		.package__listing-area .package__section-itembox .package__cnt-panel h2
+			{
+				padding: 10px 0;
+				font-size: 16px;
+			}
+	}
+
+
+@media only screen and (max-width: 1399.99px)
+	{
+		header .navbar-brand img
+			{
+				width: 65px;
+			}
+
+		.heading-main
+			{
+				padding: 0 0 20px;
+				font-size: 45px;
+			}
+
+		.package__section p
+			{
+				font-size: 14px;
+				line-height: 25px;
+				font-weight: 400;
+				width: 60%;
+			}
+
+		.package__section-itembox
+			{
+				position: relative;
+				min-height: 520px;
+			}
+
+		.package__section-itembox .package__cnt-panel h2
+			{
+				padding: 10px 0;
+				font-weight: 500;
+				font-size: 18px;
+				line-height: 25px;
+			}
+
+		/*****************/
+
+		.package__listing-area .package__section-itembox
+			{
+				min-height: 450px;
+			}
+
+		.package__listing-area .package__section-itembox .item-title
+			{
+				font-size: 12px;
+				padding:8px 10px;
+			}
+
+		.package__listing-area .package__section-itembox .pricing-area .pricing-box
+			{
+				padding: 5px 0;
+				font-size: 13px;
+			}
+
+		.package__listing-area .package__section-itembox .package__cnt-panel h2
+			{
+				padding: 7px 0;
+				font-size: 14px;
+				line-height: 22px;
+			}
+
+		/*************/
+
+		.visa_list .visa_list-wrapper .visa
+			{
+				min-height: 400px;
+			}
+	}
+
+
+@media only screen and (max-width: 1278.99px)
+	{
+
+	}
+
+
+@media only screen and (max-width: 1199.99px)
+	{
+		header .navbar-expand-lg .navbar-nav .nav-item
+			{
+				padding-left: 10px;
+				padding-right: 10px;
+			}
+
+		header .navbar-expand-lg .navbar-nav .nav-link
+			{
+				font-size: 15px;
+			}
+
+		header  .navbar-toggler-icon
+			{
+				background-image: none;
+			}
+
+		header .navbar-nav
+			{
+				margin-top: 20px;
+			}
+
+		header .navbar-expand-lg .navbar-nav .nav-item
+			{
+				padding-left: 10;
+				padding-right: 10;
+				padding-bottom: 15px;
+			}
+
+		.heading-main
+			{
+				padding: 0 0 20px;
+				font-size: 40px;
+			}
+
+		.package__section-itembox
+			{
+				min-height: 480px;
+			}
+
+		.package__section-itembox .pricing-area .pricing-box
+			{
+				padding: 8px 8px;
+				margin-bottom: 8px;
+			}
+
+		.package__section-itembox .package__cnt-panel h2
+			{
+				font-size: 16px;
+				line-height: 20px;
+			}
+
+		.package__section-itembox .item-title
+			{
+				font-size: 14px;
+			}
+
+		/************************/
+
+		.package__listing-page .package__section-wrapper 
+			{
+			    display: grid;
+			    grid-template-columns: 1fr 1fr;
+			    grid-auto-rows: minmax(100px, auto);
+			}
+
+		.filter__search-area
+			{
+				margin: 0 30px 0 0;
+			}
+
+		/*******************/
+
+		.car-item-list .car-list-wrapper
+			{
+				margin: 30px 0 0;
+				padding: 0;
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				grid-auto-rows: minmax(100px, auto);
+				grid-gap: 20px;
+			}
+
+		/**********************/
+
+		.rent-car-detail-page .nav-link 
+			{
+			    font-size: 14px;
+			}
+
+		.rent-car-detail-page .nav-pills .nav-link
+			{
+				margin: 0 20px 0 0;
+			}
+
+	}
+
+
+@media only screen and (max-width: 1399.99px) and (min-width: 1200px)  
+	{
+		.rent-car-section .container
+			{
+				max-width: 1250px;
+			}
+	}
+
+
+@media only screen and (max-width: 1199.99px) and (min-width: 992px)  
+	{
+
+	}
+
+
+@media only screen and (max-width: 991.99px) and (min-width: 767px)  
+	{
+
+	}
+
+@media only screen and (max-width: 766.99px) and (min-width: 575px)  
+	{
+		.car-item-list .car-list-wrapper .car-item-box .car-for
+			{
+				margin: 0 0px 10px 0;
+				padding: 10px;
+				background: #E8E8E8;
+				width: 100%;
+				font-size: 11px;
+			}
+
+		.car-item-list .car-list-wrapper .car-item-box .car-for:last-child
+			{
+				margin-bottom: 0px;
+			}
+
+		.car-item-list .car-list-wrapper .car-item-box .car-for .was-price
+			{
+				margin-right: 10px;
+				margin-left: 10px;
+			}
+
+	}
+
+
+@media only screen and (min-width: 0.00px)
+	{
+		
+	}
+
+
+@media only screen and (min-width: 576.00px)
+	{
+		
+	}
+
+
+@media only screen and (min-width: 768.00px)
+	{
+
+	}
+
+
+@media only screen and (min-width: 992.00px)
+	{
+		.gallery-page
+			{
+				padding-top: 100px;
+			}
+	}
+
+
+@media only screen and (min-width: 1200.00px)
+	{
+		
+
+	}
+
+@media only screen and (min-width: 1400.00px)
+	{
+
+	}
+
+
+@media only screen and (max-width: 991.99px)
+	{
+
+		.heading-main
+			{
+				padding: 0 0 20px;
+				font-size: 35px;
+			}
+
+		.menubar 
+			{ 
+				display: none; 
+			}
+
+		.mobile-menubar.open 
+			{ 
+				display: flex; 
+			}
+
+
+		/****************/
+
+		header
+			{
+				padding-left: 15px;
+				padding-right: 15px;
+			}
+
+		.package__section p
+			{
+				font-size: 14pxpx;
+				font-weight: 400;
+				width: 90%;
+			}
+
+		.package__section-wrapper
+			{
+				grid-template-columns: 1fr 1fr;
+			}
+
+		.package__section-itembox
+			{
+				min-height: 430px;
+			}
+
+		.package__section-itembox .item-title
+			{
+				font-size: 12px;
+				padding: 5px 15px;
+			}
+
+		/*************/
+
+		.slider .item
+			{
+				position: relative;
+				min-height: 500px;
+			}
+
+		.slider .slider-image
+			{
+				position: absolute;
+				object-fit: cover;
+				object-position: center;
+				width: 100%;
+				height: 100%;
+			}
+
+		.slider .slider-form
+			{
+				width: 80%;
+			}
+
+		/*************/
+
+		.services-cnt-panel
+			{
+				width: 100%;
+			}
+
+		.services-cnt-panel .item-panel
+			{
+				padding-right: 0px;
+			}
+
+		.services-cnt-panel .item-panel .services-details h4
+			{
+				font-size: 18px;
+			}
+
+		/**************/
+
+		.why__choose .why-img
+			{
+				width: 100%;
+				position: relative;
+			}
+
+		.why__choose .why-img img
+			{
+				position: relative;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				object-position: center top;
+			}
+
+		.why__choose .why-cnt-panel
+			{
+				width: 100%;
+				padding: 70px 60px;
+			}
+
+		.why__choose .why-cnt-panel .list-panel:nth-child(2) 
+			{
+			    margin-top: 30px;
+			}
+
+		/************************/
+
+		.counter-col .wrapper .counter-box h2
+			{
+				margin: 0;
+				padding: 0;
+				font-size: 35px;
+				line-height: 50px;
+				color: #fff;
+				letter-spacing: 1px;
+				font-weight: 700;
+			}
+
+		.counter-col .wrapper .counter-box h4
+			{
+				margin: 0;
+				padding: 0;
+				font-size: 14px;
+				color: #fff;
+				letter-spacing: 0px;
+				font-weight: 700;
+				letter-spacing: 1px;
+				text-transform: uppercase;
+			}
+
+		/******************************/
+		
+		.home__client .owl-theme .owl-nav
+			{
+				bottom: 40%;
+			}
+
+		.home__client .owl-carousel .owl-nav button.owl-prev
+			{
+				left: -20px;
+			}
+
+		.home__client .owl-carousel .owl-nav button.owl-next
+			{
+				right: -20px;
+			}
+
+		/*******************************/
+
+		.instagram-area .wrapper
+			{
+				grid-gap: 10px;
+			}
+
+		.instagram-area .pb-4
+			{
+				padding: 0 50px;
+			}
+
+		/********************************/
+
+		.banner
+			{
+				padding: 150px 0 60px;
+			}
+
+		.banner h3
+			{
+				font-size: 30px;
+			}
+
+		/* **************************** */
+
+		.accommodation-provide .accommodation-image
+			{
+				width: 100%;
+			}
+
+		.accommodation-provide .accommodation-image img
+			{
+				position: relative;
+			}
+
+		.accommodation-provide .accommodation-detail
+			{
+				width: 100%;
+				padding: 30px 0 0;
+			}
+
+		.accommodation-provide .accommodation-detail p
+			{
+				width: 100%;
+			}
+
+		.accommodation-enquiry .accommodation-enquiry-form, .accommodation-enquiry-image
+			{
+				width: 100%;
+			}
+
+		.accommodation-enquiry-image
+			{
+				margin-top: 50px;
+			}
+
+		/*************************/
+
+		.filter__search-area,
+		.package__listing-area
+			{
+				width: 100%;
+				margin: 0;
+			}
+
+		.md-space-both
+			{
+				padding-right: 20px;
+				padding-left: 20px;
+			}
+
+		/*************/
+
+		.visa_reason .container
+			{
+				max-width: 100%;
+			}
+
+		.visa_reason h1
+			{
+				font-size: 25px;
+			}
+
+		.visa_list .visa_list-wrapper
+			{
+				margin: 30px 0 0 ;
+				grid-template-columns: 1fr 1fr;
+			}
+
+		/*****************/
+
+		.package_detail_section .details-wrapper
+			{
+				width: 100%;
+				margin: 0 0px 0 0;
+				padding: 0 0px 0 0;
+			}
+
+		.package_detail_section .quick__link
+			{
+				width: 100%;
+				padding: 0px;
+			}
+
+		.package_detail_section .details-wrapper h1
+			{
+				font-size: 28px;
+			}
+
+		.package_detail_section .details-wrapper .package-more-info h4
+			{
+				font-size: 23px;
+			}
+
+		.package_detail_section .quick__link .call-area
+			{
+				margin-top: 0px;
+			}
+
+		.visa_detail_section .visa_details-wrapper
+			{
+				width: 100%;
+				margin: 0 0px 0 0;
+				padding: 0 0px 0 0;
+			}
+		.visa_detail_section .quick__visa-area
+			{
+				width: 100%;
+				padding: 0px;
+			}
+
+		/**************/
+
+		.contact-section .left
+			{
+				width: 100%;
+				margin: 0 0px 50px 0;
+				padding: 0px 0;
+			}
+		.contact-section .right
+			{
+				width: 100%;
+				margin: 0 0px 0px 0;
+				background: #D7B758;
+				padding:40px;
+			}
+
+		/***********************/
+
+		.car-fli-cat-area
+			{
+				margin-bottom: 30px;
+			}
+
+		.car-fli-cat-area, .car-item-list
+			{
+				width: 100%;
+			}
+
+		/***************************/
+
+		.rent-car-detail-page .rent-car-images-detail
+			{
+				width: 100%;
+				margin-bottom: 30px;
+			}
+		.rent-car-detail-page .rent-car-box-detail
+			{
+				width: 100%;
+			}
+
+		/*******************/
+
+		.rent-car-detail-page .document-req
+			{
+				width: 100%;
+			}
+
+		/********************************/
+
+		.cart-section .order-item-list
+			{
+				margin: 0 0 30px;
+				width: 100%;
+			}
+		.cart-total
+			{
+				width: 100%;
+			}
+
+		.cart-table__column
+			{
+				padding: 15px;
+			}
+
+		.cart-table__column--details
+			{
+				width: 55%;
+			}
+
+		/*******************************/
+
+
+		.checkout-section .checkout-list
+			{
+				padding: 20px;
+				width: 100%;
+				background: #fff6e4;
+			}
+
+		.checkout-section .checkout-details
+			{
+				margin: 0 0 40px;
+				width: 100%;
+			}
+
+		/***********************/
+
+
+		.book-package-section-calendar
+			{
+				width: 100%;
+				margin-bottom: 30px;
+			}
+
+		.book-package-section-calendar h1
+			{
+				width: 80%;
+				font-size: 22px;
+			}
+
+		.book-package-section-details
+			{
+				width: 100%;
+			}
+
+		/***********************/
+
+		.book-package-section-form
+			{
+				margin-bottom: 30px;
+				width: 100%;
+			}
+
+		.book-package-section-payment
+			{
+				width: 100%;
+			}
+
+		/*********************/
+
+		.my-account-detials h1
+			{
+				padding: 0 0 10px;
+				font-size: 25px;
+			}
+
+		.my-account-sort
+			{
+				font-size: 14px;
+				width: 100%;
+			}
+
+		/*******************/
+
+		.tour-package-history-table  .cart-table__column--image 
+			{
+				display: none;
+			}
+
+		.book-package-section-details .img-box
+			{
+				height: 300px;
+			}
+
+	}
+
+
+@media only screen and (max-width: 767.99px)
+	{
+
+		.login-enquire-form .modal-body
+			{
+				padding: 1rem 15px;
+			}
+
+		.login-enquire-form .reset
+			{
+				font-size: 13px;
+			}
+
+		.login-enquire-form .form-control
+			{
+				font-size: 13px;
+				margin-bottom: 10px;
+				padding: 15px 15px;
+			}
+
+		.login-enquire-form p
+			{
+				font-size: 13px;
+			}
+
+		.login-enquire-form .modal-header .modal-title
+			{
+				font-size: 20px;
+			}
+
+		/************/
+
+		.slider .item
+			{
+				position: relative;
+				min-height: 300px;
+			}
+
+		.slider .carousel-caption h2
+			{
+				font-size: 18px;
+				padding-bottom: 20px;
+			}
+
+		.slider .carousel-caption h1
+			{
+				font-size: 20px;
+			}
+
+		.slider .slider-form
+			{
+				width: 90%;
+			}
+
+		.slider .carousel-caption
+			{
+				bottom: 30px;
+			}
+
+		.slider .slider-form .form-control
+			{
+				padding: 10px 15px;
+				font-size: 13px;
+			}
+
+		.slider .slider-form img
+			{
+				width: 16px;
+			}
+
+		.slider .slider-form .search-btn
+			{
+				right: 20px;
+			}
+
+		.slider .slider-form .form-control
+			{
+				padding-right: 50px;
+			}
+
+		/*****************/
+
+		.home__video-container .content-panel h5
+			{
+				font-size: 20px;
+			}
+
+		.home__video-container
+			{
+				padding: 150px 0 130px;
+			}
+
+		/****************/
+
+		.package__section
+			{
+				padding: 60px 0;
+			}
+
+		.package__section-itembox .pricing-area
+			{
+				width: 90%;
+				left: 5%;
+			}
+
+		.package__section-itembox .package__cnt-panel
+			{
+				width: 80%;
+				left: 5%;
+			}
+
+		.home__services
+			{
+				padding:0 0 60px;
+			}
+
+		.services-cnt-panel .item-panel:nth-child(2)
+			{
+				margin-top: 20px;
+			}
+
+		/********/
+
+		.why__choose .why-cnt-panel
+			{
+				width: 100%;
+				padding: 60px 30px;
+			}
+
+		/********/
+
+		.counter-col .wrapper
+			{
+				display: grid;
+				grid-template-columns: 1fr 1fr ;
+				grid-gap: 30px;
+			}
+
+		.counter-col .wrapper .counter-box:nth-child(even)
+			{
+				border-right: 0px;
+			}
+
+		/*************/
+
+		.home__client
+			{
+				padding: 60px 0;
+			}
+
+		.home__client .item
+			{
+				margin-top: 10px;
+			}
+
+		/****************/
+
+		.home__who-we
+			{
+				padding: 60px 0;
+			}
+
+		/*****************/
+
+		.instagram-area
+			{
+				padding: 60px 0 40px;
+			}
+
+		.instagram-area .wrapper
+			{
+				grid-template-columns: 1fr 1fr 1fr;
+				grid-auto-rows: minmax(50px, auto);
+				grid-gap: 0px;
+			}
+
+		.instagram-area .wrapper
+			{
+				margin-top: 20px;
+			}
+
+		.instagram-area h1
+			{
+				font-size: 25px;
+			}
+
+		/********************/
+
+		.about-footer, .link-footer, .reach-footer
+			{
+				width: 100% !important;
+			}
+
+		footer .footer-details .about-footer p
+			{
+				width: 100%;
+			}
+
+		footer .footer-details .link-footer
+			{
+				padding: 0;
+				margin: 30px 0;
+			}
+
+		/**************************/
+
+		.banner
+			{
+				padding: 100px 0 50px;
+			}
+
+		.banner h3
+			{
+				font-size: 20px;
+			}
+
+		/***************************/
+
+		.we-accept
+			{
+				margin-top: 10px !important;
+				text-align: center;
+			}
+
+		/* ********************** */
+
+		.accommodation-page
+			{
+				padding: 60px 0;
+			}
+
+		.accommodation-form-box
+			{
+				padding: 30px 15px;
+			}
+
+		.accommodation-form-box h3
+			{
+				font-size: 18px;
+			}
+
+		.accommodation-provide
+			{
+				padding: 60px 0;
+			}
+
+		.accommodation-enquiry
+			{
+				padding: 0px 0 60px;
+			}
+
+		.accommodation-gallery
+			{
+				padding: 0px 0 60px;
+			}
+
+		.accommodation-gallery .container
+			{
+				max-width: 100%;
+			}
+
+		.accommodation-gallery-wrapper .gallery-item .name
+			{
+				font-size: 14px;
+			}
+
+		.goto-more
+			{
+				font-size: 14px !important;
+			}
+
+		.filter-sorting-result-area .filter-result, .filter-sorting-result-area .clear-filter
+			{
+				margin-bottom: 15px;
+			}
+
+		.filter-sorting-result-area
+			{
+				padding-bottom: 0px;
+			}
+
+		.package__listing-page
+			{
+				padding: 60px 0;
+			}
+
+		/*********************/
+
+		.visa_reason-wrapper
+			{
+				margin: 0;
+				padding: 0;
+				display: grid;
+				grid-template-columns: 1fr;
+			}
+
+		.visa_reason-wrapper .visa-item
+			{
+				border-right: 0px;
+				border-bottom: 1px dashed #fff;
+			}
+
+		.visa_reason-wrapper .visa-item:last-child
+			{
+				border-bottom: 0px;
+			}
+
+		.visa_reason-wrapper .visa-item .sm-screen
+			{
+				justify-content: center;
+				display: flex;
+			}
+
+		.visa_reason-wrapper .visa-item .img-box
+			{
+				margin: 0 20px 0 0;
+			}
+
+		.visa_reason-wrapper .visa-item h5
+			{
+				text-align: left;
+				width: 130px;
+				padding-bottom: 0px;
+			}
+
+
+		.visa_reason h1
+			{
+				font-size: 23px;
+				padding-bottom: 10px;
+			}
+
+		/****************/
+
+		.package_detail_section .details-wrapper .package-more-info ul
+			{
+				grid-column-gap: 30px;
+			}
+
+		.package_detail_section
+			{
+				padding: 60px 0;
+			}
+
+		/************/
+
+		.visa_detail_section .quick__visa-area .visa_choose_area h1
+			{
+				font-size: 20px;
+			}
+
+		.visa_detail_section .quick__visa-area .visa_choose_area .amount-area .amount
+			{
+				font-size: 22px;
+			}
+
+		/*************/
+
+		.contact-section
+			{
+				padding: 60px 0;
+			}
+
+		.contact-section h2, .contact-section p
+			{
+				text-align: left;
+				width: 100%;
+			}
+
+		.contact-section .left h1
+			{
+				font-size: 25px;
+				line-height: 32px;
+			}
+
+		/**********/
+
+		.book-flight-section
+			{
+				padding-bottom: 60px;
+			}
+
+		.get-in-touch-area .p-n-area .counter-small-mt
+			{
+				margin-bottom: 30px;
+			}
+
+		.book-flight-section h1
+			{
+				font-size: 25px;
+				text-align: left;
+			}
+
+		/**************/
+
+		.rent-car-section
+			{
+				padding: 60px 0;
+			}
+
+		.car-item-list .car-list-head
+			{
+				padding: 0px;
+			}
+
+		.car-item-list .car-list-head .car-head h1
+			{
+				font-size: 30px;
+			}
+
+		.car-item-list .car-list-head .car-head
+			{
+				margin-bottom: 20px;
+			}
+
+		.rent-car-section .filter-area
+			{
+				padding: 20px 15px;
+			}
+
+		.rent-car-section .filter-area h4
+			{
+				padding: 0 0 5px 0;
+				font-size: 16px;
+			}
+
+		.rent-car-section .filter-area h6
+			{
+				margin: 0;
+				padding: 5px 0 5px 0;
+				font-size: 14px;
+			}
+
+		.rent-car-section .filter-area .filter-items-area
+			{
+				margin-bottom: 5px;
+			}
+
+		.rent-car-section .filter-area .filter-items-area .filter-items
+			{
+				padding: 5px 10px;
+				letter-spacing: .5px;
+				font-size: 13px;
+			}
+
+		.rent-car-section .brands-area .form-group
+			{
+				margin-bottom: 10px;
+				font-size: 13px;
+			}
+
+		.car-enquire-form .modal-header .modal-title
+			{
+				font-size: 20px;
+			}
+
+		.car-enquire-form .form-control
+			{
+				margin-bottom: 20px;
+			}
+
+		/**************/
+
+		.rent-car-detail-page
+			{
+				margin: 0;
+				padding: 60px 0;
+			}
+
+		/*******************/
+
+		.rent-car-detail-page .rent-car-box-detail h1
+			{
+				font-size: 26px;
+			}
+
+		.rent-car-detail-page .rent-car-box-detail h2
+			{
+				font-size: 18px;
+			}
+
+		.rent-car-detail-page .information
+			{
+				margin: 40px 0 0;
+				padding: 0;
+				display: grid;
+				grid-template-columns: 1fr;
+				grid-auto-rows: minmax(5px, auto);
+				grid-row-gap: 15px;
+			}
+
+		.rent-car-detail-page .information li
+			{
+				list-style: none;
+				background: #fff;
+				padding: 10px 15px;
+				box-shadow: 0 0 5px #ccc;
+				border-radius: 10px;
+			}
+
+		/*********************/
+
+		.rent-car-detail-page .document-req li 
+			{
+			    list-style: none;
+			    background: #fff;
+			    padding: 10px 15px;
+			    box-shadow: 0 0 5px #ccc;
+			    border-radius: 10px;
+			    font-size: 14px;
+			}
+
+		.rent-car-detail-page .nav .nav-item
+			{
+				margin-bottom: 10px;
+			}
+
+		/***********************/
+
+		.cart-section
+			{
+				padding: 60px 0;
+			}
+
+		.cart-section h2
+			{
+				font-size: 25px;
+				padding-bottom: 30px;
+			}
+
+		.cart-table__table
+			{
+				margin-bottom: 20px;
+			}
+
+		.cart-table__column
+			{
+				padding: 15px 10px;
+			}
+
+		.cart-table__column p
+			{
+				font-size: 13px;
+				padding-bottom: 5px;
+				line-height: 18px;
+			} 
+
+		.cart-table__column--details .amount
+			{
+				font-size: 14px;
+				font-weight: 500;
+			}
+
+		.cart-table__column--remove
+			{
+				padding: 8px;
+				width: 5%;
+			}
+
+		/************************/
+
+		.checkout-section
+			{
+				margin: 0;
+				padding: 60px 0;
+			}
+
+		.checkout-section h2
+			{
+				margin: 0;
+				padding: 0 0 20px;
+				font-size: 25px;
+			}
+
+		.checkout-table__column p
+			{
+				font-size: 13px;
+				padding-bottom: 5px;
+				line-height: 18px;
+			} 
+
+		.checkout-section .checkout-table__column--details .amount
+			{
+				font-size: 14px;
+				font-weight: 500;
+			}
+
+
+		.checkout-section .checkout-details
+			{
+				padding: 0 0px;
+			}
+
+		/********************/
+
+		.book-package-section
+			{
+				padding: 60px 0;
+			}
+
+		.package__form-head h6
+			{
+				font-size: 14px;
+				font-weight: 500;
+			}
+
+		.package__form-head .form-group
+			{
+				border-right: 0px;
+				margin-right: 0px;
+				padding-right: 0px;
+				margin-bottom: 20px;
+				padding-bottom: 20px;
+				border-bottom: 1px solid #aeaeae;
+			}
+
+		.package__form-head .form-group:last-child
+			{
+				margin-bottom: 0;
+				padding-bottom: 0;
+				border-bottom: 0px;
+			}
+
+		.book-package-section-form h2
+			{
+				font-size: 20px;
+			}
+
+		.package__form-travel .travel-detail-item
+			{
+				display: flex;
+				flex-direction: column;
+				justify-content: start;
+				align-items: start;
+				margin: 0 0 20px 0;
+				padding-bottom: 20px;
+				border-bottom: 1px solid #aeaeae;
+			}
+
+		.package__form-travel .travel-detail-item .form-control
+			{
+				margin-left: 0px;
+				margin-top: 15px;
+			}
+
+		.package__form-travel2 .travel-detail-item
+			{
+				display: flex;
+				flex-direction: column;
+				justify-content: start;
+				align-items: start;
+				margin: 0 0 0px 0;
+			}
+
+		.package__form-travel2 .travel-detail-item .form-control
+			{
+				margin-right: 0px;
+			}
+
+		.sm-space
+			{
+				margin-bottom: 15px;
+			}
+
+		/****************/
+
+		.my-account-detials
+			{
+				padding-bottom: 70px;
+			}
+
+		.my-account-detials h1
+			{
+				padding: 0 0 10px;
+				font-size: 20px;
+			}
+
+
+		.tour-package-history-table .cart-table__column--action .leave,
+		.tour-package-history-table .cart-table__column--action .cancel
+			{
+				font-size: 12px;
+			}
+
+		.book-package-section-details .img-box
+			{
+				height: 250px;
+			}
+
+	}
+
+
+@media only screen and (max-width: 649.99px)
+	{	
+
+		.home__video-container 
+			{
+			    padding: 100px 0 90px;
+			}
+
+		.heading-main
+			{
+				font-size: 35px;
+			}
+
+		.car-enquire-form  .modal-body
+			{
+				padding: 1rem;
+			}
+
+		.checkout-section .checkout-table__column--image 
+			{
+			    width: 100px;
+			}
+
+		.checkout-section .checkout-table__column--image .img-box
+			{
+				width: 100px;
+				height: 100px;
+			}
+
+		.checkout-section .checkout-table__column--details
+			{
+				width: 100%;
+			}
+
+		.my-account-sort .form-control
+			{
+				background: #f2f2f2;
+				border: 0px;
+				margin-top: 10px;
+				padding: 10px 10px;
+				font-size: 14px;
+			}
+
+	}
+
+
+@media only screen and (max-width: 575.99px)
+	{
+
+		.package__section-wrapper
+			{
+				grid-template-columns: 1fr;
+			}
+
+		.package__section-itembox
+			{
+				min-height: 460px;
+			}
+
+		/******************/
+
+		.home__services h1
+			{
+				text-align: center;
+			}
+
+		.services-cnt-panel .item-panel .icon-services
+			{
+				margin: 0 auto;
+			}
+
+		.services-cnt-panel .item-panel .services-details
+			{
+				padding-left: 0px;
+				padding-top: 20px;
+				width: 100%;
+			}
+
+		.services-cnt-panel .item-panel .services-details h4, .services-cnt-panel .item-panel .services-details p
+			{
+				text-align: center;
+			}
+
+		/******************/
+
+		.home__client .owl-theme .owl-nav
+			{
+				bottom: 40%;
+			}
+
+		.home__client .owl-carousel .owl-nav button.owl-prev
+			{
+				left: 0px;
+			}
+
+		.home__client .owl-carousel .owl-nav button.owl-next
+			{
+				right: 0px;
+			}
+
+		/*********************/
+
+		.home__who-we .gallery-item:nth-child(even)
+			{
+				margin-top: 40px;
+			}
+
+		/***********************/
+
+		.accommodation-gallery-wrapper
+			{
+				grid-template-columns: 1fr;
+				grid-gap: 20px;
+			}
+
+		.accommodation-gallery-wrapper .gallery-item
+			{		
+				height: 200px;
+			}
+
+		/***********************/
+
+		.package__listing-page .package__section-wrapper 
+			{
+			    display: grid;
+			    grid-template-columns: 1fr;
+			    grid-auto-rows: minmax(100px, auto);
+			}
+
+		.package__listing-area .package__section-itembox 
+			{
+			    min-height: 450px;
+			}
+
+		/*******************/
+
+		.visa_list .visa_list-wrapper
+			{
+				margin: 30px 0 0 ;
+				grid-template-columns: 1fr;
+			}
+
+		/*********************/
+
+		.package_detail_section .details-wrapper .package-more-info ul
+			{
+				grid-template-columns: 1fr;
+			}
+
+		.book-package-btn
+			{
+				padding: 10px 0;
+				font-size: 18px;
+				font-weight: 500;
+			}
+
+		.package_detail_section .quick__link .other-page-link
+			{
+				padding: 10px 0;
+				font-size: 18px;
+				font-weight: 500;
+			}
+
+		/**********************/
+
+		.visa_detail_section .quick__visa-area .visa_choose_area form label
+			{
+				width: 100%;
+			}
+
+		.visa_detail_section .quick__visa-area .visa_choose_area .space-right
+			{
+				width: 100%;
+			}
+
+		.visa_detail_section .quick__visa-area .visa_choose_area form label
+			{
+				font-size: 14px;
+				padding-bottom: 10px;
+			}
+
+		.quantity-counter
+			{
+				max-width: 150px;
+			}
+
+		.quantity-counter input[type="number"]
+			{
+				padding: 13px 22px;
+			}
+
+		.visa_detail_section .quick__visa-area .visa_choose_area .date .form-control
+			{
+				width: 150px;
+			}
+
+		.visa_detail_section .quick__visa-area .visa_choose_area .date span
+			{
+				padding: 0 15px;
+				font-size: 13px;
+			}
+
+		.visa_detail_section .quick__visa-area .visa_choose_area .amount-area .amount
+			{
+				font-size: 18px;
+			}
+
+		/*************/
+
+		.get-in-touch-area
+			{
+				padding: 50px 20px;
+			}
+
+		/**************/
+
+		.car-item-list .car-list-wrapper
+			{
+				grid-template-columns: 1fr;
+			}
+
+		/***************/
+
+		.rent-car-detail-page .car-for
+			{
+				width: 100%;
+				margin-bottom: 10px;
+			}
+
+		.checkout-btn
+			{
+				font-size: 14px;
+			}
+
+		.payment-btn
+			{
+				font-size: 14px;
+			}
+
+	}
+
+
+@media only screen and (max-width:525.99px)
+	{
+		.heading-main
+			{
+				font-size: 25px;
+			}
+
+		.package__section-wrapper
+			{
+				margin-top: 30px;
+			}
+	}
+
+
+@media only screen and (max-width:480.99px)
+	{
+		/*.visa_reason-wrapper
+			{
+				margin: 0;
+				padding: 0;
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+			}
+
+		.visa_reason-wrapper .visa-item
+			{
+				border-right: 0px dashed #fff !important;
+			}
+
+		.visa_reason-wrapper .visa-item:nth-child(odd)
+			{
+				border-right: 1px dashed #fff !important;
+			}*/
+	}
+
+
+@media only screen and (max-width:459.99px)
+	{
+		.home__who-we .gallery-item
+			{
+				margin: 0 15px 0 0;
+				padding: 0;
+			}
+
+		.home__who-we .gallery-item:last-child
+			{
+				margin-right: 0px;
+			}
+
+		.tour-package-history-table .cart-table__row
+			{
+				display: flex;
+				flex-direction: column;
+			}
+
+		.tour-package-history-table  .cart-table__column--details,
+		.tour-package-history-table  .cart-table__column--people,
+		.tour-package-history-table  .cart-table__column--action
+			{
+				width: 100%;
+				margin: 0;
+				text-align: left;
+				padding: 15px;
+				border-radius: 0px !important;
+			}
+
+		.tour-package-history-table  .cart-table__column--people
+			{
+				padding-top: 0;
+				padding-bottom: 0px;
+			}
+
+		.tour-package-history-table  .cart-table__column--action
+			{
+				padding-top: 0;
+			}
+	}
+
+
+@media only screen and (max-width:420px)
+	{
+		.rent-car-detail-page .car-for
+			{
+				padding: 8px 10px;
+				font-size: 12px;
+			}
+
+
+	}
+
+
+@media only screen and (max-width:415.99px)
+	{
+		.why__choose .why-cnt-panel
+			{
+				padding: 60px 20px;
+			}
+	}
+
+@media only screen and (max-width: 399.99px)
+	{
+
+	}
+
+
+@media only screen and (max-width:370.99px)
+	{
+		/*********************/
+
+		.cart-table__column--image
+			{
+				display: none;
+			}
+	}
