@@ -32,7 +32,8 @@ $this->params['breadcrumbs'][] = 'Update';
 
             <?= $this->render('_form', [
             'model' => $model,
-            'car_general' => $car_general
+            'car_general' => $car_general,
+            'car_option'=>$car_option
             ]) ?>
         </div>
     </div>
