@@ -27,13 +27,13 @@ use yii\helpers\ArrayHelper;
                     <a class="nav-link" id="pills-general-information-tab" data-toggle="pill" href="#pills-general-information" role="tab" aria-controls="pills-general-information" aria-selected="false">General Information</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-attributes-tab" data-toggle="pill" href="#pills-attributes" role="tab" aria-controls="pills-attributes" aria-selected="false">Car Options</a>
+                    <a class="nav-link" id="pills-car-option-tab" data-toggle="pill" href="#pills-car-option" role="tab" aria-controls="pills-car-option" aria-selected="false">Car Options</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-seo-tab" data-toggle="pill" href="#pills-seo" role="tab" aria-controls="pills-seo" aria-selected="false">Extras</a>
+                    <a class="nav-link" id="pills-car-extra-tab" data-toggle="pill" href="#pills-car-extra" role="tab" aria-controls="pills-car-extra" aria-selected="false">Extras</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-seo-tab" data-toggle="pill" href="#pills-seo" role="tab" aria-controls="pills-seo" aria-selected="false">Documents Requied</a>
+                    <a class="nav-link" id="pills-car-docs-tab" data-toggle="pill" href="#pills-car-docs" role="tab" aria-controls="pills-car-docs" aria-selected="false">Documents Requied</a>
                 </li>
             </ul>
         </div>
@@ -268,32 +268,22 @@ use yii\helpers\ArrayHelper;
                     </div>
                 </div>
                 <div class="tab-pane fade   box_item" id="pills-general-information" role="tabpanel" aria-labelledby="pills-general-information-tab">
-                    <?php Pjax::begin(['id' => 'attribute_section']) ?>
+                    <?php Pjax::begin(['id' => 'info_section']) ?>
                     <?php
                     $get_car_general_infos = \common\models\CarGeneralInformation::find()->all();
                     ?>
-                    <div class="attribute_area">
+                    <div class="attribute_area info_area">
+                        <?php if ($get_car_general_infos != NULL) { ?>
 
-                        <?php if ($get_product_attributes != NULL) { ?>
-                            <?php
-                            $m = 0;
-
-                            foreach ($get_product_attributes as $get_product_attribute) {
-                                $attr_list_data = \common\models\Attributes::findOne(['id' => $get_product_attribute->attributes_id]);
-                                $pStatus = "";
-                                if ($attr_list_data != NULL) {
-                                    $attr_list_value_datas = \common\models\ProductAttributesValue::find()->where(['product_id' => $model->id, 'product_attributes_id' => $get_product_attribute->id])->all();
-                                    if ($get_product_attribute->price_status == 1) {
-                                        $pStatus = "checked";
-                                    }
-                            ?>
-                                    <div key="<?= $m; ?>" class="attribute_item">
+                            <div class="info_contents">
+                                <?php foreach ($get_car_general_infos as $get_car_general_info) { ?>
+                                    <div class="attribute_value_item info_item">
                                         <div class="row">
                                             <div class="col-sm-12">
-                                                <div class="attr_title">
+                                                <div class="attr_value_title">
                                                     <h3>
-                                                        <span><?= $attr_list_data->name; ?></span>
-                                                        <a class="delete_attr_item btn btn-xs btn-danger btn-round btn-fab" get_product_attribute="<?= $get_product_attribute->id; ?>" style="display:none" href="javascript:void(0)">
+                                                        <span> </span>
+                                                        <a class=" delete_info btn btn-xs btn-danger btn-round btn-fab" item_id="<?php echo $get_car_general_info->id; ?>" href="javascript:void(0)">
                                                             <b class="material-icons">delete</b>
                                                             <div class="ripple-container"></div>
                                                         </a>
@@ -301,138 +291,318 @@ use yii\helpers\ArrayHelper;
                                                 </div>
                                             </div>
                                             <div class="col-sm-12">
-                                                <div class="attr_contents">
-                                                    <div class="attr_data">
+                                                <div class="attr_value_contents">
+                                                    <div class="attr_value_data">
                                                         <div class="row">
-                                                            <div class="col-sm-4 attr_data_name">
-                                                                <h5 class="attr_head">Attribute Name
-                                                                </h5>
+                                                            <div class="col-sm-6">
+                                                                <?= $form->field($car_general, 'ref_id[]')->dropDownList(ArrayHelper::map(\common\models\GeneralInformationMaster::find()->all(), 'id', 'title'), ['prompt' => 'Choose One Option', 'class' => 'form-control ref_id', 'value' => $get_car_general_info->ref_id]); ?>
                                                             </div>
-                                                            <div class="col-sm-4 attr_parent">
-                                                            <?= $form->field($car_general, 'car_id')->hiddenInput(['lang' => 1, 'value' => $attr_list_data->name, 'class' => 'form-control mt-4 change_attr_name attr_en'])->label('English'); ?>
-                                                                <?= $form->field($car_general, 'car_id[]')->textInput(['lang' => 1, 'value' => $attr_list_data->name, 'class' => 'form-control mt-4 change_attr_name attr_en'])->label('English'); ?>
-                                                                <div class="pop_over_content ">
-                                                                    <div class="loader_wrapper ">
-                                                                        <div class="loader">
-                                                                        </div>
-                                                                        <h4 class="text-center mt-2"> Loading suggestion...</h4>
-                                                                    </div>
-
-                                                                    <ul class="list-unstyled " role="listbox">
-
-                                                                    </ul>
-                                                                </div>
+                                                            <div class="col-sm-6 ">
+                                                                <?= $form->field($car_general, 'value[]')->textInput(['lang' => 1, 'class' => 'form-control mt-4  info_val', 'value' => $get_car_general_info->value])->label('Value'); ?>
                                                             </div>
-
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-sm-4 attr_data_name">
-                                                                <h5 class="attr_head">Attribute Name
-                                                                </h5>
-                                                            </div>
-                                                            <div class="col-sm-4 attr_parent">
-                                                                <?= $form->field($car_general, 'car_id[]')->textInput(['lang' => 1, 'value' => $attr_list_data->name, 'class' => 'form-control mt-4 change_attr_name attr_en'])->label('English'); ?>
-
-                                                                
-                                                            </div>
-
                                                         </div>
                                                     </div>
-
-                                                </div>
-                                                <div class="attr_contents_btn_wrapper">
-                                                    <button class="btn btn_add_attr_value" tabindex="0" type="button"><b class="material-icons">add</b>Add New Information</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 <?php } ?>
-                            <?php
-                                $m++;
-                            }
-                            ?>
+                            </div>
                         <?php } else { ?>
-                            <div key="0" class="attribute_item">
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <div class="attr_title">
-                                            <h3>
-                                                <span><?= $attr_list_data->name; ?></span>
-                                                <a class="delete_attr_item btn btn-xs btn-danger btn-round btn-fab" get_product_attribute="<?= $get_product_attribute->id; ?>" style="display:none" href="javascript:void(0)">
-                                                    <b class="material-icons">delete</b>
-                                                    <div class="ripple-container"></div>
-                                                </a>
-                                            </h3>
+                            <div class="info_contents">
+                                <div class="attribute_value_item info_item">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="attr_value_title">
+                                                <h3>
+                                                    <span> </span>
+                                                    <a class=" delete_info btn btn-xs btn-danger btn-round btn-fab" item_id="0" href="javascript:void(0)">
+                                                        <b class="material-icons">delete</b>
+                                                        <div class="ripple-container"></div>
+                                                    </a>
+                                                </h3>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <div class="attr_contents">
-                                            <div class="attr_data">
-                                                <div class="row">
-                                                    <div class="col-sm-4 attr_data_name">
-                                                        <h5 class="attr_head">Attribute Name
-                                                        </h5>
-                                                    </div>
-                                                    <div class="col-sm-4 attr_parent">
-                                                        <?= $form->field($car_general, 'car_id[]')->textInput(['lang' => 1, 'value' => $attr_list_data->name, 'class' => 'form-control mt-4 change_attr_name attr_en'])->label('English'); ?>
-
-                                                        <div class="pop_over_content ">
-                                                            <div class="loader_wrapper ">
-                                                                <div class="loader">
-                                                                </div>
-                                                                <h4 class="text-center mt-2"> Loading suggestion...</h4>
-                                                            </div>
-
-                                                            <ul class="list-unstyled " role="listbox">
-
-                                                            </ul>
+                                        <div class="col-sm-12">
+                                            <div class="attr_value_contents">
+                                                <div class="attr_value_data">
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <?= $form->field($car_general, 'ref_id[]')->dropDownList(ArrayHelper::map(\common\models\GeneralInformationMaster::find()->all(), 'id', 'title'), ['prompt' => 'Choose One Option', 'class' => 'form-control ref_id']); ?>
+                                                        </div>
+                                                        <div class="col-sm-6 ">
+                                                            <?= $form->field($car_general, 'value[]')->textInput(['lang' => 1, 'class' => 'form-control mt-4  info_val'])->label('Value'); ?>
                                                         </div>
                                                     </div>
-
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-sm-4 attr_data_name">
-                                                        <h5 class="attr_head">Attribute Name
-                                                        </h5>
-                                                    </div>
-                                                    <div class="col-sm-4 attr_parent">
-                                                        <?= $form->field($car_general, 'car_id[]')->textInput(['lang' => 1, 'value' => $attr_list_data->name, 'class' => 'form-control mt-4 change_attr_name attr_en'])->label('English'); ?>
-
-                                                        <div class="pop_over_content ">
-                                                            <div class="loader_wrapper ">
-                                                                <div class="loader">
-                                                                </div>
-                                                                <h4 class="text-center mt-2"> Loading suggestion...</h4>
-                                                            </div>
-
-                                                            <ul class="list-unstyled " role="listbox">
-
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-
                                                 </div>
                                             </div>
-
-                                        </div>
-                                        <div class="attr_contents_btn_wrapper">
-                                            <button class="btn btn_add_attr_value" tabindex="0" type="button"><b class="material-icons">add</b> Add New Information</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         <?php } ?>
+                        <div class="attr_contents_btn_wrapper">
+                            <button class="btn  add_info" tabindex="0" type="button"><b class="material-icons">add</b> Add New Information</button>
+                        </div>
                     </div>
                     <?php Pjax::end()
                     ?>
 
                 </div>
+
+
+                <!--Car Options-->
+
+
+                <div class="tab-pane fade   box_item" id="pills-car-option" role="tabpanel" aria-labelledby="pills-car-option-tab">
+                    <?php Pjax::begin(['id' => 'car_option_section']) ?>
+                    <?php
+                    $get_car_options = \common\models\CarOptions::find()->all();
+                    ?>
+                    <div class="attribute_area car_option_area">
+                        <?php if ($get_car_options != NULL) { ?>
+
+                            <div class="car_option_contents">
+                                <?php foreach ($get_car_options as $get_car_option) { ?>
+                                    <div class="attribute_value_item car_option_item">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="attr_value_title">
+                                                    <h3>
+                                                        <span> </span>
+                                                        <a class=" delete_car_option btn btn-xs btn-danger btn-round btn-fab" item_id="<?php echo $get_car_option->id; ?>" href="javascript:void(0)">
+                                                            <b class="material-icons">delete</b>
+                                                            <div class="ripple-container"></div>
+                                                        </a>
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="attr_value_contents">
+                                                    <div class="attr_value_data">
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <?= $form->field($car_option, 'ref_id[]')->dropDownList(ArrayHelper::map(\common\models\CarOptionMaster::find()->all(), 'id', 'title'), ['prompt' => 'Choose One Option', 'class' => 'form-control ref_id', 'value' => $get_car_option->ref_id]); ?>
+                                                            </div>
+                                                            <div class="col-sm-6 ">
+                                                                <?= $form->field($car_option, 'value[]')->textInput(['lang' => 1, 'class' => 'form-control mt-4  info_val', 'value' => $get_car_option->value])->label('Value'); ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        <?php } else { ?>
+                            <div class="car_option_contents">
+
+                                <div class="attribute_value_item car_option_item">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="attr_value_title">
+                                                <h3>
+                                                    <span> </span>
+                                                    <a class=" delete_car_option btn btn-xs btn-danger btn-round btn-fab" item_id="0" href="javascript:void(0)">
+                                                        <b class="material-icons">delete</b>
+                                                        <div class="ripple-container"></div>
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="attr_value_contents">
+                                                <div class="attr_value_data">
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <?= $form->field($car_option, 'ref_id[]')->dropDownList(ArrayHelper::map(\common\models\CarOptionMaster::find()->all(), 'id', 'title'), ['prompt' => 'Choose One Option', 'class' => 'form-control ref_id']); ?>
+                                                        </div>
+                                                        <div class="col-sm-6 ">
+                                                            <?= $form->field($car_option, 'value[]')->textInput(['lang' => 1, 'class' => 'form-control mt-4  info_val'])->label('Value'); ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        <?php } ?>
+                        <div class="attr_contents_btn_wrapper">
+                            <button class="btn  add_car_option" tabindex="0" type="button"><b class="material-icons">add</b> Add New Car Option</button>
+                        </div>
+                    </div>
+                    <?php Pjax::end()
+                    ?>
+
+                </div>
+                <div class="tab-pane fade   box_item" id="pills-car-extra" role="tabpanel" aria-labelledby="pills-car-extra-tab">
+                    <?php Pjax::begin(['id' => 'car_extra_section']) ?>
+                    <?php
+                    $get_car_extras = \common\models\CarExtras::find()->all();
+                    ?>
+                    <div class="attribute_area car_extra_area">
+                        <?php if ($get_car_extras != NULL) { ?>
+                            <div class="car_extra_contents">
+                                <?php foreach ($get_car_extras as $get_car_extra) { ?>
+                                    <div class="attribute_value_item car_extra_item">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="attr_value_title">
+                                                    <h3>
+                                                        <span> </span>
+                                                        <a class=" delete_car_extra btn btn-xs btn-danger btn-round btn-fab" item_id="<?php echo $get_car_extra->id; ?>" href="javascript:void(0)">
+                                                            <b class="material-icons">delete</b>
+                                                            <div class="ripple-container"></div>
+                                                        </a>
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="attr_value_contents">
+                                                    <div class="attr_value_data">
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <?= $form->field($car_option, 'ref_id[]')->dropDownList(ArrayHelper::map(\common\models\ExtrasMaster::find()->all(), 'id', 'title'), ['prompt' => 'Choose One Option', 'class' => 'form-control ref_id', 'value' => $get_car_extra->ref_id]); ?>
+                                                            </div>
+                                                            <div class="col-sm-6 ">
+                                                                <?= $form->field($car_option, 'value[]')->textInput(['lang' => 1, 'class' => 'form-control mt-4  info_val', 'value' => $get_car_extra->value])->label('Value'); ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        <?php } else { ?>
+                            <div class="car_option_contents">
+
+                                <div class="attribute_value_item car_extra_item">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="attr_value_title">
+                                                <h3>
+                                                    <span> </span>
+                                                    <a class=" delete_car_extra btn btn-xs btn-danger btn-round btn-fab" item_id="0" href="javascript:void(0)">
+                                                        <b class="material-icons">delete</b>
+                                                        <div class="ripple-container"></div>
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="attr_value_contents">
+                                                <div class="attr_value_data">
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <?= $form->field($car_option, 'ref_id[]')->dropDownList(ArrayHelper::map(\common\models\ExtrasMaster::find()->all(), 'id', 'title'), ['prompt' => 'Choose One Option', 'class' => 'form-control ref_id']); ?>
+                                                        </div>
+                                                        <div class="col-sm-6 ">
+                                                            <?= $form->field($car_option, 'value[]')->textInput(['lang' => 1, 'class' => 'form-control mt-4  info_val'])->label('Value'); ?>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        <?php } ?>
+                        <div class="attr_contents_btn_wrapper">
+                            <button class="btn  add_car_extra" tabindex="0" type="button"><b class="material-icons">add</b> Add New Car Extra</button>
+                        </div>
+                    </div>
+                    <?php Pjax::end()
+                    ?>
+
+                </div>
+                <div class="tab-pane fade   box_item" id="pills-car-docs" role="tabpanel" aria-labelledby="pills-car-docs-tab">
+                    <?php Pjax::begin(['id' => 'car_docs_section']) ?>
+                    <?php
+                    $get_car_docs = \common\models\CarDocuments::find()->all();
+                    ?>
+                    <div class="attribute_area car_docs_area">
+                        <?php if ($get_car_docs != NULL) { ?>
+                            <div class="car_docs_contents">
+                                <?php foreach ($get_car_docs as $get_car_doc) { ?>
+                                    <div class="attribute_value_item car_docs_item">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="attr_value_title">
+                                                    <h3>
+                                                        <span> </span>
+                                                        <a class=" delete_car_docs btn btn-xs btn-danger btn-round btn-fab" item_id="<?php echo $get_car_doc->id; ?>" href="javascript:void(0)">
+                                                            <b class="material-icons">delete</b>
+                                                            <div class="ripple-container"></div>
+                                                        </a>
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="attr_value_contents">
+                                                    <div class="attr_value_data">
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                <?= $form->field($car_option, 'ref_id[]')->dropDownList(ArrayHelper::map(\common\models\DocumentsMaster::find()->all(), 'id', 'title'), ['prompt' => 'Choose One Option', 'class' => 'form-control ref_id', 'value' => $get_car_doc->ref_id]); ?>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        <?php } else {  ?>
+                            <div class="car_option_contents">
+                                <div class="attribute_value_item car_docs_item">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="attr_value_title">
+                                                <h3>
+                                                    <span> </span>
+                                                    <a class=" delete_car_docs btn btn-xs btn-danger btn-round btn-fab" item_id="0" href="javascript:void(0)">
+                                                        <b class="material-icons">delete</b>
+                                                        <div class="ripple-container"></div>
+                                                    </a>
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <div class="attr_value_contents">
+                                                <div class="attr_value_data">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <?= $form->field($car_option, 'ref_id[]')->dropDownList(ArrayHelper::map(\common\models\DocumentsMaster::find()->all(), 'id', 'title'), ['prompt' => 'Choose One Option', 'class' => 'form-control ref_id']); ?>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
+                        <div class="attr_contents_btn_wrapper">
+                            <button class="btn  add_car_docs" tabindex="0" type="button"><b class="material-icons">add</b> Add New Car Documents</button>
+                        </div>
+                    </div>
+                    <?php Pjax::end()
+                    ?>
+                </div>
             </div>
         </div>
-
+    </div>
+    <div class="tempHtml">
 
     </div>
-
     <div class="card-footer ml-auto mr-auto">
 
         <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
@@ -441,24 +611,147 @@ use yii\helpers\ArrayHelper;
     <?php ActiveForm::end(); ?>
 
 </div>
+<script>
+
+</script>
 <?php
 $this->registerJs(
     <<< EOT_JS_CODE
 
 
+$(document).ready(function(){
+var general_data_html = $('.info_item:first-child').html();
+var general_data = "<div class='attribute_value_item info_item'>" + general_data_html + "</div>";
+var car_option_data_html = $('.car_option_item:first-child').html();
+var car_option_general_data = "<div class='attribute_value_item car_option_item'>" + car_option_data_html + "</div>";
+var car_extra_data_html = $('.car_extra_item:first-child').html();
+var car_extra_general_data = "<div class='attribute_value_item car_extra_item'>" + car_extra_data_html + "</div>";
 
+    $(document.body).on("click", ".add_info", function (e) {
+            $(this).closest('.info_area').find(".info_contents").append(general_data);
+            $('.info_item:last').find('.ref_id').val("");//will give third li
+            $('.info_item:last').find('.info_val').val("");//will give third li
+            $('.info_item:last').find('.delete_info').attr("item_id",0);//will give third li
 
-$(document.body).on("click", ".btn_add_attr_value", function (e) {
-        var result_attr_value_html = "<div class='attribute_value_item'>" + attr_value_html + "</div>";
-        $(this).closest('.attribute_item').find(".attr_contents").append(result_attr_value_html);
-        var count = $(this).closest('.attribute_item').attr('key');
-        $('[key=' + count + '] input').each(function (key, value) {
-            var name = $(this).attr('name');
-            var newname = name.replace("attcnt", count);
-            $(this).attr('name', newname);
         });
-    });
+        // -----------------------------------  Delete Info------------------------------
+        $(document).on("click", ".delete_info", function () {
+            $(".loader-wrapp").show();
+            if (confirm('Are You Sure Want Delet this value')) {
+                var item_id = $(this).attr('item_id');
+                if (item_id != 0) {
+                    $.ajax({
+                        url: basepath + "/cars/delete-info",
+                        type: "POST",
+                        data: {item_id: item_id},
+                        success: function (data)
+                        {
+                            var obj = JSON.parse(data);
+                            if (obj.status == 200) {
+                                $.pjax.reload('#info_section', {timeout: false, async: true});
+                                $(".loader-wrapp").hide();
+                                return true;
+                            } else {
+                                $('.attr_error').html(obj.message);
+                            }
+                            $(".loader-wrapp").hide();
+                        },
+                        error: function (e) {
+                            console.log(e);
+                            $(".loader-wrapp").hide();
+                        }
+                    });
+                } else {
+                    $(this).closest(".info_item").remove();
+                    $(".loader-wrapp").hide();
     
+                }
+            }
+        });
+        //------------------------- Car Option ---------------------------
+        $(document.body).on("click", ".add_car_option", function (e) {
+            $(this).closest('.car_option_area').find(".car_option_contents").append(car_option_general_data);
+            $('.car_option_item:last').find('.ref_id').val("");//will give third li
+            $('.car_option_item:last').find('.info_val').val("");//will give third li
+            $('.car_option_item:last').find('.delete_car_option').attr("item_id",0);//will give third li
+        });
+        // -----------------------------------  Delete Info------------------------------
+        $(document).on("click", ".delete_car_option", function () {
+            $(".loader-wrapp").show();
+            if (confirm('Are You Sure Want Delet this value')) {
+                var item_id = $(this).attr('item_id');
+                if (item_id != 0) {
+                    $.ajax({
+                        url: basepath + "/cars/delete-car-option",
+                        type: "POST",
+                        data: {item_id: item_id},
+                        success: function (data)
+                        {
+                            var obj = JSON.parse(data);
+                            if (obj.status == 200) {
+                                $.pjax.reload('#car_option_section', {timeout: false, async: true});
+                                $(".loader-wrapp").hide();
+                                return true;
+                            } else {
+                                $('.attr_error').html(obj.message);
+                            }
+                            $(".loader-wrapp").hide();
+                        },
+                        error: function (e) {
+                            console.log(e);
+                            $(".loader-wrapp").hide();
+                        }
+                    });
+                } else {
+                    $(this).closest(".car_option_item").remove();
+                    $(".loader-wrapp").hide();
+                }
+            }
+        });
+        
+
+        //------------------------- Car Extra ---------------------------
+        $(document.body).on("click", ".add_car_extra", function (e) {
+            $(this).closest('.car_extra_area').find(".car_extra_contents").append(car_extra_general_data);
+            $('.car_extra_item:last').find('.ref_id').val("");//will give third li
+            $('.car_extra_item:last').find('.info_val').val("");//will give third li
+            $('.car_extra_item:last').find('.delete_car_extra').attr("item_id",0);//will give third li
+        });
+        // -----------------------------------  Delete Info------------------------------
+        $(document).on("click", ".delete_car_extra", function () {
+            $(".loader-wrapp").show();
+            if (confirm('Are You Sure Want Delet this value')) {
+                var item_id = $(this).attr('item_id');
+                if (item_id != 0) {
+                    $.ajax({
+                        url: basepath + "/cars/delete-car-extra",
+                        type: "POST",
+                        data: {item_id: item_id},
+                        success: function (data)
+                        {
+                            var obj = JSON.parse(data);
+                            if (obj.status == 200) {
+                                $.pjax.reload('#car_extra_section', {timeout: false, async: true});
+                                $(".loader-wrapp").hide();
+                                return true;
+                            } else {
+                                $('.attr_error').html(obj.message);
+                            }
+                            $(".loader-wrapp").hide();
+                        },
+                        error: function (e) {
+                            console.log(e);
+                            $(".loader-wrapp").hide();
+                        }
+                    });
+                } else {
+                    $(this).closest(".car_extra_item").remove();
+                    $(".loader-wrapp").hide();
+                }
+            }
+        });
+        
+}); 
 EOT_JS_CODE
 );
 ?>

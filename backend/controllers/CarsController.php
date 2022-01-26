@@ -2,7 +2,10 @@
 
 namespace backend\controllers;
 
+use common\models\CarDocuments;
+use common\models\CarExtras;
 use common\models\CarGeneralInformation;
+use common\models\CarOptions;
 use Yii;
 use common\models\Cars;
 use common\models\CarsSearch;
@@ -114,6 +117,10 @@ class CarsController extends Controller
     {
         $model = new Cars();
         $car_general = new CarGeneralInformation();
+        $car_option = new CarOptions();
+        $car_extra = new CarExtras();
+        $car_docs = new CarDocuments();
+
         if ($model->load(Yii::$app->request->post())) {
             $canon_name = strtolower($model->title);
             $canonical_name = str_replace(' ', '-', $canon_name); // Replaces all spaces with hyphens.
@@ -129,7 +136,11 @@ class CarsController extends Controller
 
             $model->gallery = "";
             if ($model->save()) {
-              
+                $this->saveGeneralData($_POST['CarGeneralInformation'], $model->id);
+                $this->saveCarOptions($_POST['CarOptions'], $model->id);
+                $this->saveCarExtra($_POST['CarOptions'], $model->id);
+                $this->saveCarDocument($_POST['CarOptions'], $model->id);
+
                 if ($file) {
                     $model->uploadFile($file, $profile_name, 'cars/' . $model->id . '/image');
                 }
@@ -146,6 +157,10 @@ class CarsController extends Controller
         return $this->render('create', [
             'model' => $model,
             'car_general' => $car_general,
+            'car_option' => $car_option,
+            'car_extra' => $car_extra,
+            'car_docs' => $car_docs
+
         ]);
     }
     /**
@@ -159,7 +174,9 @@ class CarsController extends Controller
     {
         $model = $this->findModel($id);
         $car_general = new CarGeneralInformation();
-
+        $car_option = new CarOptions();
+        $car_extra = new CarExtras();
+        $car_docs = new CarDocuments();
         $images = $model->image;
         $gallery_data = $model->gallery;
         if ($model->load(Yii::$app->request->post())) {
@@ -186,9 +203,12 @@ class CarsController extends Controller
             } else {
                 $model->gallery = $gallery_data;
             }
-           
-            if ($model->save()) {
 
+            if ($model->save()) {
+                $this->saveGeneralData($_POST['CarGeneralInformation'], $model->id);
+                $this->saveCarOptions($_POST['CarOptions'], $model->id);
+                $this->saveCarExtra($_POST['CarOptions'], $model->id);
+                $this->saveCarDocument($_POST['CarOptions'], $model->id);
                 if ($file) {
                     $model->uploadFile($file, $profile_name, 'cars/' . $model->id . '/image');
                 }
@@ -206,9 +226,112 @@ class CarsController extends Controller
         return $this->render('update', [
             'model' => $model,
             'car_general' => $car_general,
+            'car_option' => $car_option,
+            'car_extra' => $car_extra,
+            'car_docs' => $car_docs
+
         ]);
     }
+    function saveGeneralData($post, $id)
+    {
+        // echo '<pre/>';
+        // print_r($post);
+        // exit;
+        if ($post != NULL && count($post['ref_id']) > 0) {
+            $count =    count($post['ref_id']);
+            for ($i = 0; $i < $count; $i++) {
+                if (isset($post['ref_id'][$i]) && $post['ref_id'][$i] != "" && isset($post['value'][$i]) && $post['value'][$i] != "") {
 
+                    $carGeneral = new CarGeneralInformation();
+                    $checkExist = CarGeneralInformation::find()->where(['car_id' => $id, 'ref_id' => $post['ref_id'][$i]])->one();
+                    if ($checkExist != NULL) {
+
+                        $carGeneral = $checkExist;
+                    } else {
+                        $carGeneral->car_id = $id;
+                        $carGeneral->ref_id = $post['ref_id'][$i];
+                    }
+                    $carGeneral->value = $post['value'][$i];
+                    $carGeneral->status = 1;
+                    if ($carGeneral->save()) {
+                    }
+                }
+            }
+        }
+        return true;
+    }
+    function saveCarDocument($post, $id)
+    {
+        if ($post != NULL && count($post['ref_id']) > 0) {
+            $count =    count($post['ref_id']);
+            for ($i = 0; $i < $count; $i++) {
+                if (isset($post['ref_id'][$i]) && $post['ref_id'][$i] != "" && isset($post['value'][$i]) && $post['value'][$i] != "") {
+                    $carGeneral = new CarDocuments();
+                    $checkExist = CarDocuments::find()->where(['car_id' => $id, 'ref_id' => $post['ref_id'][$i]])->one();
+                    if ($checkExist != NULL) {
+                        $carGeneral = $checkExist;
+                    } else {
+                        $carGeneral->car_id = $id;
+                        $carGeneral->ref_id = $post['ref_id'][$i];
+                    }
+                    $carGeneral->status = 1;
+                    if ($carGeneral->save()) {
+                    }
+                }
+            }
+        }
+        return true;
+    }
+    function saveCarOptions($post, $id)
+    {
+        if ($post != NULL && count($post['ref_id']) > 0) {
+            $count =    count($post['ref_id']);
+            for ($i = 0; $i < $count; $i++) {
+                if (isset($post['ref_id'][$i]) && $post['ref_id'][$i] != "" && isset($post['value'][$i]) && $post['value'][$i] != "") {
+
+                    $carGeneral = new CarOptions();
+                    $checkExist = CarOptions::find()->where(['car_id' => $id, 'ref_id' => $post['ref_id'][$i]])->one();
+                    if ($checkExist != NULL) {
+
+                        $carGeneral = $checkExist;
+                    } else {
+                        $carGeneral->car_id = $id;
+                        $carGeneral->ref_id = $post['ref_id'][$i];
+                    }
+                    $carGeneral->value = $post['value'][$i];
+                    $carGeneral->status = 1;
+                    if ($carGeneral->save()) {
+                    }
+                }
+            }
+        }
+        return true;
+    }
+    function saveCarExtra($post, $id)
+    {
+        if ($post != NULL && count($post['ref_id']) > 0) {
+            $count =    count($post['ref_id']);
+            for ($i = 0; $i < $count; $i++) {
+                if (isset($post['ref_id'][$i]) && $post['ref_id'][$i] != "" && isset($post['value'][$i]) && $post['value'][$i] != "") {
+
+                    $carGeneral = new CarExtras();
+                    $checkExist = CarExtras::find()->where(['car_id' => $id, 'ref_id' => $post['ref_id'][$i]])->one();
+                    if ($checkExist != NULL) {
+
+                        $carGeneral = $checkExist;
+                    } else {
+                        $carGeneral->car_id = $id;
+                        $carGeneral->ref_id = $post['ref_id'][$i];
+                    }
+                    $carGeneral->value = $post['value'][$i];
+                    $carGeneral->status = 1;
+                    if ($carGeneral->save()) {
+                    }
+                }
+            }
+        }
+        return true;
+    }
     /**
      * Deletes an existing Cars model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
@@ -216,13 +339,66 @@ class CarsController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
+    public function actionDeleteInfo()
+    {
+        $request = Yii::$app->request;
+
+        if ($request->isAjax) {
+            $model = \common\models\CarGeneralInformation::find()->where(['id' => $_POST['item_id']])->one();
+            if ($model != NULL) {
+                if ($model->delete()) {
+                    $array['status'] = 200;
+                    $array['error'] = '';
+                    $array['message'] = 'Delete Successfully.';
+                } else {
+                    $array['status'] = 201;
+                    $array['error'] = $model->errors;
+                    $array['message'] = 'Error.';
+                }
+            } else {
+                $array['status'] = 201;
+                $array['error'] = '';
+                $array['message'] = 'No such information found.';
+            }
+
+            echo json_encode($array);
+            exit;
+        }
+    }
+    public function actionDeleteCarOption()
+    {
+        $request = Yii::$app->request;
+
+        if ($request->isAjax) {
+            $model = \common\models\CarOptions::find()->where(['id' => $_POST['item_id']])->one();
+            if ($model != NULL) {
+                if ($model->delete()) {
+                    $array['status'] = 200;
+                    $array['error'] = '';
+                    $array['message'] = 'Delete Successfully.';
+                } else {
+                    $array['status'] = 201;
+                    $array['error'] = $model->errors;
+                    $array['message'] = 'Error.';
+                }
+            } else {
+                $array['status'] = 201;
+                $array['error'] = '';
+                $array['message'] = 'No such information found.';
+            }
+
+            echo json_encode($array);
+            exit;
+        }
+    }
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
     }
-    public function actionGalleryDelete() {
+    public function actionGalleryDelete()
+    {
         $image = $_GET['item'];
         $id = $_GET['id'];
         $model = $this->findModel($id);
@@ -237,7 +413,7 @@ class CarsController extends Controller
             }
 
             $gallery = explode(',', $model->gallery);
-            $array1 = Array($image);
+            $array1 = array($image);
             $array3 = array_diff($gallery, $array1);
             $model->gallery = implode(',', $array3);
             $model->save(FALSE);
