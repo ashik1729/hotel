@@ -86,7 +86,7 @@ JS;
                     <a class="nav-link" id="pills-price-tab" data-toggle="pill" href="#pills-price" role="tab" aria-controls="pills-price" aria-selected="false">Price & Quantity</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" id="pills-attributes-tab" data-toggle="pill" href="#pills-attributes" role="tab" aria-controls="pills-attributes" aria-selected="false">Attributes & Variation</a>
+                    <a class="nav-link" id="pills-attributes-tab" data-toggle="pill" href="#pills-attributes" role="tab" aria-controls="pills-attributes" aria-selected="false">Price & Quantity</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" id="pills-seo-tab" data-toggle="pill" href="#pills-seo" role="tab" aria-controls="pills-seo" aria-selected="false">SEO & Settings</a>
@@ -145,15 +145,15 @@ JS;
                         } else {
                             $get_discounts = \common\models\Discounts::find()->where(['status' => 1, 'item_type' => 2])->andWhere("merchant_id IS NULL")->all();
                         }
-                        if ($get_discounts != NULL) {
+                      /*  if ($get_discounts != NULL) {
                             foreach ($get_discounts as $get_discount) {
                                 $discount[$get_discount->id] = $get_discount->title . ' - ' . ($get_discount->discount_type == 1 ? "Flat (" . $get_discount->discount_rate . ") " : " Percantage (" . $get_discount->discount_rate . "%)");
                             }
-                        }
+                        } */
                         ?>
                         <div class="col-sm-3">
                             <div class="form-group bmd-form-group">
-                                <?= $form->field($model, 'product_name_en')->textInput(['maxlength' => true]) ?>                             
+                                <?= $form->field($model, 'package_title')->textInput(['maxlength' => true]) ?>                             
                             </div>
                         </div>
                         <div class="col-sm-3">
@@ -239,6 +239,20 @@ JS;
 
                             </div>
                         </div>
+                        <div class="col-sm-4">
+
+                            <div class="form-group bmd-form-group">
+                            
+                                <?= $form->field($model, 'overview')->textarea(['rows' => 1]) ?>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+
+                            <div class="form-group bmd-form-group">
+                            
+                                <?= $form->field($model, 'packaage_organize')->textarea(['rows' => 1]) ?>
+                            </div>
+                        </div>
 
 
 
@@ -273,7 +287,7 @@ JS;
 
                             if ($get_products != NULL) {
                                 foreach ($get_products as $get_product) {
-                                    $related_products[$get_product->id] = $get_product->product_name_en;
+                                    $related_products[$get_product->id] = $get_product->package_title ;
                                 }
                             }
                         } */

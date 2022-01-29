@@ -1556,3 +1556,25 @@ form{
 .shipment_method_data{
     padding: 15px;
 }
+.add_pkg {
+    float: right;
+    background-color: #4caf50;
+    width: 20px;
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 50px;
+    color: #fff;
+    cursor: pointer;
+}
+.remove_pkg  {
+    float: right;
+    background-color: #990808;
+    width: 20px;
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 50px;
+    color: #fff;
+    cursor: pointer;
+}
