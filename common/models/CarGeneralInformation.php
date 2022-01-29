@@ -32,7 +32,7 @@ class CarGeneralInformation extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['car_id', 'value', 'ref_id'], 'required'],
+            // [['car_id', 'value', 'ref_id'], 'required'],
             [['car_id', 'status', 'ref_id'], 'integer'],
             [['value'], 'string', 'max' => 200],
             [['car_id'], 'exist', 'skipOnError' => true, 'targetClass' => Cars::className(), 'targetAttribute' => ['car_id' => 'id']],
