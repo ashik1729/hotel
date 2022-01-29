@@ -1991,3 +1991,21 @@ form {
     color: #fff;
     cursor: pointer;
 }
+
+.remove_pkg.btn.btn-fab {
+    font-size: 17px !important;
+    height: 33px !important;
+    width: 35px !important;
+    line-height: 35px !important;
+    min-width: 36px !important;
+}
+
+.add_pkg.btn.btn-fab {
+    font-size: 17px !important;
+    height: 33px !important;
+    width: 35px !important;
+    line-height: 35px !important;
+    min-width: 36px !important;
+
+
+}
