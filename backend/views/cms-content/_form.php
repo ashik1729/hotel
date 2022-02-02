@@ -42,7 +42,7 @@ use kartik\select2\Select2;
             <div class="form-group bmd-form-group">
                 <?= $form->field($model, 'short_description')->widget(CKEditor::className(), [
                     'options' => ['rows' => 6],
-                    'preset' => 'advanced'
+                    'preset' => 'custom'
                 ]) ?>
             </div>
         </div>
@@ -50,7 +50,7 @@ use kartik\select2\Select2;
             <div class="form-group bmd-form-group">
                 <?= $form->field($model, 'long_description')->widget(CKEditor::className(), [
                     'options' => ['rows' => 6],
-                    'preset' => 'advanced'
+                    'preset' => 'custom'
                 ]) ?>
             </div>
         </div>

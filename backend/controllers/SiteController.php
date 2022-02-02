@@ -72,16 +72,7 @@ class SiteController extends Controller {
 
     public function actionDashboard() {
         $ordersQuery = \common\models\Orders::find()->where("status != 0");
-        if (\Yii::$app->user->identity->interface == 'merchant') {
-            $ordersQuery->innerJoinWith('order_products', 'orders.id = order_products.order_id');
-            $ordersQuery->andWhere(['order_products.merchant_id' => \Yii::$app->user->identity->interface]);
-        }
-        if (\Yii::$app->user->identity->interface == 'franchise') {
-            $get_merchant = Merchant::find()->select('id')->where(['franchise_id' => \Yii::$app->user->identity->id])->asArray()->all();
-            $merchant_array = array_column($get_merchant, 'id');
-            $ordersQuery->innerJoinWith('order_products', 'orders.id = order_products.order_id');
-            $ordersQuery->andWhere(['order_products.merchant_id' => $merchant_array]);
-        }
+    
         $orders = $ordersQuery->all();
 
         return $this->render('index', ['orders' => $orders]);

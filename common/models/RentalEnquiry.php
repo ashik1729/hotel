@@ -11,7 +11,7 @@ use Yii;
  * @property string $name
  * @property string $email
  * @property string $phone
- * @property int|null $driver_staus 1-With Driver,2-Without Driver
+ * @property int|null $driver_status 1-With Driver,2-Without Driver
  * @property string $date_from
  * @property string $date_to
  * @property string|null $message
@@ -37,7 +37,7 @@ class RentalEnquiry extends \yii\db\ActiveRecord
     {
         return [
             [['name', 'email', 'phone', 'date_from', 'date_to', 'car_id'], 'required'],
-            [['driver_staus', 'car_id', 'status'], 'integer'],
+            [['driver_status', 'car_id', 'status'], 'integer'],
             [['date_from', 'date_to'], 'safe'],
             [['message'], 'string'],
             [['name'], 'string', 'max' => 100],
@@ -57,7 +57,7 @@ class RentalEnquiry extends \yii\db\ActiveRecord
             'name' => 'Name',
             'email' => 'Email',
             'phone' => 'Phone',
-            'driver_staus' => 'Driver Staus',
+            'driver_status' => 'Driver Staus',
             'date_from' => 'Date From',
             'date_to' => 'Date To',
             'message' => 'Message',

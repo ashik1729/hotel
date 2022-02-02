@@ -39,7 +39,7 @@ $this->beginPage();
         <!-- CSS Files -->
 
         <?= Html::csrfMetaTags() ?>
-        <title>Capon Admin</title>
+        <title>HCCA Admin</title>
         <?php $this->head() ?>
 
         <script type="text/javascript">

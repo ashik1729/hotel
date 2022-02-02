@@ -36,7 +36,7 @@ class Banner extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['name', 'banner_type', 'file_type', 'file_ios', 'file_and', 'status', 'created_by', 'updated_by', 'store', 'promotion_id'], 'required'],
+            [['name',  'file_and', 'status', 'created_by', 'updated_by'], 'required'],
             [['banner_type', 'file_type', 'status', 'created_by', 'updated_by', 'sort_order', 'map_type'], 'integer'],
             [['created_at', 'updated_at', 'promotion_id', 'promotion_from', 'promotion_to', 'sort_order', 'map_type', 'map_to', 'description_en', 'description_ar', 'save'], 'safe'],
             [['name', 'file_ios', 'file_and'], 'string', 'max' => 100],
@@ -68,12 +68,5 @@ class Banner extends \yii\db\ActiveRecord {
         ];
     }
 
-    public function getPromotionalCampaign() {
-        return $this->hasOne(PromotionalCampaign::className(), ['id' => 'promotion_id']);
-    }
-
-    public function getStore0() {
-        return $this->hasOne(Franchise::className(), ['id' => 'store']);
-    }
 
 }

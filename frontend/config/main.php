@@ -18,8 +18,6 @@ return [
         'elasticsearch' => [
             'class' => 'yii\elasticsearch\Connection',
             'nodes' => [
-//                ['http_address' => 'http://localhost/capon'],
-//                ['http_address' => '127.0.0.1:80/capon'],
                 ['http_address' => '127.0.0.1:9200'],
             // configure more hosts if you have a cluster
             ],
@@ -77,6 +75,12 @@ return [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                'rent-car'=>'site/rent-car',
+                'about-us'=>'site/about-us',
+                'contact-us'=>'site/contact-us',
+                'packages'=>'site/packages',
+                'package-details'=>'site/package-details',
+                'visa'=>'site/visa',
                 'user/register' => 'user/register',
                 'user/login' => 'user/login',
                 'log-out' => 'user/log-out',
@@ -98,6 +102,20 @@ return [
                 'business-type' => 'home/business-type',
                 'marketing-banners' => 'marketing-banners/index',
                 'marketing-banners/<id:\w+(-\w+)*>' => 'marketing-banners/index',
+                'rent-car-details/<can:\w+(-\w+)*>' => 'site/rent-car-details',
+                'visa-details/<can:\w+(-\w+)*>' => 'site/visa-details',
+                'accomodation-gallery/<can:\w+(-\w+)*>' => 'site/accomodation-gallery',
+                'accomodation'=>'site/accomodation',
+                'log-out'=>'user/log-out',
+                'request-password-reset'=>'user/request-password-reset',
+                'verify-email/<token:\w+(-\w+)*>'=>'user/verify-email',
+                'reset-password/<token:\w+(-\w+)*>'=>'user/reset-password',
+                'reset-password'=>'user/reset-password',
+                'reset-password-success'=>'user/reset-password-success',
+                'dashboard'=>'my-account/dashboard',
+                'visa-enquiry'=>'my-account/visa-enquiry',
+                'package-history'=>'my-account/package-history',
+
             ],
         ],
     ],

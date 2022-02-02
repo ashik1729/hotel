@@ -10,6 +10,7 @@ use yii\helpers\Json;
 use yii\filters\Cors;
 use yii\web\UploadedFile;
 use frontend\controllers\CrmController;
+use yii\web\NotFoundHttpException;
 
 /**
  * Site controller

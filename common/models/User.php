@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use Imagine\Exception\NotSupportedException;
 use yii\web\IdentityInterface;
 use Yii;
 
@@ -46,19 +47,21 @@ use Yii;
  * @property UserAddress[] $userAddresses
  * @property UserWishlist[] $userWishlists
  */
-class User extends \yii\db\ActiveRecord implements IdentityInterface {
+class User extends \yii\db\ActiveRecord implements IdentityInterface
+{
 
     /**
      * {@inheritdoc}
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'user';
     }
 
     public $cr_no;
     public $business_name;
     public $type_of_business;
-
+    public $retype_password;
     const STATUS_DELETED = 0;
     const STATUS_INACTIVE = 1;
     const STATUS_ACTIVE = 10;
@@ -66,13 +69,17 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
     /**
      * {@inheritdoc}
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['first_name', 'last_name', 'email', 'password', 'profile_image', 'state', 'created_by_type', 'updated_by', 'updated_by_type'], 'required', 'on' => 'admin_new_user'],
             [['first_name', 'last_name', 'email', 'password', 'user_type', 'account_type'], 'required', 'on' => 'register_user'],
             [['first_name', 'last_name', 'user_type', 'account_type', 'external_account_id'], 'required', 'on' => 'register_user_social'],
             [['first_name', 'last_name', 'email', 'password', 'user_type', 'account_type'], 'required', 'on' => 'register_merchant'],
             [['first_name', 'last_name', 'user_type', 'cr_no', 'business_name', 'type_of_business', 'account_type'], 'required', 'on' => 'register_merchant_social'],
+            [['first_name', 'password', 'email', 'status', 'mobile_number','retype_password'], 'required', 'on' => 'create_user'],
+            ['retype_password', 'compare', 'compareAttribute'=>'password', 'message'=>"Passwords don't match" ],
+
             [['email', 'password'], 'required', 'on' => 'login_user'],
             [['user_type'], 'required', 'on' => 'guest_user'],
             [['gender', 'country', 'state', 'status', 'newsletter', 'emailverify', 'created_by', 'created_by_type', 'updated_by', 'updated_by_type'], 'integer'],
@@ -85,8 +92,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
             [['password'], 'string', 'max' => 255],
             [['mobile_number'], 'string', 'max' => 15],
             [['auth_key'], 'string', 'max' => 255],
-//            [['user_otp'], 'string', 'max' => 12],
-//            [['email'], 'unique'],
+            //            [['user_otp'], 'string', 'max' => 12],
+            //            [['email'], 'unique'],
             [['email'], 'email'],
             ['email', 'checkemail'],
             [['external_account_id'], 'unique'],
@@ -99,7 +106,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
     /**
      * {@inheritdoc}
      */
-    public function checkemail($attribute, $params) {
+    public function checkemail($attribute, $params)
+    {
         if ($this->user_type == 1 || $this->user_type == 2) {
 
             $check_exist = User::findOne(['email' => $this->email]);
@@ -116,7 +124,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
         }
     }
 
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => 'ID',
             'first_name' => 'First Name',
@@ -151,7 +160,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getAuthentications() {
+    public function getAuthentications()
+    {
         return $this->hasMany(Authentication::className(), ['user_id' => 'id']);
     }
 
@@ -160,7 +170,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getCarts() {
+    public function getCarts()
+    {
         return $this->hasMany(Cart::className(), ['user_id' => 'id']);
     }
 
@@ -169,8 +180,15 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getOrderProducts() {
+    public function getOrderProducts()
+    {
         return $this->hasMany(OrderProducts::className(), ['user_id' => 'id']);
+    }
+    public static function findByVerificationToken($token) {
+        return static::findOne([
+                    'auth_key' => $token,
+                    'status' => self::STATUS_INACTIVE
+        ]);
     }
 
     /**
@@ -178,11 +196,13 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getOrders() {
+    public function getOrders()
+    {
         return $this->hasMany(Orders::className(), ['user_id' => 'id']);
     }
 
-    public function getMerchant() {
+    public function getMerchant()
+    {
         return $this->hasMany(Merchant::className(), ['user_id' => 'id']);
     }
 
@@ -191,7 +211,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getProductReviews() {
+    public function getProductReviews()
+    {
         return $this->hasMany(ProductReview::className(), ['user_id' => 'id']);
     }
 
@@ -200,7 +221,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getProductVieweds() {
+    public function getProductVieweds()
+    {
         return $this->hasMany(ProductViewed::className(), ['user_id' => 'id']);
     }
 
@@ -215,7 +237,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getCountry0() {
+    public function getCountry0()
+    {
         return $this->hasOne(Country::className(), ['id' => 'country']);
     }
 
@@ -224,7 +247,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getState0() {
+    public function getState0()
+    {
         return $this->hasOne(States::className(), ['id' => 'state']);
     }
 
@@ -233,7 +257,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUserAddresses() {
+    public function getUserAddresses()
+    {
         return $this->hasMany(UserAddress::className(), ['user_id' => 'id']);
     }
 
@@ -242,11 +267,10 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getUserWishlists() {
-        return $this->hasMany(UserWishlist::className(), ['user_id' => 'id']);
-    }
 
-    public function checkextension($attribute) {
+
+    public function checkextension($attribute)
+    {
         $img = ['jpg', 'jpeg', 'png', 'JPG', 'JPEG', 'PNG'];
         $ext = explode('.', $this->image);
         $get_ext = end($ext);
@@ -255,7 +279,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
         }
     }
 
-    public function passwordvalidation($attribute) {
+    public function passwordvalidation($attribute)
+    {
 
         if (!preg_match('/^(?=.*\d)(?=.*[@#\-_$%^&+=§!\?])(?=.*[a-z])(?=.*[A-Z])[0-9A-Za-z@#\-_$%^&+=§!\?]{8,20}$/', $this->password)) {
             $this->addError($attribute, 'Password Must be contain atlease one lowercase,uppercase,digit and special charector-' . $this->password);
@@ -265,7 +290,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
     /**
      * @inheritdoc
      */
-    public function uploadFile($model, $file, $name) {
+    public function uploadFile($model, $file, $name)
+    {
 
         $targetFolder = \yii::$app->basePath . '/../uploads/users/' . $model->id . '/';
         if (!file_exists($targetFolder)) {
@@ -279,19 +305,20 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
         }
     }
 
-    function getRandomPwd() {
+    function getRandomPwd()
+    {
         $psw = rand(10001, 9999999999);
-//        $special_array[] = "@";
+        //        $special_array[] = "@";
         $special_array[] = "$";
-//        $special_array[] = "%";
-//        $special_array[] = "^";
+        //        $special_array[] = "%";
+        //        $special_array[] = "^";
         $special_array[] = "&";
-//        $special_array[] = "*";
-//        $special_array[] = "(";
-//        $special_array[] = ")";
+        //        $special_array[] = "*";
+        //        $special_array[] = "(";
+        //        $special_array[] = ")";
         $special_array[] = "#";
-//        $special_array[] = "]";
-//        $special_array[] = "[";
+        //        $special_array[] = "]";
+        //        $special_array[] = "[";
         for ($i = 65; $i < 91; $i++) {
             $array_alpha[] = chr($i);
         }
@@ -304,14 +331,16 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
         return $result;
     }
 
-    public static function findIdentity($id) {
+    public static function findIdentity($id)
+    {
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
 
     /**
      * @inheritdoc
      */
-    public static function findIdentityByAccessToken($token, $type = null) {
+    public static function findIdentityByAccessToken($token, $type = null)
+    {
         throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
 
@@ -321,7 +350,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
      * @param string $username
      * @return static|null
      */
-    public static function findByUsername($username) {
+    public static function findByUsername($username)
+    {
 
         return static::findOne(['email' => $username, 'status' => self::STATUS_ACTIVE]);
     }
@@ -332,14 +362,15 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
      * @param string $token password reset token
      * @return static|null
      */
-    public static function findByPasswordResetToken($token) {
+    public static function findByPasswordResetToken($token)
+    {
         if (!static::isPasswordResetTokenValid($token)) {
             return null;
         }
 
         return static::findOne([
-                    'password_reset_token' => $token,
-                    'status' => self::STATUS_ACTIVE,
+            'password_reset_token' => $token,
+            'status' => self::STATUS_ACTIVE,
         ]);
     }
 
@@ -349,7 +380,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
      * @param string $token password reset token
      * @return bool
      */
-    public static function isPasswordResetTokenValid($token) {
+    public static function isPasswordResetTokenValid($token)
+    {
         if (empty($token)) {
             return false;
         }
@@ -362,25 +394,29 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
     /**
      * @inheritdoc
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->getPrimaryKey();
     }
 
     /**
      * @inheritdoc
      */
-    public function getAuthKey() {
+    public function getAuthKey()
+    {
         return $this->auth_key;
     }
 
-    public function getGroup() {
+    public function getGroup()
+    {
         return $this->hasOne(UserGroup::className(), ['id' => 'user_group']);
     }
 
     /**
      * @inheritdoc
      */
-    public function validateAuthKey($authKey) {
+    public function validateAuthKey($authKey)
+    {
         return $this->getAuthKey() === $authKey;
     }
 
@@ -390,7 +426,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
      * @param string $password password to validate
      * @return bool if password provided is valid for current user
      */
-    public function validatePassword($password) {
+    public function validatePassword($password)
+    {
 
         return Yii::$app->security->validatePassword($password, $this->password);
     }
@@ -400,29 +437,32 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface {
      *
      * @param string $password
      */
-    public function setPassword($password) {
+    public function setPassword($password)
+    {
         $this->password = Yii::$app->security->generatePasswordHash($password);
     }
 
     /**
      * Generates "remember me" authentication key
      */
-    public function generateAuthKey() {
+    public function generateAuthKey()
+    {
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
 
     /**
      * Generates new password reset token
      */
-    public function generatePasswordResetToken() {
+    public function generatePasswordResetToken()
+    {
         $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
     /**
      * Removes password reset token
      */
-    public function removePasswordResetToken() {
+    public function removePasswordResetToken()
+    {
         $this->password_reset_token = null;
     }
-
 }

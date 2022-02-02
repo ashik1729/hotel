@@ -28,32 +28,15 @@ use yii\widgets\Pjax;
     ?>
     <div class="row">
 
-        <div class="col-sm-3">
+        <div class="col-sm-4">
             <div class="form-group bmd-form-group">
                 <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
             </div>
         </div>
 
-        <div class="col-sm-2">
-            <div class="form-group bmd-form-group">
-                <?= $form->field($model, 'banner_type')->dropDownList(['0' => 'Free', '1' => 'Paid'], ['prompt' => 'Select Banner Type']) ?>
-
-            </div>
-        </div>
-        <div class="col-sm-2">
-            <div class="form-group bmd-form-group">
-                <?= $form->field($model, 'store')->dropDownList(yii\helpers\ArrayHelper::map(\common\models\Franchise::find()->where(['status' => 10])->all(), 'id', 'first_name'), ['prompt' => 'Choose a Store']) ?>
-
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="form-group bmd-form-group">
-                <?= $form->field($model, 'promotion_id')->dropDownList(yii\helpers\ArrayHelper::map(\common\models\PromotionalCampaign::find()->all(), 'id', 'name'), ['prompt' => 'Choose a Campaign']) ?>
-
-            </div>
-        </div>
-        <div class="col-sm-2">
+       
+        <div class="col-sm-4">
             <div class="form-group bmd-form-group">
                 <?= $form->field($model, 'status')->dropDownList(['1' => 'Enable', '0' => 'Disable'], ['prompt' => 'Choose Status']) ?>
 
@@ -61,58 +44,29 @@ use yii\widgets\Pjax;
         </div>
 
 
-        <div class="col-sm-3">
-            <div class="form-group bmd-form-group">
-                <?= $form->field($model, 'promotion_from')->textInput(['type' => 'text', 'class' => 'form-control datepicker']) ?>
 
-            </div>
-        </div>
-
-        <div class="col-sm-2">
+        <div class="col-sm-4">
             <div class="form-group bmd-form-group">
                 <?= $form->field($model, 'sort_order')->textInput(['value' => 0]) ?>
 
             </div>
         </div>
 
-        <div class="col-sm-2">
-            <div class="form-group bmd-form-group">
-                <?= $form->field($model, 'map_type')->dropDownList(['0' => 'No Maping', '1' => 'Products', '2' => 'Category', '3' => 'Merchant', '4' => 'External Link'], ['prompt' => 'Select Item', 'class' => 'form-control map_to_type']) ?>
-
-            </div>
-        </div>
-
-        <div class="col-sm-3">
-            <div class="form-group bmd-form-group">
-                <div class="mapping_to_wrap">
-                    <?= $form->field($model, 'map_to')->textInput() ?>
-
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-2">
-            <div class="form-group bmd-form-group">
-                <?= $form->field($model, 'file_type')->dropDownList(['1' => 'Image', '2' => 'File'], ['prompt' => 'Select File']) ?>
-
-
-            </div>
-        </div>
-
         <div class="col-sm-6">
             <div class="form-group bmd-form-group">
-                <?= $form->field($model, 'description_en')->textarea(['rows' => 2]) ?>
+                <?= $form->field($model, 'description_en')->textarea(['rows' => 2])->label("Decription One") ?>
 
 
             </div>
         </div>
         <div class="col-sm-6">
             <div class="form-group bmd-form-group">
-                <?= $form->field($model, 'description_ar')->textarea(['rows' => 2]) ?>
+                <?= $form->field($model, 'description_ar')->textarea(['rows' => 2])->label("Decription Two") ?> 
 
             </div>
         </div>
 
-        <div class="col-sm-6">
+        <div class="col-sm-12">
             <div class="form-group bmd-form-group">
                 <div id="imagePriview">
                     <?php
@@ -127,7 +81,7 @@ use yii\widgets\Pjax;
                 </div>
                 <br/>
                 <?php
-                echo '<label class="control-label">Upload category Image</label>';
+                echo '<label class="control-label">Upload  Image</label>';
                 echo FileInput::widget([
                     'model' => $model,
                     'attribute' => 'file_and',
@@ -145,40 +99,7 @@ use yii\widgets\Pjax;
 
             </div>
         </div>
-        <div class="col-sm-6">
-            <div class="form-group bmd-form-group">
-                <div id="imagePriview">
-                    <?php
-                    if (isset($model->id) && $model->id > 0 && isset($model->file_ios) && $model->file_ios !== "") {
-                        $imgPath = ((yii\helpers\Url::base())) . '/../uploads/marketing_banners/' . $model->id . '/ios/' . $model->file_ios;
-                    } else {
-                        $imgPath = Yii::$app->request->baseUrl . '/img/no-image.jpg';
-                    }
-
-                    echo '<img width="125" style="border: 2px solid #d2d2d2;" src="' . $imgPath . '" />';
-                    ?>
-                </div>
-                <br/>
-                <?php
-                echo '<label class="control-label">Upload category Image</label>';
-                echo FileInput::widget([
-                    'model' => $model,
-                    'attribute' => 'file_ios',
-                    'options' => [
-//                        'multiple' => true
-                        'id' => 'input-3',
-                    ],
-                    'pluginOptions' => [
-                        'showUpload' => false,
-                        'allowedFileExtensions' => ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'xlsx'],
-                    ]
-                ]);
-                ?>
-                <span class="bmd-help"><?= Html::activeHint($model, 'file'); ?></span>
-
-            </div>
-        </div>
-
+        
 
     </div>
 

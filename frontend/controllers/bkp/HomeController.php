@@ -25,8 +25,6 @@ class HomeController extends Controller {
             'http://localhost:3000',
             'http://localhost:4200',
             'http://localhost:80',
-            'http://wlabdemo.com',
-            'http://wlabdemo.com/caponcms'
         ];
     }
 

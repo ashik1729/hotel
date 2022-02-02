@@ -91,77 +91,20 @@ use yii\widgets\DetailView;
                     'attributes' => [
                         'id',
                         'name',
-                        [
-                            'attribute' => 'store',
-                            'value' => function ($data) {
-                                return $data->store0->first_name . ' ' . $data->store0->last_name . ' (' . $data->store0->email . ')';
-                            },
-                        ],
-                        'promotion_from',
-                        'promotion_to',
-                        [
-                            'attribute' => 'banner_type',
-                            'value' => function ($data) {
-                                if ($data->banner_type == 0) {
-                                    return "Free";
-                                } else if ($data->banner_type == 1) {
-
-                                    return "Paid";
-                                } else {
-                                    return "Not Described";
-                                }
-                            },
-//                                            'format' => 'html',
-                        ],
-                        [
-                            'attribute' => 'file_type',
-                            'value' => function ($data) {
-                                if ($data->file_type == 1) {
-                                    return "Image";
-                                } else if ($data->file_type == 1) {
-
-                                    return "File";
-                                } else {
-                                    return "Not Described";
-                                }
-                            },
-//                                            'format' => 'html',
-                        ],
-//                        'file',
+                      
                         [
                             'attribute' => 'file_and',
                             'value' => function ($data) {
                                 if ($data->file_and != '') {
-                                    if ($data->file_type == 1) {
-                                        return '<img src="' . Yii::$app->request->baseUrl . '/../uploads/marketing_banners/' . $data->id . '/android/' . $data->file_and . '"/>';
-                                    } else if ($data->file_type == 2) {
-                                        return '<a target="new" href="' . Yii::$app->request->baseUrl . '/../uploads/marketing_banner/' . $data->id . '/android/' . $data->file_and . '">View File</a>';
-                                    } else {
-                                        return " No File To Display";
-                                    }
+                                    return '<img src="' . Yii::$app->request->baseUrl . '/../uploads/marketing_banners/' . $data->id . '/android/' . $data->file_and . '"/>';
+
                                 } else {
                                     return " No File To Display";
                                 }
                             },
                             'format' => 'html',
                         ],
-                        [
-                            'attribute' => 'file_ios',
-                            'value' => function ($data) {
-                                if ($data->file_ios != '') {
-                                    if ($data->file_type == 1) {
-                                        return '<img src="' . Yii::$app->request->baseUrl . '/../uploads/marketing_banners/' . $data->id . '/ios/' . $data->file_ios . '"/>';
-                                    } else if ($data->file_type == 2) {
-                                        return '<a target="new" href="' . Yii::$app->request->baseUrl . '/../uploads/marketing_banner/' . $data->id . '/ios/' . $data->file_ios . '">View File</a>';
-                                    } else {
-                                        return " No File To Display";
-                                    }
-                                } else {
-                                    return " No File To Display";
-                                }
-                            },
-                            'format' => 'html',
-                        ],
+                        
                         [
                             'attribute' => 'status',
                             'value' => function ($data) {
@@ -202,22 +145,7 @@ use yii\widgets\DetailView;
                             },
                         ],
                         'sort_order',
-                        [
-                            'attribute' => 'map_type',
-                            'value' => function ($data) {
-                                if ($data->map_type == 0) {
-                                    return "No Mapping";
-                                } else if ($data->map_type == 1) {
-                                    return "Products";
-                                } else if ($data->map_type == 2) {
-                                    return "Category";
-                                } else {
-                                    return "Other";
-                                }
-                            },
-//                                            'format' => 'html',
-                        ],
-                        'map_to',
+                     
                     ],
                 ])
                 ?>

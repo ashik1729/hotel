@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use Imagine\Exception\NotSupportedException;
 use yii\web\IdentityInterface;
 use Yii;
 
@@ -78,7 +79,7 @@ class Users extends \yii\db\ActiveRecord implements IdentityInterface {
     public function rules() {
         return [
             [['auth_key', 'name', 'last_name', 'password', 'email', 'status', 'phone', 'country_name'], 'required', 'on' => 'create_api'],
-            [['name', 'password', 'email', 'status', 'phone', 'country_name', 'role', 'user_group'], 'required', 'on' => 'create_user'],
+            [['name', 'password', 'email', 'status', 'phone'], 'required', 'on' => 'create_user'],
             [['password', 'password_reset_token'], 'required', 'on' => 'password_reset'],
 //            [['auth_key', 'password', 'email', 'status', 'role', 'phone'], 'required', 'on' => 'create_backend_patient'],
 //            [['email', 'status', 'phone'], 'required', 'on' => 'update_backend_patient'],
