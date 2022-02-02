@@ -18,10 +18,11 @@ class AppAsset extends AssetBundle {
         'css/owlcarousel/css/owl.theme.default.min.css',
         'css/style.css',
         'css/responsive.css',
+        'css/developer.css',
     ];
     public $js = [
         'https://kit.fontawesome.com/df7cb1b087.js',
-        'js/counter/ajax-jquery.min.js',
+        // 'js/counter/ajax-jquery.min.js',
         'js/counter/counter-waypoints.min.js',
         'js/counter/js-counter.js',
         'css/owlcarousel/js/owl.carousel.js',
@@ -29,6 +30,8 @@ class AppAsset extends AssetBundle {
         'js/wow.min.js',
         'js/jquery.fittext.js',
         'css/bootstrap@5.0.2/js/bootstrap.bundle.min.js', 
+        'js/instafeed.js',
+        'js/developer.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

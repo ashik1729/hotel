@@ -2,9 +2,11 @@
 
 namespace common\components;
 
+use Exception;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
+use yii\web\NotFoundHttpException;
 
 class MailRequest extends Component {
 
@@ -12,7 +14,7 @@ class MailRequest extends Component {
 
 
         $to = $model->email;
-        $subject = 'Email Veryfi for Capon';
+        $subject = 'Email Veryfi for HCCA';
 
 
 
@@ -102,13 +104,13 @@ class MailRequest extends Component {
             $return['error'] = [];
             return $return;
         }
-        $user->password_reset_token = mt_rand(100000, 999999);
-        $user->save(false);
+        // $user->password_reset_token = mt_rand(100000, 999999);
+        // $user->save(false);
         $to = $user->email;
-        $subject = 'Password reset for Capon';
+        $subject = 'Password reset for HCCA';
         try {
             \Yii::$app->mailer->compose('password_reset', ['model' => $user, 'lang' => $lang])
-                    ->setFrom(["noreply@wakra-lab.com" => 'AGOGO - Password Reset'])
+                    ->setFrom(["noreply@wakra-lab.com" => 'HCCA - Password Reset'])
                     ->setTo($to)
                     ->setSubject($subject)
                     ->send();

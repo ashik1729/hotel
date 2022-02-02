@@ -186,7 +186,7 @@ class NotificationManager extends \yii\base\Component {
         if ($data['reciever'] != NULL) {
             foreach ($data['reciever'] as $user_id) {
                 $notifications = new Notification();
-                $notifications->id = uniqid('CAPON');
+                $notifications->id = uniqid('HCCA');
                 $notifications->type_id = $data['notification_type'];
                 $notifications->redirection_id = $data['redirection_id'];
                 $notifications->title = $data['title']['en'];
@@ -221,7 +221,7 @@ class NotificationManager extends \yii\base\Component {
             }
         } else {
             $notifications = new Notification();
-            $notifications->id = uniqid('CAPON');
+            $notifications->id = uniqid('HCCA');
             $notifications->type_id = $data['notification_type'];
             $notifications->title = $data['title']['en'];
             $notifications->title_ar = $data['title']['ar'];

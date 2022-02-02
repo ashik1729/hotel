@@ -54,83 +54,21 @@ if ($storedatas != NULL) {
                                     ['class' => 'yii\grid\SerialColumn'],
 //                                    'id',
                                     'name',
-                                    [
-                                        'attribute' => 'store',
-                                        'header' => 'Store',
-                                        'filter' => Html::activeDropDownList($searchModel, 'store', $store_list, ['class' => 'form-control ashik ', 'prompt' => 'All']),
-                                        'value' => function($model) {
-                                            return "<span style=' text-transform: capitalize'>" . $model->store0->first_name . ' ' . $model->store0->last_name . '(' . $model->store0->email . ')' . "</span>";
-                                        },
-                                        'format' => 'html',
-                                    ],
-                                    [
-                                        'attribute' => 'banner_type',
-                                        'header' => 'Banner Type',
-                                        'filter' => ['0' => 'Free', '1' => 'Paid'],
-                                        'value' => function ($data) {
-                                            if ($data->banner_type == 0) {
-                                                return "Free";
-                                            } else if ($data->banner_type == 1) {
-
-                                                return "Paid";
-                                            } else {
-                                                return "Not Described";
-                                            }
-                                        },
-//                                            'format' => 'html',
-                                    ],
-                                    [
-                                        'attribute' => 'file_type',
-                                        'header' => 'File Type',
-                                        'filter' => ['1' => 'Image', '2' => 'File'],
-                                        'value' => function ($data) {
-                                            if ($data->file_type == 1) {
-                                                return "Image";
-                                            } else if ($data->file_type == 2) {
-
-                                                return "File";
-                                            } else {
-                                                return "Not Described";
-                                            }
-                                        },
-//                                            'format' => 'html',
-                                    ],
+                                   
                                     [
                                         'attribute' => 'file_and',
                                         'filter' => false,
                                         'value' => function ($data) {
                                             if ($data->file_and != '') {
-                                                if ($data->file_type == 1) {
-                                                    return '<img src="' . Yii::$app->request->baseUrl . '/../uploads/marketing_banners/' . $data->id . '/android/' . $data->file_and . '"/>';
-                                                } else if ($data->file_type == 2) {
-                                                    return '<a target="new" href="' . Yii::$app->request->baseUrl . '/../uploads/marketing_banner/' . $data->id . '/android/' . $data->file_and . '">View File</a>';
-                                                } else {
-                                                    return " No File To Display";
-                                                }
+                                                return '<img src="' . Yii::$app->request->baseUrl . '/../uploads/marketing_banners/' . $data->id . '/android/' . $data->file_and . '"/>';
+
                                             } else {
                                                 return " No File To Display";
                                             }
                                         },
                                         'format' => 'html',
                                     ],
-                                    [
-                                        'attribute' => 'file_ios',
-                                        'filter' => false,
-                                        'value' => function ($data) {
-                                            if ($data->file_ios != '') {
-                                                if ($data->file_type == 1) {
-                                                    return '<img src="' . Yii::$app->request->baseUrl . '/../uploads/marketing_banners/' . $data->id . '/ios/' . $data->file_ios . '"/>';
-                                                } else if ($data->file_type == 2) {
-                                                    return '<a target="new" href="' . Yii::$app->request->baseUrl . '/../uploads/marketing_banner/' . $data->id . '/ios/' . $data->file_ios . '">View File</a>';
-                                                } else {
-                                                    return " No File To Display";
-                                                }
-                                            } else {
-                                                return " No File To Display";
-                                            }
-                                        },
-                                        'format' => 'html',
-                                    ],
+                                   
                                     [
                                         'attribute' => 'status',
                                         'header' => 'Status',

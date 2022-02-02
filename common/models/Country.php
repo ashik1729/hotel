@@ -113,8 +113,5 @@ class Country extends \yii\db\ActiveRecord
      *
      * @return \yii\db\ActiveQuery
      */
-    public function getVendors()
-    {
-        return $this->hasMany(Vendor::className(), ['country' => 'id']);
-    }
+   
 }

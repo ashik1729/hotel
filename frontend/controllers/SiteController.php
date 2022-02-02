@@ -2,6 +2,12 @@
 
 namespace frontend\controllers;
 
+use common\models\Accomodation;
+use common\models\AccomodationRequest;
+use common\models\Brands;
+use common\models\Cars;
+use common\models\CmsContent;
+use common\models\Enquiry;
 use kartik\widgets\FileInput;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
@@ -12,95 +18,49 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use common\models\RentalEnquiry;
+use common\models\TypeOfCar;
+use common\models\Visa;
+use common\models\VisaFaq;
+use common\models\VisaRequests;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use yii\filters\auth\HttpBearerAuth;
+use yii\filters\Cors;
+use yii\web\NotFoundHttpException;
+use yii\web\UploadedFile;
 
 //use Imagine\Imagick\Image;
 
 /**
  * Site controller
  */
-class SiteController extends Controller {
+class SiteController extends Controller
+{
+    // public $enableCsrfValidation = false;
 
-    /**
-     * {@inheritdoc}
-     */
-//    public function behaviors() {
-//        return [
-//            'access' => [
-//                'class' => AccessControl::className(),
-//                'only' => ['logout', 'signup'],
-//                'rules' => [
-//                    [
-//                        'actions' => ['signup'],
-//                        'allow' => true,
-//                        'roles' => ['?'],
-//                    ],
-//                    [
-//                        'actions' => ['logout'],
-//                        'allow' => true,
-//                        'roles' => ['@'],
-//                    ],
-//                ],
-//            ],
-//            'verbs' => [
-//                'class' => VerbFilter::className(),
-//                'actions' => [
-//                    'logout' => ['post'],
-//                ],
-//            ],
-//        ];
-//    }
-
-    public function behaviors() {
-        $behaviors = parent::behaviors();
-
-
-        $behaviors['corsFilter'] = [
-            'class' => \yii\filters\Cors::className(),
-            'cors' => [
-                // restrict access to
-                'Origin' => ['*'],
-                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
-                // Allow only POST and PUT methods
-                'Access-Control-Request-Headers' => ['*'],
-                // Allow only headers 'X-Wsse'
-                'Access-Control-Allow-Credentials' => true,
-                // Allow OPTIONS caching
-                'Access-Control-Max-Age' => 30,
-            // Allow the X-Pagination-Current-Page header to be exposed to the browser.
-            // 'Access-Control-Expose-Headers' => [],
-            ]
-        ];
-//        $behaviors['contentNegotiator'] = [
-//            'class' => \yii\filters\ContentNegotiator::className(),
-//            'formats' => [
-//                'application/json' => \yii\web\Response::FORMAT_JSON,
-//            ],
-//        ];
-        return $behaviors;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function actions() {
+    public function actions()
+    {
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
-                'view' => 'error.php',
-                'layout' => false
             ],
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
+            'auth' => [
+                'class' => 'yii\authclient\AuthAction',
+                'successCallback' => [$this, 'successCallback'],
+            ],
         ];
     }
 
-    public function actionError() {
+
+    public function actionError()
+    {
 
         $this->layout = 'defaultLayoutName';
         //rest of the code goes here
@@ -111,9 +71,184 @@ class SiteController extends Controller {
      *
      * @return mixed
      */
-    public function actionIndex() {
+    public function actionPackages()
+    {
+ 
+        return $this->render('packages');
+    }
+    public function actionPackageDetails()
+    {
+        
+        return $this->render('package-details');
+    }
+    public function actionVisa()
+    {
+        $model = CmsContent::findOne(['page_id' => 'visa']);
+        $visas = Visa::find()->where(['status' => 1])->all();
+        return $this->render('visa', ['model' => $model, 'visas' => $visas]);
+    }
+    public function actionVisaDetails()
+    {
+        $visa = Visa::findOne(['can_name' => $_GET['can'], 'status' => 1]);
+        $visafaq = VisaFaq::find()->where(['visa_id' => $visa->id, 'status' => 1])->all();
+        $visaRequest = new VisaRequests();
+        if ($visaRequest->load(Yii::$app->request->post())) {
+            if (!Yii::$app->user->isGuest) {
+
+                $visaRequest->status = 1;
+                $visaRequest->user_id = Yii::$app->user->id;
+                if ($visaRequest->save()) {
+                    Yii::$app->session->setFlash('success', "Visa Enquiry Sent Successfully.");
+                } else {
+                    Yii::$app->session->setFlash('error', "Following Error While Senting your Enquiry." . json_encode($visaRequest->errors));
+                }
+                return  $this->redirect(['visa-details/'.$_GET['can']]);
+
+            }else{
+                Yii::$app->session->setFlash('error', "Please Login before making visa request.");
+                return $this->redirect(['visa-details/'.$_GET['can']]);
+
+
+            }
+        }
+
+        return $this->render('visa-details', ['visa' => $visa, 'visafaq' => $visafaq,'visaRequest'=>$visaRequest]);
+    }
+    public function actionIndex()
+    {
         return $this->render('index');
     }
+    public function actionAccomodationGallery()
+    {
+        $model = Accomodation::findOne(['can_name' => $_GET['can'], 'status' => 1]);
+        return $this->render('accomodation-gallery', [
+            'model' => $model
+        ]);
+    }
+    public function actionAccomodation()
+    {
+        $model = CmsContent::findOne(['page_id' => 'accomodation']);
+        $enquiry = new Enquiry();
+        $accommodation = new AccomodationRequest();
+        $accommodationData = Accomodation::find()->where(['status' => 1])->all();
+        if ($enquiry->load(Yii::$app->request->post())) {
+            $enquiry->status = 1;
+            if ($enquiry->save()) {
+                Yii::$app->session->setFlash('success', "Enquiry Sent Successfully.");
+            } else {
+                Yii::$app->session->setFlash('error', "Following Error While Senting your Enquiry." . json_encode($enquiry->errors));
+            }
+            return $this->redirect(['accomodation']);
+        }
+        if ($accommodation->load(Yii::$app->request->post())) {
+            $accommodation->status = 1;
+            if ($accommodation->save()) {
+                Yii::$app->session->setFlash('success', "Accomodation request Sent Successfully.");
+            } else {
+                Yii::$app->session->setFlash('error', "Following Error While Senting ccomodation request." . json_encode($accommodation->errors));
+            }
+            return $this->redirect(['accomodation']);
+        }
+        return $this->render('accomodation', [
+            'model' => $model,
+            'accommodation' => $accommodation,
+            'enquiry' => $enquiry,
+            'accommodationData' => $accommodationData
+        ]);
+    }
+    public function actionContactUs()
+    {
+        $enquiry = new Enquiry();
+        $model = CmsContent::findOne(['page_id' => 'contact-us']);
+        if ($enquiry->load(Yii::$app->request->post())) {
+            $enquiry->status = 1;
+            if ($enquiry->save()) {
+                Yii::$app->session->setFlash('success', "Enquiry Sent Successfully.");
+            } else {
+                Yii::$app->session->setFlash('error', "Following Error While Senting your Enquiry." . json_encode($enquiry->errors));
+            }
+            return $this->redirect(['contact-us']);
+        }
+        return $this->render('contact-us', [
+            'model' => $model,
+            'enquiry' => $enquiry
+        ]);
+    }
 
+    public function actionAboutUs()
+    {
+        $model = CmsContent::findOne(['page_id' => 'about-us']);
+        return $this->render(
+            'about-us',
+            [
+                'model' => $model
+            ]
+        );
+    }
+    public function actionRentCarDetails()
+    {
+        $car = Cars::findOne(['can_name' => $_GET['can'], 'status' => 1]);
+        $rentEnquiry = new RentalEnquiry();
+        if ($rentEnquiry->load(Yii::$app->request->post())) {
+            $rentEnquiry->status = 1;
+            if ($rentEnquiry->save()) {
+                Yii::$app->session->setFlash('success', "Rental Enquiry Sent Successfully.");
+            } else {
+                Yii::$app->session->setFlash('error', "Following Error While Senting your Enquiry." . json_encode($rentEnquiry->errors));
+            }
+            return $this->redirect(['rent-car-details/' . $_GET['can']]);
+        }
+        return $this->render('rent-car-details', [
+            'car' => $car,
+            'rentEnquiry' => $rentEnquiry
+        ]);
+    }
+    public function actionRentCar()
+    {
 
+        $model = CmsContent::findOne(['page_id' => 'rent-a-car', 'status' => 1]);
+        $typeOfCars =  TypeOfCar::find()->where(['status' => 1])->all();
+        $brands =  Brands::find()->where(['status' => 1])->all();
+        $carquery = Cars::find()->where(['status' => 1]);
+        $rentEnquiry = new RentalEnquiry();
+        if (isset($_GET['type_of_car']) && $_GET['type_of_car'] != "") {
+            $carquery->andWhere(['type_of_car' => $_GET['type_of_car']]);
+        }
+        if (isset($_GET['brand']) && $_GET['brand'] != "") {
+            $carquery->andWhere(['brand' => $_GET['brand']]);
+        }
+        if (isset($_GET['sorting']) && $_GET['sorting'] != "") {
+            if ($_GET['sorting'] == 1) {
+                $carquery->orderBy([
+                    'model_year' => SORT_DESC
+                ]);
+            } else {
+                $carquery->orderBy([
+                    'model_year' => SORT_ASC
+                ]);
+            }
+        } else {
+            $carquery->orderBy([
+                'model_year' => SORT_DESC
+            ]);
+        }
+
+        $cars = $carquery->all();
+        if ($rentEnquiry->load(Yii::$app->request->post())) {
+            $rentEnquiry->status = 1;
+            if ($rentEnquiry->save()) {
+                Yii::$app->session->setFlash('success', "Rental Enquiry Sent Successfully.");
+            } else {
+                Yii::$app->session->setFlash('error', "Following Error While Senting your Enquiry." . json_encode($rentEnquiry->errors));
+            }
+            return $this->redirect(['rent-car']);
+        }
+        return $this->render('rent-car', [
+            'model' => $model,
+            'typeOfCars' => $typeOfCars,
+            'brands' => $brands,
+            'cars' => $cars,
+            'rentEnquiry' => $rentEnquiry
+        ]);
+    }
 }

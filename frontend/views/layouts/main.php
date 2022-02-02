@@ -2,12 +2,20 @@
 /* @var $this \yii\web\View */
 /* @var $content string */
 
+use common\models\CmsContent;
+use common\models\Settings;
+use frontend\models\LoginForm;
+use common\models\User;
+use common\models\Users;
 use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
+use frontend\models\PasswordResetRequestForm;
+use yii\widgets\ActiveForm;
+use yii\helpers\ArrayHelper;
 
 AppAsset::register($this);
 ?>
@@ -35,7 +43,7 @@ AppAsset::register($this);
 <body>
     <?php $this->beginBody() ?>
     <nav class="mobile-menubar">
-        <a class="mobile-logo-area" href="index.html"><img class="mobile-nav-logo" src="<?php echo Yii::$app->request->baseUrl; ?>/images/hcca-logol.png" alt="HCCA Group Logo"></a>
+        <a class="mobile-logo-area" href="<?php echo Yii::$app->request->baseUrl; ?>"><img class="mobile-nav-logo" src="<?php echo Yii::$app->request->baseUrl; ?>/images/hcca-logol.png" alt="HCCA Group Logo"></a>
         <button class="btn btn-menu-close">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -43,20 +51,37 @@ AppAsset::register($this);
             </svg>
         </button>
         <ul class="mobile-menu d-flex align-items-center justify-content-center flex-column">
-            <li class="menu-item"><a href="home.html">Packages</a></li>
-            <li class="menu-item"><a href="home.html">Visa</a></li>
-            <li class="menu-item"><a href="home.html">Accommodation</a></li>
-            <li class="menu-item"><a href="">Rent a car</a></li>
-            <li class="menu-item"><a href="home.html">About us</a></li>
-            <li class="menu-item"><a href="home.html">Contact us</a></li>
-            <li class="menu-item"><a href="" data-bs-toggle="modal" data-bs-target="#LoginEnquiry"><img src="<?php echo Yii::$app->request->baseUrl; ?>/images/user.png" alt="HCCA User"></a></li>
+            <li class="menu-item"><a href="<?php echo Yii::$app->request->baseUrl; ?>">Home</a></li>
+            <li class="menu-item"><a href="<?php echo Yii::$app->request->baseUrl; ?>/packages">Packages</a></li>
+            <li class="menu-item"><a href="<?php echo Yii::$app->request->baseUrl; ?>/visa">Visa</a></li>
+            <li class="menu-item"><a href="<?php echo Yii::$app->request->baseUrl; ?>/accomodation">Accommodation</a></li>
+            <li class="menu-item"><a href="<?php echo Yii::$app->request->baseUrl; ?>/rent-car">Rent a car</a></li>
+            <li class="menu-item"><a href="<?php echo Yii::$app->request->baseUrl; ?>/about-us">About us</a></li>
+            <li class="menu-item"><a href="<?php echo Yii::$app->request->baseUrl; ?>/contact-us">Contact us</a></li>
+            <?php
+            if (!Yii::$app->user->isGuest) { ?>
+                <li class="menu-item">
+                    <a class="nav-link" href="<?php echo Yii::$app->request->baseUrl; ?>/dashboard">Dashboard </a>
+                </li>
+                <li class="menu-item">
+                    <a class="nav-link" href="<?php echo Yii::$app->request->baseUrl; ?>/log-out"><img src="<?php echo Yii::$app->request->baseUrl; ?>/images/logout.png" alt="HCCA User"></a>
+                </li>
+
+            <?php    } else { ?>
+                <li class="menu-item">
+                    <a class="nav-link" href="" data-bs-toggle="modal" data-bs-target="#LoginEnquiry"><img src="<?php echo Yii::$app->request->baseUrl; ?>/images/user.png" alt="HCCA User"></a>
+                </li>
+            <?php    }
+            ?>
+
+            <!-- <li class="menu-item"><a href="" data-bs-toggle="modal" data-bs-target="#LoginEnquiry"><img src="<?php echo Yii::$app->request->baseUrl; ?>/images/user.png" alt="HCCA User"></a></li> -->
         </ul>
     </nav>
 
     <header id="home-u">
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid">
-                <a class="navbar-brand" href="index.html"><img src="<?php echo Yii::$app->request->baseUrl; ?>/images/hcca-logol.png" alt="HCCA Group Logo"></a>
+                <a class="navbar-brand" href="<?php echo Yii::$app->request->baseUrl; ?>"><img src="<?php echo Yii::$app->request->baseUrl; ?>/images/hcca-logol.png" alt="HCCA Group Logo"></a>
                 <button class="navbar-toggler btn-menu-open" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon">
                         <img src="<?php echo Yii::$app->request->baseUrl; ?>/images/stroke-miterlimit.svg">
@@ -65,32 +90,58 @@ AppAsset::register($this);
                 <div class="collapse navbar-collapse menubar" id="navbarSupportedContent">
                     <ul class="navbar-nav ">
                         <li class="nav-item">
-                            <a class="nav-link" href="home.html">Packages</a>
+                            <a class="nav-link" href="<?php echo Yii::$app->request->baseUrl; ?>">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="home.html"> Visa</a>
+                            <a class="nav-link" href="<?php echo Yii::$app->request->baseUrl; ?>/packages">Packages</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="home.html">Accommodation</a>
+                            <a class="nav-link" href="<?php echo Yii::$app->request->baseUrl; ?>/visa"> Visa</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="home.html">Rent a car</a>
+                            <a class="nav-link" href="<?php echo Yii::$app->request->baseUrl; ?>/accomodation">Accommodation</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="home.html">About us</a>
+                            <a class="nav-link" href="<?php echo Yii::$app->request->baseUrl; ?>/rent-car">Rent a car</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="home.html">Contact us</a>
+                            <a class="nav-link" href="<?php echo Yii::$app->request->baseUrl; ?>/about-us">About us</a>
                         </li>
-                        <li class="nav-item nav-last">
-                            <a class="nav-link" href="" data-bs-toggle="modal" data-bs-target="#LoginEnquiry"><img src="<?php echo Yii::$app->request->baseUrl; ?>/images/user.png" alt="HCCA User"></a>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?php echo Yii::$app->request->baseUrl; ?>/contact-us">Contact us</a>
                         </li>
+                        <?php
+                        if (!Yii::$app->user->isGuest) { ?>
+                            <li class="nav-item nav-last">
+                                <a class="nav-link" href="<?php echo Yii::$app->request->baseUrl; ?>/dashboard">Dashboard </a>
+                            </li>
+                            <li class="nav-item nav-last">
+                                <a class="nav-link" href="<?php echo Yii::$app->request->baseUrl; ?>/log-out"><img src="<?php echo Yii::$app->request->baseUrl; ?>/images/logout.png" alt="HCCA User"></a>
+                            </li>
+
+                        <?php    } else { ?>
+                            <li class="nav-item nav-last">
+                                <a class="nav-link" href="" data-bs-toggle="modal" data-bs-target="#LoginEnquiry"><img src="<?php echo Yii::$app->request->baseUrl; ?>/images/user.png" alt="HCCA User"></a>
+                            </li>
+                        <?php    }
+                        ?>
+
                     </ul>
                 </div>
             </div>
         </nav>
     </header>
     <?= $content ?>
+    <?php $footerData =  CmsContent::find()->where(['page_id'=>'about-us'])->one();
+    $config = Settings::find()->where(['status' => 1])->one();
+    ?>
+    <?php
+    //  echo  \kmarenov\instagram\InstagramWidget::widget([
+    //     'clientId'      => '1884142681770933',
+    //     'userName'      => 'ashik_1729',
+    //     'isShowToolbar' => false
+    // ]);
+?>
     <footer>
         <div class="container">
             <div class="row">
@@ -111,12 +162,7 @@ AppAsset::register($this);
                     <div class="footer-details d-flex flex-md-row justify-content-between flex-column">
                         <div class="about-footer wow fadeInUp">
                             <h4>About Us</h4>
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                consequat.
-                            </p>
+                            <?= $footerData->short_description;?>
                             <div class="col-12">
                                 <a href="">
                                     <div class="goto-more"><span>View All Tours <i class="fas fa-arrow-right"></i></span></div>
@@ -126,28 +172,44 @@ AppAsset::register($this);
                         <div class="link-footer wow fadeInUp" data-wow-delay="300ms">
                             <h4>About Us</h4>
                             <ul>
-                                <li><a href="home.html">Home</a></li>
-                                <li><a href="home.html">Packages</a></li>
-                                <li><a href="home.html">Visa</a></li>
-                                <li><a href="home.html">Accommodation</a></li>
-                                <li><a href="home.html">Rent A Car </a></li>
-                                <li><a href="home.html">About Us</a></li>
-                                <li><a href="home.html">Contact Us</a></li>
-                                <li><a href="home.html">Login/Register </a></li>
+                                
+                                <li><a href="<?php echo Yii::$app->request->baseUrl; ?>">Home</a></li>
+                                <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/packages">Packages</a></li>
+                                <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/visa">Visa</a></li>
+                                <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/accomodation">Accommodation</a></li>
+                                <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/rent-car">Rent a car</a></li>
+                                <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/about-us">About us</a></li>
+                                <li><a href="<?php echo Yii::$app->request->baseUrl; ?>/contact-us">Contact us</a></li>
+                                <?php
+                                if (!Yii::$app->user->isGuest) { ?>
+                                    <li>
+                                        <a href="<?php echo Yii::$app->request->baseUrl; ?>/dashboard">Dashboard </a>
+                                    </li>
+                                    <li>
+                                        <a href="<?php echo Yii::$app->request->baseUrl; ?>/log-out">Logout</a>
+                                    </li>
+
+                                <?php    } else { ?>
+                                    <li>
+                                        <a href="" data-bs-toggle="modal" data-bs-target="#LoginEnquiry"><img src="<?php echo Yii::$app->request->baseUrl; ?>/images/user.png" alt="HCCA User"></a>
+                                    </li>
+                                <?php    }
+                                ?>
+
                             </ul>
                         </div>
                         <div class="reach-footer wow fadeInUp" data-wow-delay="600ms">
                             <h4>Reach Us</h4>
-                            <p><a href="">932 Demo address here UAE, 33060</a></p>
-                            <p><a href="">example@example.com</a></p>
-                            <p><a href="">(123) 1234 567890</a></p>
+                            <p><a href=""><?= $config->address;?></a></p>
+                            <p><a href=""><?= $config->email;?></a></p>
+                            <p><a href=""><?= $config->phone_number; ?></a></p>
                         </div>
                     </div>
                 </div>
                 <div class="col-12">
                     <div class="copy d-flex flex-md-row justify-content-between flex-column align-items-center">
                         <p class="wow fadeInUp">
-                            <i class="far fa-copyright"></i> 2021 <a href="">HCCA Tours</a> , All Rights Reserved
+                            <i class="far fa-copyright"></i> <?= date('Y');?> <a href="<?php echo Yii::$app->request->baseUrl; ?>">HCCA Tours</a> , All Rights Reserved
                         </p>
                         <div class="we-accept wow fadeInUp" data-wow-delay="300ms">
                             We Accept <img class="img-fluid" src="<?php echo Yii::$app->request->baseUrl; ?>/images/we-accept.png">
@@ -158,6 +220,138 @@ AppAsset::register($this);
         </div>
     </footer>
 
+    <?php
+    $resetmodel = new PasswordResetRequestForm();
+
+    ?>
+
+    <div class="modal fade login-enquire-form" id="resetPassword" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">LOGIN</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="reesetError hashing"></p>
+                    <?php $form = ActiveForm::begin([
+                        'id' => 'reset-form',
+                        'action' => Yii::$app->request->baseUrl . '/user/forgot-password',
+                        // 'enableAjaxValidation' => true,
+                        'enableClientValidation' => true,
+                        // 'validationUrl' => 'validation-rul',
+                        'options' => ['enctype' => 'multipart/form-data', 'enableClientScript' => false]
+                    ]); ?>
+                    <div class="form-group">
+                        <?= $form->field($resetmodel, 'email')->textInput(['maxlength' => true, 'placeholder' => 'Email', 'class' => 'form-control'])->label(false) ?>
+                    </div>
+
+                    <?= Html::submitButton('Submit', ['class' => 'my-btn log_button']) ?>
+                    <?php ActiveForm::end(); ?>
+                    <p>New to HCCA? <a href="" data-bs-dismiss="modal" aria-label="Close" data-bs-toggle="modal" data-bs-target="#CreateAccount">Create an account</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php
+    $logmodel = new LoginForm();
+
+    ?>
+
+    <div class="modal fade login-enquire-form" id="LoginEnquiry" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">LOGINN</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="loginError"></p>
+                    <?php $form = ActiveForm::begin([
+                        'id' => 'log-form',
+                        'action' => Yii::$app->request->baseUrl . '/user/login',
+                        // 'enableAjaxValidation' => true,
+                        'enableClientValidation' => true,
+                        // 'validationUrl' => 'validation-rul',
+                        'options' => ['enctype' => 'multipart/form-data', 'enableClientScript' => false]
+                    ]); ?>
+                    <div class="form-group">
+                        <?= $form->field($logmodel, 'email')->textInput(['maxlength' => true, 'placeholder' => 'Email', 'class' => 'form-control'])->label(false) ?>
+                    </div>
+                    <div class="form-group reset-from ">
+                        <?= $form->field($logmodel, 'password')->textInput(['maxlength' => true, 'placeholder' => 'Password', 'class' => 'form-control'])->label(false) ?>
+                        <a class="reset" data-bs-dismiss="modal" aria-label="Close" data-bs-toggle="modal" data-bs-target="#resetPassword" href="">Reset Password</a>
+                    </div>
+                    <?= Html::submitButton('Submit', ['class' => 'my-btn log_button']) ?>
+                    <?php ActiveForm::end(); ?>
+                    <p>New to HCCA? <a href="" data-bs-dismiss="modal" aria-label="Close" data-bs-toggle="modal" data-bs-target="#CreateAccount">Create an account</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <?php $regmodel = new User();
+
+    $regmodel->scenario = "create_user" ?>
+    <!-- Modal -->
+    <div class="modal fade login-enquire-form" id="CreateAccount" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create an account</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <?php $form = ActiveForm::begin([
+                        'id' => 'reg-form',
+                        'action' => Yii::$app->request->baseUrl . '/user/register',
+                        // 'enableAjaxValidation' => true,
+                        'enableClientValidation' => true,
+                        // 'validationUrl' => 'validation-rul',
+                        'options' => ['enctype' => 'multipart/form-data', 'enableClientScript' => false]
+                    ]); ?>
+
+
+                    <div class="form-group">
+                        <?= $form->field($regmodel, 'first_name')->textInput(['maxlength' => true, 'placeholder' => 'Full Name', 'class' => 'form-control'])->label(false) ?>
+                    </div>
+                    <div class="form-group">
+                        <?= $form->field($regmodel, 'email')->textInput(['maxlength' => true, 'placeholder' => 'Email Address', 'class' => 'form-control'])->label(false) ?>
+                    </div>
+                    <div class="form-group">
+                        <?= $form->field($regmodel, 'mobile_number')->textInput(['maxlength' => true, 'placeholder' => 'Contact Number',  'class' => 'form-control'])->label(false) ?>
+
+                    </div>
+                    <div class="form-group ">
+
+                        <?= $form->field($regmodel, 'password')->textInput(['maxlength' => true, 'placeholder' => 'Password', 'class' => 'form-control'])->label(false) ?>
+                    </div>
+                    <div class="form-group ">
+                        <?= $form->field($regmodel, 'retype_password')->textInput(['maxlength' => true, 'placeholder' => 'Retype Password', 'class' => 'form-control'])->label(false) ?>
+
+                    </div>
+                    <span class="password_criteria">Password Must be contain atlease one lowercase,uppercase,digit and special charector</span>
+                    <?= Html::submitButton('Create account', ['class' => 'my-btn reg_button']) ?>
+
+                    <?php ActiveForm::end(); ?>
+                    <p>Existing User? <a href="" data-bs-dismiss="modal" aria-label="Close" data-bs-toggle="modal" data-bs-target="#LoginEnquiry">Log in</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade login-enquire-form" id="accountSuccess" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Account Created</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body succes_body">
+
+                    <p>Please Verify your email by clicking the verification link sent to your email. Please check the junk folder as well</p>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="fixed-chat">
         <div class="whatsapp d-flex justify-content-center align-items-center">
             <a href=""><img src="<?php echo Yii::$app->request->baseUrl; ?>/images/whatsapp.png"></a>
