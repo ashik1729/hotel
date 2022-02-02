@@ -8,7 +8,7 @@ use yii\grid\GridView;
 /* @var $searchModel common\models\ProductsServicesSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Products Services';
+$this->title = 'Packages';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php $model_path = str_replace(" ", "-", strtolower(Html::encode($this->title))) ?>
@@ -43,12 +43,6 @@ if ($franchise != NULL) {
                         </h4>
                     </div>
                     <?php
-//                    $merchantdatasquery = \common\models\Merchant::find()->where(['status' => 10]);
-//                    if (isset($_GET['ProductsServicesSearch']['store']) && $_GET['ProductsServicesSearch']['store'] != '') {
-//                        $merchantdatasquery->andWhere(['franchise_id' => $_GET['ProductsServicesSearch']['store']]);
-//                    }
-//                    $merchantdatas = $merchantdatasquery->all();
-//
 
                     $merchant_list = [];
                     if (\Yii::$app->user->identity->interface == 'merchant') {
@@ -65,12 +59,6 @@ if ($franchise != NULL) {
                         $disable = FALSE;
                         $get_merchants = \common\models\Merchant::find()->where(['status' => 10])->all();
                     }
-
-//                    if ($get_merchants != NULL) {
-//                        foreach ($get_merchants as $get_merchant) {
-//                            $merchant_list[$get_merchant->id] = $get_merchant->first_name . ' ' . $get_merchant->last_name . '(' . $get_merchant->country0->country_name . ')';
-//                        }
-//                    }
 
 
                     if ($get_merchants != NULL) {
@@ -107,7 +95,7 @@ if ($franchise != NULL) {
                     <div class="card-body">
                         <div class="material-datatables">
                             <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-
+                    
                             <?=
                             GridView::widget([
                                 'dataProvider' => $dataProvider,
@@ -228,14 +216,32 @@ if ($franchise != NULL) {
                                     //'short_description:ntext',
                                     //'long_description:ntext',
                                     //'type',
+                                    
                                     [
                                         'header' => \Yii::t('app', 'Actions'),
                                         'class' => '\yii\grid\ActionColumn',
                                         'contentOptions' => [
                                             'class' => 'table-actions'
                                         ],
-                                        'template' => '{view} {update} {delete}',
+                                        'template' => '{popup}{view} {update} {delete}',
                                         'buttons' => [
+                                           /* 'popup' => 
+                                                        function ($model)  {
+                                                            
+                                                            return Html::tag('span', '<i class="fa fa-sliders"></i>', ['class'=>'label ','data-toggle'=>"modal",
+                                                            'data-target'=>"#package_content", 'data-id'=>'1', 'data-ds'=>'123']);
+                                                        }, */
+                                            'popup' => function ($url, $model) {
+
+                                                    return Html::a(
+                                                        '<i class="fa fa-sliders add_pkg_content"></i>', \yii\helpers\Url::to(['packages-date/save-package-date-price', 'id' => $model->id]), [
+//                                                            'rel' => "tooltip",
+//                                                            'data-original-title' => 'View this user',
+                                                    'data-placement' => 'top',
+                                                    'style' => 'margin-right: 10px'
+                                                        ]
+                                                    );
+                                            },
                                             'view' => function ($url, $model) {
                                                 return Html::a(
                                                                 '<i class="fa fa-eye"></i>', \yii\helpers\Url::to(['view', 'id' => $model->id]), [
@@ -275,7 +281,12 @@ if ($franchise != NULL) {
                             ]);
                             ?>
 
-
+<?=
+    $this->render('_order_edit', [
+        'package_model' => $package_model,
+        'pkg_price_model' => $pkg_price_model
+    ])
+    ?>
 
                         </div>
                     </div>
@@ -284,4 +295,75 @@ if ($franchise != NULL) {
         </div>
     </div>
 </div>
+<?php
+    $this->registerJs(<<< EOT_JS_CODE
+    
+   /* $(document.body).on("click",".add_pkg_content",function(e){
+        var package_id = $(this).attr('package_id');
+        $('.hd_package_id').val(package_id);
+        $('#package_content').modal('show');
+        $(".form_pkg_content").trigger("reset");
 
+    });    
+
+        $(document.body).on('click', '.save-pckg-details', function (e) {
+
+            $('.loader-wrapp').show();
+            var form = $(".form_pkg_content");
+            e.preventDefault();
+            if (form.find('.has-error').length)
+            {
+                return false;
+            }
+            var formData = form.serialize();
+            $.ajax({
+                url: form.attr("action"),
+                type: "POST",
+                data: formData,
+                success: function (data) {
+                    var obj = JSON.parse(data);
+                    if (obj.status == 200) {
+                        $('#package_content').modal('hide');
+                        $('.loader-wrapp').hide();
+                        $('body').removeClass('modal-open');
+                        $('.modal-backdrop').remove();
+                    } else {
+                        console.log(obj.error);
+                                              $('.loader-wrapp').hide();
+                                              $('.errmsg').text(obj.error);
+
+                    }
+                },
+                error: function () {
+
+                    alert("Something went wrong");
+                    $('.loader-wrapp').hide();
+
+                }
+
+            });
+
+            }).on('submit', function (e) {
+
+            e.preventDefault();
+
+        });
+        
+        $(document.body).on("click", ".btn_add_pkg_details", function (e) {
+         //   alert();
+            var result_attr_value_html = $(".attr_value_contents").html();
+            $('.temp_div').append(result_attr_value_html)
+            
+            console.log(result_attr_value_html);
+            $(this).closest('.attr_value_contents').append(result_attr_value_html);
+            // var count = $(this).closest('.attribute_item').attr('key');
+            // $('[key=' + count + '] input').each(function (key, value) {
+            //     var name = $(this).attr('name');
+            //     var newname = name.replace("attcnt", count);
+            //     $(this).attr('name', newname);
+            // });
+        }); */
+
+EOT_JS_CODE
+);
+?>

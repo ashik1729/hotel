@@ -15,16 +15,8 @@ use Yii;
  * @property string $gallery
  * @property int $sort_order
  * @property float $price
- * @property int $discount_type
- * @property float $discount_rate
- * @property string $new_from
- * @property string $new_to
- * @property string $sale_from
- * @property string $sale_to
- * @property string $discount_from
- * @property string $discount_to
- * @property string $search_tag
- * @property int $stock_availability
+ 
+ * @property int $package_title
  * @property int $is_featured
  * @property string $created_at
  * @property string $updated_at
@@ -64,14 +56,15 @@ class ProductsServices extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            // [['category_id', 'merchant_id', 'price', 'requires_shipping', 'updated_by', 'created_by', 'quantity', 'type', 'product_name_en', 'product_name_ar'], 'required'],
+            // [['category_id', 'merchant_id', 'price', 'requires_shipping', 'updated_by', 'created_by', 'quantity', 'type', 'package_title ', 'product_name_ar'], 'required'],
             [['category_id', 'sort_order', 'discount_type', 'is_featured',  'updated_by', 'created_by', 'status', 'quantity'], 'integer'],
             [['gallery', 'search_tag', 'meta_description', 'meta_keywords', 'short_description_en', 'long_description_en'], 'string'],
             [['price', 'discount_rate'], 'number'],
             [['gallery','short_description_en', 'long_description_en'], 'string'],
-            [['new_from', 'new_to', 'sale_from', 'sale_to', 'discount_from', 'discount_to', 'created_at', 'updated_at', 'created_at', 'field', 'canonical_name', 'updated_at', 'title', 'short_description_en', 'short_description_ar', 'long_description_en', 'long_description_ar', 'discount_type', 'discount_rate', 'new_from', 'new_to', 'sale_from', 'sale_to', 'discount_from', 'discount_to', 'meta_title', 'meta_description', 'meta_keywords','sort_order', 'image', 'gallery', 'discount_id', 'store'], 'safe'],
+            [['id', 'created_at', 'updated_at', 'created_at', 'field', 'canonical_name', 'updated_at', 'short_description_en', 'short_description_ar', 'long_description_en','meta_title', 'meta_description', 'meta_keywords',
+                'sort_order', 'image', 'gallery', 'package_title','overview','packaage_organize'], 'safe'],
             
-            [['product_name_en', 'canonical_name', 'meta_title'], 'string', 'max' => 255],
+            [['package_title', 'canonical_name', 'meta_title'], 'string', 'max' => 255],
             [['image'], 'string', 'max' => 100],
             // [['sku'], 'unique'],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
@@ -87,28 +80,20 @@ class ProductsServices extends \yii\db\ActiveRecord {
             'id' => 'ID',
             'category_id' => 'Category ID',
            // 'merchant_id' => 'Merchant ID',
-            'product_name_en' => 'Package Name ',
+            'package_title ' => 'Package Name ',
             'canonical_name' => 'Canonical Name',
             'image' => 'Image',
             'gallery' => 'Gallery',
             'sort_order' => 'Sort Order',
             'price' => 'Price',
-            'discount_type' => 'Discount Type',
-            'discount_rate' => 'Discount Rate',
-            'new_from' => 'New From',
-            'new_to' => 'New To',
-            'sale_from' => 'Sale From',
-            'sale_to' => 'Sale To',
-            'discount_from' => 'Discount From',
-            'discount_to' => 'Discount To',
+            'overview'    => 'Overview',
+            'packaage_organize' => 'Package Organize',
             'search_tag' => 'Search Tag',
-            'is_featured' => 'Is Featured',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
             'updated_by' => 'Updated By',
             'created_by' => 'Created By',
             'status' => 'Status',
-            'meta_title' => 'Meta Title',
             'meta_description' => 'Meta Description',
             'meta_keywords' => 'Meta Keywords',
             'tax_applicable' => 'Tax Applicable',
@@ -236,7 +221,7 @@ class ProductsServices extends \yii\db\ActiveRecord {
     }
 
     public function getProductLanguage() {
-        return $this->hasOne(LanguageData::className(), ['item_id' => 'product_name_en']);
+        return $this->hasOne(LanguageData::className(), ['item_id' => 'package_title ']);
     }
 
     public function getLongDesc() {

@@ -98,7 +98,7 @@ use yii\widgets\DetailView;
                     'attributes' => [
                         'id',
                         'title',
-                        'sku',
+                        // 'sku',
                         [
                             'attribute' => 'type',
                             'value' => function ($data) {
@@ -154,14 +154,7 @@ use yii\widgets\DetailView;
                             },
                             'format' => 'html',
                         ],
-                        [
-                            'attribute' => 'merchant_id',
-                            'header' => 'Merchants',
-                            'value' => function($model) {
-                                return "<span style=' text-transform: capitalize'>" . $model->merchant->first_name . ' ' . $model->merchant->last_name . '(' . $model->merchant->email . ')' . "</span>";
-                            },
-                            'format' => 'html',
-                        ],
+                    
                         'canonical_name',
                         [
                             'attribute' => 'image',
@@ -183,7 +176,7 @@ use yii\widgets\DetailView;
                                     $result_html = '';
                                     if ($images != NULL) {
                                         foreach ($images as $image) {
-                                            $imgPath = Yii::$app->request->baseUrl . '/../uploads/products/' . base64_encode($data->sku) . '/gallery/' . $image;
+                                            $imgPath = Yii::$app->request->baseUrl . '/../uploads/products/' . base64_encode($data->id) . '/gallery/' . $image;
                                             $result_html .= '<div class ="img_gallery">                    <a href="' . $imgPath . '" class="thumbnail"><img src="' . $imgPath . '" alt="Image Alt" /></a></div>';
 //                                            $result_html .= "<img class='thumb_image' src='" . Yii::$app->request->baseUrl . '/../uploads/products/' . base64_encode($data->sku) . '/gallery/' . $image . "' />";
                                         }
@@ -213,17 +206,7 @@ use yii\widgets\DetailView;
 //                                            'format' => 'html',
                         ],
                         'discount_rate',
-                        [
-                            'attribute' => 'requires_shipping',
-                            'value' => function ($data) {
-                                if ($data->requires_shipping == 1) {
-                                    return "Yes";
-                                } else {
-                                    return "No";
-                                }
-                            },
-//                                            'format' => 'html',
-                        ],
+                   
                         'new_from',
                         'new_to',
                         'sale_from',
@@ -231,34 +214,11 @@ use yii\widgets\DetailView;
                         'discount_from',
                         'discount_to',
                         'search_tag:ntext',
-//                        'related_products:ntext',
-                        'stock_availability',
-                        [
-                            'attribute' => 'stock_availability',
-                            'value' => function ($data) {
-                                if ($data->stock_availability == 1) {
-                                    return "Yes";
-                                } else {
-                                    return "No";
-                                }
-                            },
-//                                            'format' => 'html',
-                        ],
+
                         [
                             'attribute' => 'is_featured',
                             'value' => function ($data) {
                                 if ($data->is_featured == 1) {
-                                    return "Yes";
-                                } else {
-                                    return "No";
-                                }
-                            },
-//                                            'format' => 'html',
-                        ],
-                        [
-                            'attribute' => 'is_admin_approved',
-                            'value' => function ($data) {
-                                if ($data->is_admin_approved == 1) {
                                     return "Yes";
                                 } else {
                                     return "No";

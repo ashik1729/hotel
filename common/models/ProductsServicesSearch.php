@@ -17,7 +17,7 @@ class ProductsServicesSearch extends ProductsServices {
     public function rules() {
         return [
            // [['id', 'category_id', 'merchant_id', 'sort_order', 'discount_type', 'requires_shipping', 'stock_availability', 'is_featured', 'is_admin_approved', 'updated_by', 'created_by', 'status', 'tax_applicable', 'min_quantity', 'quantity', 'weight_class', 'type'], 'integer'],
-            [['sku', 'product_name_en', 'canonical_name', 'image', 'gallery', 'new_from', 'new_to', 'sale_from', 'sale_to', 'discount_from', 'discount_to', 'search_tag', 'related_products', 'created_at', 'updated_at', 'meta_title', 'meta_description', 'meta_keywords', 'short_description_en', 'long_description_en', 'title', 'discount_id', 'store'], 'safe'],
+            [['id', 'package_title', 'canonical_name', 'image', 'gallery', 'new_from', 'new_to', 'sale_from', 'sale_to', 'discount_from', 'discount_to', 'search_tag', 'related_products', 'created_at', 'updated_at', 'meta_title', 'meta_description', 'meta_keywords', 'short_description_en', 'long_description_en', 'title', 'discount_id', 'store'], 'safe'],
             [['price', 'discount_rate'], 'number'],
         ];
     }
@@ -102,7 +102,7 @@ class ProductsServicesSearch extends ProductsServices {
 
         $query
                 //->andFilterWhere(['like', 'sku', $this->sku])
-                ->andFilterWhere(['like', 'product_name_en', $this->product_name_en])
+                ->andFilterWhere(['like', 'package_title', $this->package_title])
                 //->andFilterWhere(['like', 'title', $this->title])
                 ->andFilterWhere(['like', 'canonical_name', $this->canonical_name])
                 ->andFilterWhere(['like', 'image', $this->image])
