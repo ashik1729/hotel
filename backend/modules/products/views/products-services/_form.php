@@ -130,18 +130,7 @@ JS;
                         $discount = [];
                         $get_discounts = [];
                         if (!$model->isNewRecord) {
-                            if (\Yii::$app->user->identity->interface == 'merchant') {
-                                $get_discounts = \common\models\Discounts::find()->where(['status' => 1, 'item_type' => 2, 'merchant_id' => \Yii::$app->user->identity->id])->orWhere("merchant_id IS NULL")->all();
-                                $disable = TRUE;
-                            } else if (\Yii::$app->user->identity->interface == 'franchise') {
-                                $get_merchant_list = common\models\Merchant::find()->select('id')->where(['status' => 10, 'franchise_id' => 3])->asArray()->all();
-                                $get_merchant_final_list = array_column($get_merchant_list, 'id');
-//                        $get_discounts = \common\models\Discounts::find()->where(['IN', 'merchant_id', $get_merchant_final_list])->orWhere("merchant_id IS NULL")->all();
-                                $get_discounts = \common\models\Discounts::find()->where(['status' => 1, 'item_type' => 2])->andWhere(['merchant_id' => $model->merchant_id])->orWhere("merchant_id IS NULL")->all();
-                            } else {
-                                $get_discounts = \common\models\Discounts::find()->where(['status' => 1, 'item_type' => 2])->andWhere(['merchant_id' => $model->merchant_id])->orWhere("merchant_id IS NULL")->all();
-//                        $get_discounts = \common\models\Discounts::find()->where(['status' => 1])->all();
-                            }
+     
                         } else {
                             $get_discounts = \common\models\Discounts::find()->where(['status' => 1, 'item_type' => 2])->andWhere("merchant_id IS NULL")->all();
                         }
@@ -304,7 +293,7 @@ JS;
                                         foreach ($images as $image) {
                                             $delete_url = Yii::$app->request->baseUrl . '/products/products-services/gallery-delete?id=' . $model->id . '&item=' . $image;
                                             if (isset($model->id) && $model->id > 0 && isset($model->gallery) && $model->gallery !== "") {
-                                                $imgPath = ((yii\helpers\Url::base())) . '/../uploads/products/' . base64_encode($model->sku) . '/gallery/' . $image;
+                                                $imgPath = ((yii\helpers\Url::base())) . '/../uploads/products/' . base64_encode($model->id) . '/gallery/' . $image;
                                                 $result_html .= '<div class ="img_gallery">                    <a href="' . $imgPath . '" class="thumbnail"><img src="' . $imgPath . '" alt="Image Alt" /></a>
 <a href="' . $delete_url . '"><i class="fa fa-trash trash_file"></i></a></div>';
                                             } else {

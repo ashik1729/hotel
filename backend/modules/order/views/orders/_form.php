@@ -95,7 +95,7 @@ JS;
                 <label class="control-label" for="productsservices-merchant_id">User
                 </label>
                 <?php
-                echo Select2::widget([
+               /* echo Select2::widget([
                     'model' => $model,
                     'attribute' => 'user_id',
                     'data' => $user,
@@ -107,7 +107,7 @@ JS;
                         'tokenSeparators' => [',', ' '],
                         'maximumInputLength' => 20
                     ],
-                ]);
+                ]); */
                 ?>
             </div>
         </div>

@@ -150,20 +150,40 @@ class ProductsServicesController extends Controller {
     public function actionView($id) {
 
         $model = $this->findModel($id);
-        if (\Yii::$app->user->identity->interface == 'franchise') {
-            $get_merchant = \common\models\Merchant::find()->select('id')->where(['franchise_id' => \Yii::$app->user->identity->id])->asArray()->all();
-            $merchant_array = array_column($get_merchant, 'id');
-            if (!in_array($model->merchant_id, $merchant_array)) {
-                throw new \yii\web\ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        $package = [];
+        $package_date_model   = new PackagesDate();
+        $pkg_price_model      = new PackagesPrice();
+        $package_model        = new ProductsServices();
+        $package_date         = \common\models\PackagesDate::find()->where(['package_id' => $id])->all();
+        if(!empty($package_date)){
+            foreach($package_date as $pkg_date) {
+                $package_price = \common\models\PackagesPrice::find()->where(['package_id' => $id, 'package_date_id' => $pkg_date->id])->all();
+                if(!empty($package_price)) {
+                    foreach($package_price as $package_price) {
+                        $package['pkg_date'] = $pkg_date['package_date'];
+                        $package['price'][] = $package_price;
+                    }
+
+                }
+
             }
+
         }
-        if (Yii::$app->user->identity->interface == 'merchant') {
-            if ($model->merchant_id != Yii::$app->user->identity->id) {
-                throw new \yii\web\ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
-            }
-        }
+
+     //echo '<pre/>';print_r($package);exit;
+
+       
+		
+// $command = $query->createCommand();
+// $data = $command->queryAll();
+
+        // $package_details = $packagedQuery->all();
+        // echo '<pre/>';print_r($package_date);exit;
+      
+       
         return $this->render('view', [
                     'model' => $this->findModel($id),
+                    'package' => $package
         ]);
     }
 
@@ -188,21 +208,6 @@ class ProductsServicesController extends Controller {
             $canonical_name = str_replace(' ', '-', $canon_name); // Replaces all spaces with hyphens.
             $canonical_name = preg_replace('/[^A-Za-z0-9\-]/', '', $canonical_name); // Removes special chars.
             $model->canonical_name = preg_replace('/-+/', '-', $canonical_name);
-            // if (isset($_POST['search_tag']) && $_POST['search_tag'] != NULL) {
-            //     $implode_search_tag = implode(',', $_POST['search_tag']);
-            // }
-            // if (isset($_POST['related_products']) && $_POST['related_products'] != NULL) {
-            //     $related_products = implode(',', $_POST['related_products']);
-            // }
-            // if (!isset($_POST['ProductsServices']['sort_order']) || $_POST['ProductsServices']['sort_order'] == NULL) {
-            //     $model->sort_order = 0;
-            // }
-            // if ($implode_search_tag != '') {
-            //     $model->search_tag = $implode_search_tag;
-            // }
-            // if ($related_products != '') {
-            //     $model->related_products = $related_products;
-            // }
             $model->created_by = yii::$app->user->identity->id;
             $model->updated_by = yii::$app->user->identity->id;
             $model->status = 1;
@@ -283,18 +288,7 @@ class ProductsServicesController extends Controller {
     public function actionUpdate($id) {
         $model = $this->findModel($id);
         $implode_search_tag = "";
-        if (Yii::$app->user->identity->interface == 'merchant') {
-            if ($model->merchant_id != Yii::$app->user->identity->id) {
-                throw new \yii\web\ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
-            }
-        }
-        if (\Yii::$app->user->identity->interface == 'franchise') {
-            $get_merchant = \common\models\Merchant::find()->select('id')->where(['franchise_id' => \Yii::$app->user->identity->id])->asArray()->all();
-            $merchant_array = array_column($get_merchant, 'id');
-            if (!in_array($model->merchant_id, $merchant_array)) {
-                throw new \yii\web\ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
-            }
-        }
+     
         $modelcat = new \common\models\Category();
         $product_attribute = new \common\models\ProductAttributesValue();
         $attribute = new \common\models\Attributes();
@@ -413,21 +407,17 @@ class ProductsServicesController extends Controller {
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id) {
-        if (\Yii::$app->user->identity->interface == 'franchise') {
-            $get_merchant = \common\models\Merchant::find()->select('id')->where(['franchise_id' => \Yii::$app->user->identity->id])->asArray()->all();
-            $merchant_array = array_column($get_merchant, 'id');
-            if (!in_array($merchant_array->merchant_id, $merchant_array)) {
-                throw new \yii\web\ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
-            }
-        }
+    
         $model = $this->findModel($id);
-        if (Yii::$app->user->identity->interface == 'merchant') {
-            if ($model->merchant_id != Yii::$app->user->identity->id) {
-                throw new \yii\web\ForbiddenHttpException(Yii::t('yii', 'You are not allowed to perform this action.'));
+        $package_date_model   = new PackagesDate();
+        $pkg_price_model      = new PackagesPrice();
+        $status = $package_date_model::deleteAll(['package_id' => $id]);
+        if($status == 1) {
+            $price_delete = $pkg_price_model::deleteAll(['package_id' => $id]);
+            if($price_delete == 1) { 
+                $this->findModel($id)->delete();
             }
         }
-        $this->findModel($id)->delete();
-
         return $this->redirect(['index']);
     }
 
