@@ -95,14 +95,14 @@ if ($franchise != NULL) {
                     <div class="card-body">
                         <div class="material-datatables">
                             <?php echo $this->render('_search', ['model' => $searchModel]); ?>
-                    
+
                             <?=
                             GridView::widget([
                                 'dataProvider' => $dataProvider,
                                 'filterModel' => $searchModel,
                                 'columns' => [
                                     ['class' => 'yii\grid\SerialColumn'],
-                                /*    [
+                                    /*    [
                                         'attribute' => 'image',
                                         'header' => 'Image',
                                         'value' => function($model) {
@@ -116,52 +116,52 @@ if ($franchise != NULL) {
                                         'format' => ['image', ['width' => '80', 'height' => '80']],
                                     ], */
                                     'id',
-//                                    'category_id',
+                                    //                                    'category_id',
                                     // 'sku',
                                     // 'title',
                                     [
                                         'attribute' => 'category_id',
                                         'header' => 'Category',
                                         'filter' => Html::activeDropDownList($searchModel, 'category_id', $options, ['class' => 'form-control ashik ', 'prompt' => 'All']),
-                                        'value' => function($model) {
-                                        //   /  if ($model->category->parent != $model->category->id) {
+                                        'value' => function ($model) {
+                                            //   /  if ($model->category->parent != $model->category->id) {
 
-                                        //         $html = '<nav aria-label = "breadcrumb"> <ol class = "breadcrumb">';
-                                        //         $catmodel = \common\models\Category::find()->where(['id' => $model->category_id])->one();
+                                            //         $html = '<nav aria-label = "breadcrumb"> <ol class = "breadcrumb">';
+                                            //         $catmodel = \common\models\Category::find()->where(['id' => $model->category_id])->one();
 
-                                        //         $option_items = Yii::$app->SelectCategory->selectCategories($catmodel);
-                                        //         $option_data = explode('-', $option_items);
-                                        //         $option_data_array = array_reverse($option_data);
-                                        //         if ($option_data_array != NULL) {
-                                        //             $i = 1;
-                                        //             $count = count($option_data_array);
-                                        //             foreach ($option_data_array as $option_data_arr) {
-                                        //                 $option_cat = \common\models\Category::find()->where(['id' => $option_data_arr])->one();
-                                        //                 $caturl = Yii::$app->request->baseUrl . '/category/view?id=' . $option_data_arr;
+                                            //         $option_items = Yii::$app->SelectCategory->selectCategories($catmodel);
+                                            //         $option_data = explode('-', $option_items);
+                                            //         $option_data_array = array_reverse($option_data);
+                                            //         if ($option_data_array != NULL) {
+                                            //             $i = 1;
+                                            //             $count = count($option_data_array);
+                                            //             foreach ($option_data_array as $option_data_arr) {
+                                            //                 $option_cat = \common\models\Category::find()->where(['id' => $option_data_arr])->one();
+                                            //                 $caturl = Yii::$app->request->baseUrl . '/category/view?id=' . $option_data_arr;
 
-                                        //                 if ($option_cat != NULL) {
-                                        //                     if ($i == $count) {
-                                        //                         $html .= '<li class="breadcrumb-item active" aria-current="page"><a href = "' . $caturl . '">' . $option_cat->category_name . '</a></li>';
-                                        //                     } else {
-                                        //                         $html .= '<li class = "breadcrumb-item"><a href = "' . $caturl . '">' . $option_cat->category_name . '</a></li>';
-                                        //                     }
-                                        //                     $i++;
-                                        //                 }
-                                        //             }
-                                        //         }
+                                            //                 if ($option_cat != NULL) {
+                                            //                     if ($i == $count) {
+                                            //                         $html .= '<li class="breadcrumb-item active" aria-current="page"><a href = "' . $caturl . '">' . $option_cat->category_name . '</a></li>';
+                                            //                     } else {
+                                            //                         $html .= '<li class = "breadcrumb-item"><a href = "' . $caturl . '">' . $option_cat->category_name . '</a></li>';
+                                            //                     }
+                                            //                     $i++;
+                                            //                 }
+                                            //             }
+                                            //         }
 
-                                        //         $html .= '</ol></nav>';
-                                        //         return $html;
-                                        //     } else {
-                                        //         $caturl = Yii::$app->request->baseUrl . '/category/view?id=' . $model->category->id;
+                                            //         $html .= '</ol></nav>';
+                                            //         return $html;
+                                            //     } else {
+                                            //         $caturl = Yii::$app->request->baseUrl . '/category/view?id=' . $model->category->id;
 
-                                        //         return '<a href = "' . $caturl . '">' . $model->category->category_name . '</a>';
-                                        //     } 
-                                         // return "<span style=' text-transform: capitalize'>" . $model->franchise->first_name . ' ' . $model->franchise->last_name . '(' . $gfranchise->country0->country_name . ')' . "</span>";
+                                            //         return '<a href = "' . $caturl . '">' . $model->category->category_name . '</a>';
+                                            //     } 
+                                            // return "<span style=' text-transform: capitalize'>" . $model->franchise->first_name . ' ' . $model->franchise->last_name . '(' . $gfranchise->country0->country_name . ')' . "</span>";
                                         },
                                         'format' => 'html',
                                     ],
-                               /*     [
+                                    /*     [
                                         'attribute' => 'merchant_id',
                                         'header' => 'Merchants',
                                         'filter' => Html::activeDropDownList($searchModel, 'merchant_id', $merchant_list, ['class' => 'form-control ashik ', 'prompt' => 'All']),
@@ -216,7 +216,7 @@ if ($franchise != NULL) {
                                     //'short_description:ntext',
                                     //'long_description:ntext',
                                     //'type',
-                                    
+
                                     [
                                         'header' => \Yii::t('app', 'Actions'),
                                         'class' => '\yii\grid\ActionColumn',
@@ -225,7 +225,7 @@ if ($franchise != NULL) {
                                         ],
                                         'template' => '{popup}{view} {update} {delete}',
                                         'buttons' => [
-                                           /* 'popup' => 
+                                            /* 'popup' => 
                                                         function ($model)  {
                                                             
                                                             return Html::tag('span', '<i class="fa fa-sliders"></i>', ['class'=>'label ','data-toggle'=>"modal",
@@ -233,46 +233,54 @@ if ($franchise != NULL) {
                                                         }, */
                                             'popup' => function ($url, $model) {
 
-                                                    return Html::a(
-                                                        '<i class="fa fa-sliders add_pkg_content"></i>', \yii\helpers\Url::to(['packages-date/save-package-date-price', 'id' => $model->id]), [
-//                                                            'rel' => "tooltip",
-//                                                            'data-original-title' => 'View this user',
-                                                    'data-placement' => 'top',
-                                                    'style' => 'margin-right: 10px'
-                                                        ]
-                                                    );
+                                                return Html::a(
+                                                    '<i class="fa fa-sliders add_pkg_content"></i>',
+                                                    \yii\helpers\Url::to(['packages-date/save-package-date-price', 'id' => $model->id]),
+                                                    [
+                                                        //                                                            'rel' => "tooltip",
+                                                        //                                                            'data-original-title' => 'View this user',
+                                                        'data-placement' => 'top',
+                                                        'style' => 'margin-right: 10px'
+                                                    ]
+                                                );
                                             },
                                             'view' => function ($url, $model) {
                                                 return Html::a(
-                                                                '<i class="fa fa-eye"></i>', \yii\helpers\Url::to(['view', 'id' => $model->id]), [
-//                                                            'rel' => "tooltip",
-//                                                            'data-original-title' => 'View this user',
-                                                            'data-placement' => 'top',
-                                                            'style' => 'margin-right: 10px'
-                                                                ]
+                                                    '<i class="fa fa-eye"></i>',
+                                                    \yii\helpers\Url::to(['view', 'id' => $model->id]),
+                                                    [
+                                                        //                                                            'rel' => "tooltip",
+                                                        //                                                            'data-original-title' => 'View this user',
+                                                        'data-placement' => 'top',
+                                                        'style' => 'margin-right: 10px'
+                                                    ]
                                                 );
                                             },
                                             'update' => function ($url, $model) {
                                                 return Html::a(
-                                                                '<i class="fa fa-edit"></i>', \yii\helpers\Url::to(['update', 'id' => $model->id]), [
-//                                                            'rel' => "tooltip",
-//                                                            'data-original-title' => 'Edit this user',
-                                                            'data-placement' => 'top',
-                                                            'style' => 'margin-right: 10px'
-                                                                ]
+                                                    '<i class="fa fa-edit"></i>',
+                                                    \yii\helpers\Url::to(['update', 'id' => $model->id]),
+                                                    [
+                                                        //                                                            'rel' => "tooltip",
+                                                        //                                                            'data-original-title' => 'Edit this user',
+                                                        'data-placement' => 'top',
+                                                        'style' => 'margin-right: 10px'
+                                                    ]
                                                 );
                                             },
                                             'delete' => function ($url, $model) {
                                                 return Html::a(
-                                                                '<i class="fa fa-trash-o"></i>', \yii\helpers\Url::to(['delete', 'id' => $model->id]), [
-//                                                            'rel' => "tooltip",
-//                                                            'data-original-title' => 'Delete this user?',
-                                                            'data-placement' => 'top',
-                                                            'data-pjax' => '0',
-                                                            'data-confirm' => 'Are you sure you want to delete this item?',
-                                                            'data-method' => 'post',
-                                                            'style' => 'margin-right: 10px'
-                                                                ]
+                                                    '<i class="fa fa-trash-o"></i>',
+                                                    \yii\helpers\Url::to(['delete', 'id' => $model->id]),
+                                                    [
+                                                        //                                                            'rel' => "tooltip",
+                                                        //                                                            'data-original-title' => 'Delete this user?',
+                                                        'data-placement' => 'top',
+                                                        'data-pjax' => '0',
+                                                        'data-confirm' => 'Are you sure you want to delete this item?',
+                                                        'data-method' => 'post',
+                                                        'style' => 'margin-right: 10px'
+                                                    ]
                                                 );
                                             },
                                         ]
@@ -281,12 +289,12 @@ if ($franchise != NULL) {
                             ]);
                             ?>
 
-<?=
-    $this->render('_order_edit', [
-        'package_model' => $package_model,
-        'pkg_price_model' => $pkg_price_model
-    ])
-    ?>
+                            <?=
+                            $this->render('_order_edit', [
+                                'package_model' => $package_model,
+                                'pkg_price_model' => $pkg_price_model
+                            ])
+                            ?>
 
                         </div>
                     </div>
@@ -296,7 +304,8 @@ if ($franchise != NULL) {
     </div>
 </div>
 <?php
-    $this->registerJs(<<< EOT_JS_CODE
+$this->registerJs(
+    <<< EOT_JS_CODE
     
    /* $(document.body).on("click",".add_pkg_content",function(e){
         var package_id = $(this).attr('package_id');

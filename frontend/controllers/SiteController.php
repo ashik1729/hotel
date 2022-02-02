@@ -8,6 +8,9 @@ use common\models\Brands;
 use common\models\Cars;
 use common\models\CmsContent;
 use common\models\Enquiry;
+use common\models\EventRequest;
+use common\models\Events;
+use common\models\FlightRequest;
 use kartik\widgets\FileInput;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
@@ -179,9 +182,62 @@ class SiteController extends Controller
     {
         $model = CmsContent::findOne(['page_id' => 'about-us']);
         return $this->render(
-            'about-us',
+            'events',
             [
                 'model' => $model
+            ]
+        );
+    }
+    public function actionEventGallery()
+    {
+        $model = Events::findOne(['can_name' => $_GET['can'], 'status' => 1]);
+        return $this->render('event-gallery', [
+            'model' => $model
+        ]);
+    }
+    public function actionEvents()
+    {
+        $model = CmsContent::findOne(['page_id' => 'events']);
+        $eventData = Events::find()->where(['status' => 1])->all();
+        $eventRequest = new EventRequest();
+
+        if ($eventRequest->load(Yii::$app->request->post())) {
+            $eventRequest->status = 1;
+            if ($eventRequest->save()) {
+                Yii::$app->session->setFlash('success', "Event request Sent Successfully.");
+            } else {
+                Yii::$app->session->setFlash('error', "Following Error While Senting ccomodation request." . json_encode($eventRequest->errors));
+            }
+            return $this->redirect(['events']);
+        }
+        return $this->render(
+            'events',
+            [
+                'model' => $model,
+                'eventData'=>$eventData,
+                'eventRequest'=>$eventRequest
+            ]
+        );
+    }
+    public function actionFlightTickets()
+    {
+        $model = CmsContent::findOne(['page_id' => 'flight-tickets']);
+        $flgihtRequest = new FlightRequest();
+
+        if ($flgihtRequest->load(Yii::$app->request->post())) {
+            $flgihtRequest->status = 1;
+            if ($flgihtRequest->save()) {
+                Yii::$app->session->setFlash('success', "Flight Booking request Sent Successfully.");
+            } else {
+                Yii::$app->session->setFlash('error', "Following Error While Senting Flight Booking request." . json_encode($flgihtRequest->errors));
+            }
+            return $this->redirect(['flight-tickets']);
+        }
+        return $this->render(
+            'flight-tickets',
+            [
+                'model' => $model,
+                'flgihtRequest'=>$flgihtRequest
             ]
         );
     }

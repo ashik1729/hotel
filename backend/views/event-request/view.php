@@ -24,7 +24,7 @@ use yii\widgets\DetailView;
                     <i class="material-icons">account_box</i>
                 </div>
                 <h4 class="card-title">
-                    <?= Html::encode('Events') ?>
+                    <?= Html::encode('Event Requests') ?>
 
                     <div class="pull-right">
                         <?= Html::a(Html::tag('b', 'keyboard_arrow_left', ['class' => 'material-icons']), ['index'], [
@@ -66,9 +66,9 @@ use yii\widgets\DetailView;
                     'model' => $model,
                     'attributes' => [
                         'id',
-                        'title',
-                        'short_description:ntext',
-                        'long_description:ntext',
+                        'date',
+                        'no_adult',
+                        'event_id',
                         [
                             'attribute' => 'status',
                             'header' => 'Status',
@@ -82,38 +82,9 @@ use yii\widgets\DetailView;
                             },
                             'format' => 'html',
                         ],
-                        [
-                            'attribute' => 'image',
-                            'value' => function ($data) {
-                                if ($data->image != '') {
-                                    return Yii::$app->request->baseUrl . '/../uploads/events/' . $data->id . '/image/' . $data->image;
-                                } else {
-                                    return Yii::$app->request->baseUrl . '/img/no-image.jpg';
-                                }
-                            },
-                            'format' => 'image'
-                        ],
-                        [
-                            'attribute' => 'gallery',
-                            'value' => function ($data) {
-                                if ($data->gallery != '') {
-                                    $images = explode(',', $data->gallery);
-                                    $result_html = '';
-                                    if ($images != NULL) {
-                                        foreach ($images as $image) {
-                                            $result_html .= "<img src='" . Yii::$app->request->baseUrl . '/../uploads/events/' . $data->id . '/gallery/' . $image . "' />";
-                                        }
-                                    }
-                                    return $result_html;
-                                } else {
-
-                                    return "<img src='" . Yii::$app->request->baseUrl . '/img/no-image.jpg' . "' />";
-                                }
-                            },
-                            'format' => 'html'
-                        ],
-                        'sort_order',
-                        'can_name',
+                        'name',
+                        'email:email',
+                        'phone',
                     ],
                 ]) ?>
 

@@ -4,12 +4,12 @@ namespace common\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Events;
+use common\models\EventRequest;
 
 /**
- * EventsSearch represents the model behind the search form of `common\models\Events`.
+ * EventRequestSearch represents the model behind the search form of `common\models\EventRequest`.
  */
-class EventsSearch extends Events
+class EventRequestSearch extends EventRequest
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class EventsSearch extends Events
     public function rules()
     {
         return [
-            [['id', 'status', 'sort_order'], 'integer'],
-            [['title', 'short_description', 'long_description', 'image', 'gallery', 'can_name'], 'safe'],
+            [['id', 'no_adult', 'event_id', 'status'], 'integer'],
+            [['date', 'name', 'email', 'phone'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class EventsSearch extends Events
      */
     public function search($params)
     {
-        $query = Events::find();
+        $query = EventRequest::find();
 
         // add conditions that should always apply here
 
@@ -59,16 +59,15 @@ class EventsSearch extends Events
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'date' => $this->date,
+            'no_adult' => $this->no_adult,
+            'event_id' => $this->event_id,
             'status' => $this->status,
-            'sort_order' => $this->sort_order,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'short_description', $this->short_description])
-            ->andFilterWhere(['like', 'long_description', $this->long_description])
-            ->andFilterWhere(['like', 'image', $this->image])
-            ->andFilterWhere(['like', 'gallery', $this->gallery])
-            ->andFilterWhere(['like', 'can_name', $this->can_name]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'phone', $this->phone]);
 
         return $dataProvider;
     }

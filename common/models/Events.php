@@ -8,70 +8,102 @@ use Yii;
  * This is the model class for table "events".
  *
  * @property int $id
- * @property string $title_en
- * @property string $title_ar
- * @property string|null $description_en
- * @property string|null $description_ar
- * @property string $date_time
- * @property string|null $file
+ * @property string $title
+ * @property string|null $short_description
+ * @property string|null $long_description
+ * @property string|null $image
  * @property string|null $gallery
- * @property int $status
- * @property int|null $created_by
- * @property int|null $updated_by
- * @property string $created_at
- * @property string $updated_at
- * @property int $sort_order
+ * @property int|null $status
+ * @property int|null $sort_order
+ * @property string $can_name
  */
-class Events extends \yii\db\ActiveRecord {
-
+class Events extends \yii\db\ActiveRecord
+{
     /**
      * {@inheritdoc}
      */
-    public static function tableName() {
+    public static function tableName()
+    {
         return 'events';
     }
 
     /**
      * {@inheritdoc}
      */
-    public function rules() {
+    public function rules()
+    {
         return [
-            [['title_en', 'title_ar', 'date_time', 'status', 'store_id'], 'required', 'on' => 'create'],
-            [['description_en', 'description_ar', 'gallery'], 'string'],
-            [['date_time', 'created_at', 'updated_at', 'store_id', 'title_en', 'title_ar', 'date_time', 'status', 'store_id', 'country', 'city', 'place', 'place_ar'], 'safe'],
-            [['status', 'created_by', 'updated_by', 'sort_order'], 'integer'],
-            [['title_en', 'title_ar', 'file'], 'string', 'max' => 255],
+            [['title', 'can_name'], 'required'],
+            [['short_description', 'long_description', 'gallery'], 'string'],
+            [['status', 'sort_order'], 'integer'],
+            [['title', 'can_name'], 'string', 'max' => 255],
+            [['image'], 'string', 'max' => 100],
         ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => 'ID',
-            'title_en' => 'Title En',
-            'title_ar' => 'Title Ar',
-            'description_en' => 'Description En',
-            'description_ar' => 'Description Ar',
-            'date_time' => 'Date Time',
-            'file' => 'File',
+            'title' => 'Title',
+            'short_description' => 'Short Description',
+            'long_description' => 'Long Description',
+            'image' => 'Image',
             'gallery' => 'Gallery',
             'status' => 'Status',
-            'created_by' => 'Created By',
-            'updated_by' => 'Updated By',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
             'sort_order' => 'Sort Order',
+            'can_name' => 'Can Name',
         ];
     }
+    public function uploadFile($file, $name, $folder) {
 
-    public function getCountry0() {
-        return $this->hasOne(Country::className(), ['id' => 'country']);
+        $targetFolder = \yii::$app->basePath . '/../uploads/' . $folder . '/';
+        if (!file_exists($targetFolder)) {
+            mkdir($targetFolder, 0777, true);
+        }
+        if ($file->saveAs($targetFolder . $name . '.' . $file->extension)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public function getCity0() {
-        return $this->hasOne(City::className(), ['id' => 'city']);
-    }
+    public function uploadMultipleImage($uploadfile, $id, $name, $foldername = false) {
+        $model = Events::find()->where(['status' => 1, 'id' => $id])->one();
+        if (!is_dir(Yii::$app->basePath . '/../uploads/' . $foldername)) {
+            mkdir(Yii::$app->basePath . '/../uploads/' . $foldername);
+            chmod(Yii::$app->basePath . '/../uploads/' . $foldername . '', 0777);
+        }
+        $i = 1;
+        if ($model->gallery != '') {
+            $name_array = explode(',', $model->gallery);
+        } else {
+            $name_array = [];
+        }
+        foreach ($uploadfile as $upload) {
+            if (isset($upload)) {
+                $gallery_name = 'gallery' . $name . $i;
+                if ($upload->saveAs(Yii::$app->basePath . '/../uploads/' . $foldername . '/' . $gallery_name . '.' . $upload->extension)) {
+                    chmod(Yii::$app->basePath . '/../uploads/' . $foldername . '/' . $gallery_name . '.' . $upload->extension, 0777);
+                    $name_array[] = $gallery_name . '.' . $upload->extension;
+                }
+            }
+            $i++;
+        }
 
+
+
+        if ($model != NULL) {
+
+            if ($name_array != NULL) {
+
+
+                $model->gallery = implode(',', $name_array);
+                $model->save(FALSE);
+            }
+        }
+    }
 }
