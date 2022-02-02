@@ -22,42 +22,42 @@ class PackagesDateController extends Controller
 public function behaviors()
 {
 
-$tbl_name = 'PackagesDate';
-$get_rules_list = \common\models\AdminRoleList::find()->where(['controller' => $tbl_name . 'Controller'])->all();
-$get_rules = [];
-$route = strtolower(preg_replace('~(?=[A-Z])(?!\A)~', '-', $tbl_name));
-$rule_list = [];
-$action[] = "error";
+    $tbl_name = 'PackagesDate';
+    $get_rules_list = \common\models\AdminRoleList::find()->where(['controller' => $tbl_name . 'Controller'])->all();
+    $get_rules = [];
+    $route = strtolower(preg_replace('~(?=[A-Z])(?!\A)~', '-', $tbl_name));
+    $rule_list = [];
+    $action[] = "error";
 
-if ($get_rules_list != NULL) {
-foreach ($get_rules_list as $get_rules_li) {
-$get_rules = \common\models\AdminRoleLocation::find()->where(['role_id' => Yii::$app->user->identity->role, 'role_list_id' => $get_rules_li->id])->all();
-if ($get_rules != NULL) {
-foreach ($get_rules as $get_rule) {
-$action[] = $get_rule->location->action;
-}
-}
-}
-}
-return [
-'access' => [
-'class' => AccessControl::className(),
-'rules' => [
-[
-'actions' => $action,
-'allow' => true,
-'roles' => ['@'],
-],
-],
-],
-'verbs' => [
-'class' => VerbFilter::className(),
-'actions' => [
-'logout' => ['post'],
-'delete' => ['POST'],
-],
-],
-];
+    if ($get_rules_list != NULL) {
+        foreach ($get_rules_list as $get_rules_li) {
+        $get_rules = \common\models\AdminRoleLocation::find()->where(['role_id' => Yii::$app->user->identity->role, 'role_list_id' => $get_rules_li->id])->all();
+            if ($get_rules != NULL) {
+                foreach ($get_rules as $get_rule) {
+                    $action[] = $get_rule->location->action;
+                }
+            }
+        }
+    }
+    return [
+    'access' => [
+    'class' => AccessControl::className(),
+    'rules' => [
+    [
+    'actions' => $action,
+    'allow' => true,
+    'roles' => ['@'],
+    ],
+    ],
+    ],
+    'verbs' => [
+    'class' => VerbFilter::className(),
+    'actions' => [
+    'logout' => ['post'],
+    'delete' => ['POST'],
+    ],
+    ],
+    ];
 return [
 'verbs' => [
 'class' => VerbFilter::className(),
@@ -81,7 +81,10 @@ return $this->redirect(yii::$app->request->baseUrl . '/site/login');
 */
 public function actionIndex()
 {
+    
     $searchModel = new PackagesDateSearch();
+    
+   
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
     return $this->render('index', [
@@ -110,15 +113,20 @@ return $this->render('view', [
 */
 public function actionCreate()
 {
-$model = new PackagesDate();
+    $model = new PackagesDate();
+    $pkg_price   = new PackagesPrice();
+    $package_id  = 0;
+    
 
-if ($model->load(Yii::$app->request->post()) && $model->save()) {
-return $this->redirect(['view', 'id' => $model->id]);
-}
+    if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        return $this->redirect(['view', 'id' => $model->id]);
+    }
 
-return $this->render('create', [
-'model' => $model,
-]);
+    return $this->render('create', [
+        'model'        => $model,
+        'pkg_price'    => $pkg_price,
+        'package_id'   => $package_id
+    ]);
 }
 
 /**
@@ -162,10 +170,13 @@ public function actionSavePackageDatePrice() {
     $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
     $package_id = isset($_GET['id'])?$_GET['id']:0;
     $log = [];
-    if($model->load(Yii::$app->request->post()) &&  $package_id > 0) {
-        $model->package_id  = $package_id;
+    if($model->load(Yii::$app->request->post())) {
+        if(isset($_GET['id'])) {
+            $model->package_id  = $package_id;
+        }
         $model->created_at = date('Y-m-d H:i:s');
         $model->updated_at = date('Y-m-d H:i:s');
+       
        if($model->save()) {
             $pkg_date_id        = $model->id;
             $package_details    = Yii::$app->request->post();
@@ -193,7 +204,7 @@ public function actionSavePackageDatePrice() {
         
             return $this->render('index', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'dataProvider' => $dataProvider
             ]);
 
         } else {
@@ -201,8 +212,9 @@ public function actionSavePackageDatePrice() {
         }
     }
     return $this->render('create', [
-        'model' => $model,
-        'pkg_price' => $pkg_price
+        'model'        => $model,
+        'pkg_price'    => $pkg_price,
+        'package_id'   => $package_id
     ]);
 
 }

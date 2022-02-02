@@ -7,23 +7,46 @@ use yii\widgets\ActiveForm;
 /* @var $model common\models\PackagesDate */
 /* @var $form yii\widgets\ActiveForm */
 ?>
+<?php
+    $packages = \common\models\ProductsServices::find()->where(['status' => 1])->all();
+    $options = array();
+    if ($packages != NULL) {
+        foreach ($packages as $package) {
+            if (!empty($package)) {
+                $options[$package->id] = $package->package_title;
+            }
+        }
+    }
+    ?>
 
 <div class="card-body packages-date-form">
-    <?php $form = ActiveForm::begin(['options' => ['class' => 'form_pkg_content']]); ?>
-    <div class="row">
-        <div class="col-sm-2">
+    <?php $form = ActiveForm::begin(['action' => 'save-package-date-price','options' => ['class' => 'form_pkg_content']]); ?>
+   
+        <div class="col-sm-12">
+            <div class="row">
+                <?php if(!isset($package_id) ||  $package_id <= 0) {?>
+                    <div class="col-sm-3">
 
-            <div class="form-group bmd-form-group">
-                <?= $form->field($model, 'package_date')->textInput(['type' => 'date', 'id' => 'calenders', 'class' => 'form-control']) ?>
-            </div>
-        </div>
-        <div class="col-sm-2">
+                        <div class="form-group bmd-form-group">
+                            <?= $form->field($model, 'package_id')->dropDownList($options, ['prompt' => 'Select Package']);
+                            ?>
+                        </div>
+                    </div>
+                <?php } ?>
+                <div class="col-sm-2">
 
-            <div class="form-group bmd-form-group">
-               
-            <?= $form->field($model, 'package_quantity')->textInput([]) ?>
+                    <div class="form-group bmd-form-group">
+                        <?= $form->field($model, 'package_date')->textInput(['type' => 'date', 'id' => 'calenders', 'class' => 'form-control']) ?>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+
+                    <div class="form-group bmd-form-group">
+                    
+                    <?= $form->field($model, 'package_quantity')->textInput([]) ?>
+                    </div>
+                </div>
             </div>
-        </div>
 
         </div>
         <div class="row price_repeat_sctn">  
