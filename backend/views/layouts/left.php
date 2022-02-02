@@ -66,7 +66,7 @@
 
                     <i class="material-icons">design_services</i>
 
-                    <p>Products And Service
+                    <p>Packages
                         <b class="caret"></b>
                     </p>
                 </a>
@@ -75,7 +75,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="<?= \yii\helpers\Url::to(['/products/products-services/index']); ?>">
                                 <i class="material-icons">design_services</i>
-                                <span class="sidebar-normal">Product & Services</span>
+                                <span class="sidebar-normal">Packages</span>
                             </a>
                         </li>
                         <li class="nav-item">
