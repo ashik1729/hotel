@@ -115,6 +115,11 @@ return [
                 'dashboard'=>'my-account/dashboard',
                 'visa-enquiry'=>'my-account/visa-enquiry',
                 'package-history'=>'my-account/package-history',
+                'event-gallery/<can:\w+(-\w+)*>' => 'site/event-gallery',
+                'events'=>'site/events',
+                'flight-tickets'=>'site/flight-tickets',
+
+
 
             ],
         ],

@@ -14,12 +14,13 @@ use yii\web\UploadedFile;
 /**
  * EventsController implements the CRUD actions for Events model.
  */
-class EventsController extends Controller {
-
+class EventsController extends Controller
+{
     /**
      * {@inheritdoc}
      */
-    public function behaviors() {
+    public function behaviors()
+    {
 
         $tbl_name = 'Events';
         $get_rules_list = \common\models\AdminRoleList::find()->where(['controller' => $tbl_name . 'Controller'])->all();
@@ -67,24 +68,26 @@ class EventsController extends Controller {
         ];
     }
 
-    public function init() {
+
+    public function init()
+    {
         parent::init();
         if (Yii::$app->user->isGuest) {
             return $this->redirect(yii::$app->request->baseUrl . '/site/login');
         }
     }
-
     /**
      * Lists all Events models.
      * @return mixed
      */
-    public function actionIndex() {
+    public function actionIndex()
+    {
         $searchModel = new EventsSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -94,9 +97,10 @@ class EventsController extends Controller {
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionView($id) {
+    public function actionView($id)
+    {
         return $this->render('view', [
-                    'model' => $this->findModel($id),
+            'model' => $this->findModel($id),
         ]);
     }
 
@@ -105,46 +109,42 @@ class EventsController extends Controller {
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate() {
+    public function actionCreate()
+    {
         $model = new Events();
 
         if ($model->load(Yii::$app->request->post())) {
-
-            $model->created_by = yii::$app->user->identity->id;
-            $model->updated_by = yii::$app->user->identity->id;
-
-            $file = UploadedFile::getInstance($model, 'file');
+            $canon_name = strtolower($model->title);
+            $canonical_name = str_replace(' ', '-', $canon_name); // Replaces all spaces with hyphens.
+            $canonical_name = preg_replace('/[^A-Za-z0-9\-]/', '', $canonical_name); // Removes special chars.
+            $model->can_name = preg_replace('/-+/', '-', $canonical_name);
+            $file = UploadedFile::getInstance($model, 'image');
             $gallery = UploadedFile::getInstances($model, 'gallery');
             $name = md5(microtime());
-            $file_name = 'file' . $name;
+            $profile_name = 'image' . $name;
             if ($file) {
-                $model->file = $file_name . '.' . $file->extension;
+                $model->image = $profile_name . '.' . $file->extension;
             }
 
             $model->gallery = "";
-            $transaction = Yii::$app->db->beginTransaction();
-
             if ($model->save()) {
 
                 if ($file) {
-                    Yii::$app->FileManagement->uploadFile($file, $file_name, 'events/' . $model->id . '/file');
+                    $model->uploadFile($file, $profile_name, 'events/' . $model->id . '/image');
                 }
 
                 if ($gallery != NULL) {
-                    Yii::$app->FileManagement->uploadMultipleImage($gallery, $model->id, $name, 'events/' . $model->id . '/gallery', $model);
+                    $model->uploadMultipleImage($gallery, $model->id, $name, 'events/' . $model->id . '/gallery');
                 }
-                $transaction->commit();
-
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
-                $transaction->rollBack();
                 print_r($model->errors);
                 exit;
             }
         }
 
         return $this->render('create', [
-                    'model' => $model,
+            'model' => $model,
         ]);
     }
 
@@ -155,22 +155,29 @@ class EventsController extends Controller {
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id) {
+    public function actionUpdate($id)
+    {
         $model = $this->findModel($id);
-        $oldfile = $model->file;
+
+        $images = $model->image;
         $gallery_data = $model->gallery;
         if ($model->load(Yii::$app->request->post())) {
+            if ($model->can_name == "") {
+                $canon_name = strtolower($model->title);
+                $canonical_name = str_replace(' ', '-', $canon_name); // Replaces all spaces with hyphens.
+                $canonical_name = preg_replace('/[^A-Za-z0-9\-]/', '', $canonical_name); // Removes special chars.
+                $model->can_name = preg_replace('/-+/', '-', $canonical_name);
+            }
 
-            $model->updated_by = yii::$app->user->identity->id;
-            $file = UploadedFile::getInstance($model, 'file');
+            $file = UploadedFile::getInstance($model, 'image');
             $gallery = UploadedFile::getInstances($model, 'gallery');
             $name = md5(microtime());
-            $file_name = 'file' . $name;
+            $profile_name = 'image' . $name;
 
             if ($file) {
-                $model->file = $file_name . '.' . $file->extension;
+                $model->image = $profile_name . '.' . $file->extension;
             } else {
-                $model->file = $oldfile;
+                $model->image = $images;
             }
 
             if ($gallery_data == '') {
@@ -178,13 +185,15 @@ class EventsController extends Controller {
             } else {
                 $model->gallery = $gallery_data;
             }
+
             if ($model->save()) {
+
                 if ($file) {
-                    Yii::$app->FileManagement->uploadFile($file, $file_name, 'events/' . $model->id . '/file');
+                    $model->uploadFile($file, $profile_name, 'events/' . $model->id . '/image');
                 }
 
                 if ($gallery != NULL) {
-                    Yii::$app->FileManagement->uploadMultipleImage($gallery, $model->id, $name, 'events/' . $model->id . '/gallery', $model);
+                    $model->uploadMultipleImage($gallery, $model->id, $name, 'events/' . $model->id . '/gallery');
                 }
                 return $this->redirect(['view', 'id' => $model->id]);
             } else {
@@ -194,7 +203,7 @@ class EventsController extends Controller {
         }
 
         return $this->render('update', [
-                    'model' => $model,
+            'model' => $model,
         ]);
     }
 
@@ -205,7 +214,8 @@ class EventsController extends Controller {
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id) {
+    public function actionDelete($id)
+    {
         $this->findModel($id)->delete();
 
         return $this->redirect(['index']);
@@ -218,12 +228,12 @@ class EventsController extends Controller {
      * @return Events the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
-    protected function findModel($id) {
+    protected function findModel($id)
+    {
         if (($model = Events::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException('The requested page does not exist.');
     }
-
 }

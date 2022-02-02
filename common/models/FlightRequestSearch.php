@@ -4,12 +4,12 @@ namespace common\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Events;
+use common\models\FlightRequest;
 
 /**
- * EventsSearch represents the model behind the search form of `common\models\Events`.
+ * FlightRequestSearch represents the model behind the search form of `common\models\FlightRequest`.
  */
-class EventsSearch extends Events
+class FlightRequestSearch extends FlightRequest
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class EventsSearch extends Events
     public function rules()
     {
         return [
-            [['id', 'status', 'sort_order'], 'integer'],
-            [['title', 'short_description', 'long_description', 'image', 'gallery', 'can_name'], 'safe'],
+            [['id', 'no_adult', 'no_children', 'no_room', 'purpose', 'status'], 'integer'],
+            [['from_place', 'checkin_date', 'return_date', 'class', 'name', 'email', 'phone', 'to_place'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class EventsSearch extends Events
      */
     public function search($params)
     {
-        $query = Events::find();
+        $query = FlightRequest::find();
 
         // add conditions that should always apply here
 
@@ -59,16 +59,21 @@ class EventsSearch extends Events
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
+            'checkin_date' => $this->checkin_date,
+            'return_date' => $this->return_date,
+            'no_adult' => $this->no_adult,
+            'no_children' => $this->no_children,
+            'no_room' => $this->no_room,
+            'purpose' => $this->purpose,
             'status' => $this->status,
-            'sort_order' => $this->sort_order,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'short_description', $this->short_description])
-            ->andFilterWhere(['like', 'long_description', $this->long_description])
-            ->andFilterWhere(['like', 'image', $this->image])
-            ->andFilterWhere(['like', 'gallery', $this->gallery])
-            ->andFilterWhere(['like', 'can_name', $this->can_name]);
+        $query->andFilterWhere(['like', 'from_place', $this->from_place])
+            ->andFilterWhere(['like', 'class', $this->class])
+            ->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'email', $this->email])
+            ->andFilterWhere(['like', 'phone', $this->phone])
+            ->andFilterWhere(['like', 'to_place', $this->to_place]);
 
         return $dataProvider;
     }
