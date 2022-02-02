@@ -31,6 +31,7 @@ use Yii;
  * @property string $long_description
  *
  * @property Cart[] $carts
+ * @property PackagesDate[] $PackageDate
  * @property OrderHistory[] $orderHistories
  * @property OrderProducts[] $orderProducts
  * @property ProductAttributesValue[] $productAttributesValues
@@ -77,7 +78,7 @@ class ProductsServices extends \yii\db\ActiveRecord {
      */
     public function attributeLabels() {
         return [
-            'id' => 'ID',
+            'id' => 'Package ID',
             'category_id' => 'Category ID',
            // 'merchant_id' => 'Merchant ID',
             'package_title ' => 'Package Name ',
@@ -216,6 +217,10 @@ class ProductsServices extends \yii\db\ActiveRecord {
      *
      * @return \yii\db\ActiveQuery
      */
+    public function getPackageDate() {
+        return $this->hasMany(PackagesDate::className(), ['package_id' => 'id']);
+    }
+
     public function getCarts() {
         return $this->hasMany(Cart::className(), ['product_id' => 'id']);
     }

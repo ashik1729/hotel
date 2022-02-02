@@ -97,22 +97,8 @@ use yii\widgets\DetailView;
                     'model' => $model,
                     'attributes' => [
                         'id',
-                        'title',
-                        // 'sku',
-                        [
-                            'attribute' => 'type',
-                            'value' => function ($data) {
-                                if ($data->status == 1) {
-                                    return "Products";
-                                } else if ($data->status == 2) {
-
-                                    return "Shop Service";
-                                } else if ($data->status == 3) {
-                                    return "Home Service";
-                                }
-                            },
-//                                            'format' => 'html',
-                        ],
+                        'package_title',
+                
                         [
                             'attribute' => 'category_id',
                             'header' => 'Category',
@@ -191,41 +177,6 @@ use yii\widgets\DetailView;
                         ],
                         'sort_order',
                         'price',
-                        [
-                            'attribute' => 'discount_type',
-                            'value' => function ($data) {
-                                if ($data->discount_rate == 1) {
-                                    return "Flat";
-                                } else if ($data->discount_rate == 2) {
-
-                                    return "Percentage";
-                                } else {
-                                    return "Not Set";
-                                }
-                            },
-//                                            'format' => 'html',
-                        ],
-                        'discount_rate',
-                   
-                        'new_from',
-                        'new_to',
-                        'sale_from',
-                        'sale_to',
-                        'discount_from',
-                        'discount_to',
-                        'search_tag:ntext',
-
-                        [
-                            'attribute' => 'is_featured',
-                            'value' => function ($data) {
-                                if ($data->is_featured == 1) {
-                                    return "Yes";
-                                } else {
-                                    return "No";
-                                }
-                            },
-//                                            'format' => 'html',
-                        ],
                         'created_at',
                         'updated_at',
                         [
@@ -264,20 +215,68 @@ use yii\widgets\DetailView;
                             },
 //                                            'format' => 'html',
                         ],
-                        'meta_title',
-                        'meta_description:ntext',
-                        'meta_keywords:ntext',
-                        'tax_applicable',
-                        'tax_amount',
-                        'min_quantity',
-                        'quantity',
-                        'weight_class',
-                        'weight',
                         'short_description_en:ntext',
                         'long_description_en:ntext',
                     ],
                 ])
                 ?>
+            <?php //echo '<pre/>';print_r($package);
+            
+         //   exit;?>    
+                <div class="col-sm-12 ">
+                    <div class="card-body">
+                        <div class="card-header card-header-rose text-center m-0 p-1 font-weight-bold">
+                            <h4 class="card-title">Package Date & Price <?php // count($carts) > 0 ? "(<span class='item_count'>" . count($carts) . "</span>)" : "(<span class='item_count'>0</span>)"; ?></h4>
+
+                        </div>
+                        <div class="material-datatables">
+
+                            <div id="w4" class="grid-view">
+                                <table class="table table-striped table-bordered"><thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>Date</th>
+                                            <th>Min Person</a></th>
+                                            <th>Max Person</th>
+                                            <th>Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php if ($package != NULL) { 
+                                            $i = 1;
+                                            $subtotal = 0;
+                                            foreach ($package['price'] as $pkg_details) {                                         
+                                                ?>
+
+                                            <tr data-key="1">
+                                                <td><?= $i; ?></td>
+                                            
+                                                <td>
+                                                    <?php 
+                                                    $pkg_date = isset($package['pkg_date'])?$package['pkg_date']:"";
+                                                    
+                                                    echo date("Y-m-d",strtotime($pkg_date));?>
+                                                </td>
+                                                <td><?php echo  $pkg_details->min_person; ?></td>
+                                                <td><?php echo  $pkg_details->max_person; ?></td>
+                                                <td><?php echo  $pkg_details->price; ?></td>
+                                            </tr>
+                                        
+                                            <?php
+                                                $i++;
+                                                }
+                                            } else { ?>
+                                            <tr class="text-center" data-key="1">
+                                                <td colspan="5">No Results Found!</td>
+                                            </tr>
+                                        <?php } ?>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
 
             </div>
