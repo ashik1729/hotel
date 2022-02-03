@@ -116,6 +116,7 @@ return [
                 'visa-enquiry'=>'my-account/visa-enquiry',
                 'package-history'=>'my-account/package-history',
                 'event-gallery/<can:\w+(-\w+)*>' => 'site/event-gallery',
+                'package-details/<can:\w+(-\w+)*>' => 'site/package-details',
                 'events'=>'site/events',
                 'flight-tickets'=>'site/flight-tickets',
 

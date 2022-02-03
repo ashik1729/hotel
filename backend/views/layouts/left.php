@@ -84,7 +84,20 @@
                                 <span class="sidebar-normal">Category</span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= \yii\helpers\Url::to(['/products/packages-date/index']); ?>">
+                                <i class="material-icons">label_important</i>
 
+                                <span class="sidebar-normal">Package Date</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= \yii\helpers\Url::to(['/package-destination/index']); ?>">
+                                <i class="material-icons">label_important</i>
+
+                                <span class="sidebar-normal">Package Destination</span>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="<?= \yii\helpers\Url::to(['/products/attributes/index']); ?>">
                                 <i class="material-icons">label_important</i>

@@ -6,6 +6,7 @@ use common\models\Accomodation;
 use common\models\AccomodationRequest;
 use common\models\Brands;
 use common\models\Cars;
+use common\models\Category;
 use common\models\CmsContent;
 use common\models\Enquiry;
 use common\models\EventRequest;
@@ -21,6 +22,8 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
+use common\models\PackageDestination;
+use common\models\ProductsServices;
 use common\models\RentalEnquiry;
 use common\models\TypeOfCar;
 use common\models\Visa;
@@ -30,6 +33,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use Mpdf\Output\Destination;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\Cors;
 use yii\web\NotFoundHttpException;
@@ -76,19 +80,43 @@ class SiteController extends Controller
      */
     public function actionPackages()
     {
- 
-        return $this->render('packages');
+        $query = ProductsServices::find()->where(['status'=>1]);
+        if (isset($_REQUEST['search_key']) && $_REQUEST['search_key'] != "") {
+            $query->andWhere(['LIKE', 'package_title', $_REQUEST['search_key']]);
+            $query->orWhere(['LIKE', 'short_description_en', $_REQUEST['search_key']]);
+            $query->orWhere(['LIKE', 'long_description_en', $_REQUEST['search_key']]);
+        }
+        if (isset($_REQUEST['destination']) && $_REQUEST['destination'] != "") {
+            $query->andWhere(['destination'=> $_REQUEST['destination']]);
+        }
+        if (isset($_REQUEST['category']) && $_REQUEST['category'] != "") {
+            $query->andWhere(['category_id'=> $_REQUEST['category']]);
+        }
+        $packages = $query->all();
+        $destinations = PackageDestination::find()->where(['status'=>1])->all();
+        $cateory = Category::find()->where(['status'=>1])->all();
+        $model = CmsContent::findOne(['page_id' => 'packages']);
+        return $this->render(
+            'packages',
+            [
+                'model' => $model,
+                'packages'=>$packages,
+                'destinations'=>$destinations,
+                'cateory'=>$cateory
+            ]
+        );
     }
     public function actionPackageDetails()
     {
-        
-        return $this->render('package-details');
+        $model = ProductsServices::findOne(['canonical_name' => $_GET['can'], 'status' => 1]);
+        return $this->render('package-details',['model'=>$model]);
     }
     public function actionVisa()
     {
         $model = CmsContent::findOne(['page_id' => 'visa']);
         $visas = Visa::find()->where(['status' => 1])->all();
-        return $this->render('visa', ['model' => $model, 'visas' => $visas]);
+
+        return $this->render('visa', ['model' => $model, 'visa  s' => $visas]);
     }
     public function actionVisaDetails()
     {
@@ -119,7 +147,8 @@ class SiteController extends Controller
     }
     public function actionIndex()
     {
-        return $this->render('index');
+        $packages = ProductsServices::find()->where(['status'=>1])->all();
+        return $this->render('index',['packages'=>$packages]);
     }
     public function actionAccomodationGallery()
     {
@@ -182,7 +211,7 @@ class SiteController extends Controller
     {
         $model = CmsContent::findOne(['page_id' => 'about-us']);
         return $this->render(
-            'events',
+            'about-us',
             [
                 'model' => $model
             ]

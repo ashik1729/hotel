@@ -103,8 +103,8 @@ class ManageRequest extends Component {
     function getImage($model) {
         if (isset($model->id) && $model->id > 0 && isset($model->image) && $model->image !== "") {
 
-            $imgPath = ((yii\helpers\Url::base())) . '/../uploads/products/' . base64_encode($model->sku) . '/image/' . $model->image;
-            $imgBasePath = \Yii::$app->basePath . '/../uploads/products/' . base64_encode($model->sku) . '/image/' . $model->image;
+            $imgPath = ((yii\helpers\Url::base())) . '/../uploads/products/' . base64_encode($model->id) . '/image/' . $model->image;
+            $imgBasePath = \Yii::$app->basePath . '/../uploads/products/' . base64_encode($model->id) . '/image/' . $model->image;
 
             if (!file_exists($imgBasePath)) {
                 $imgPath = Yii::$app->request->baseUrl . '/img/no-image.jpg';
