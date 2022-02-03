@@ -3,6 +3,8 @@
 use common\models\Banner;
 use common\models\CmsContent;
 use common\models\CmsData;
+use common\models\PackagesDate;
+use common\models\PackagesPrice;
 
 $model = CmsContent::findOne(['page_id' => 'about-us']);
 $home = CmsContent::findOne(['page_id' => 'home']);
@@ -12,6 +14,7 @@ $middleDatathree = CmsData::findOne(['page_id' => $model->id, 'can_name' => 'tou
 $middleDataOneFour = CmsData::findOne(['page_id' => $model->id, 'can_name' => 'travelling-experience']);
 $middlevideo = CmsData::findOne(['page_id' => $model->id, 'can_name' => 'video-promotion']);
 $homeService = CmsData::findOne(['page_id' => $home->id, 'can_name' => 'home-service-data']);
+$homeFirst = CmsData::findOne(['page_id' => $home->id, 'can_name' => 'home-first']);
 $homesliders = Banner::find()->where(['status' => 1])->all();
 ?>
 <section class="slider">
@@ -49,240 +52,62 @@ $homesliders = Banner::find()->where(['status' => 1])->all();
 	<div class="row no-padding">
 		<div class="col-12 text-center">
 			<h1 class="heading-main wow fadeInUp">Most Popular Packages</h1>
-			<p class="wow fadeInUp">
-				Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat,
-			</p>
+			<?php echo $homeFirst->field_one; ?>
 		</div>
 		<div class="col-12 no-padding">
 			<div class="package__section-wrapper">
-				<div class="package__section-itembox wow fadeInUp">
-					<a href="">
-						<img class="img-fluid" src="<?php echo Yii::$app->request->baseUrl; ?>/images/package/package-01.jpg" alt="HCCA Package Burj Khalifa and Dubai Fountains">
-						<div class="overlay_shadow">
-						</div>
-						<div class="pricing-area d-flex align-items-center justify-content-center flex-column">
-							<div class="pricing-box">
-								3 - 7 People : 4.998 $
-							</div>
-							<div class="pricing-box">
-								8 – 12 People : 7.997 $
-							</div>
-							<div class="pricing-box">
-								13 – 17 People : 4.998 $
-							</div>
-						</div>
-						<div class="package__cnt-panel">
-							<h2>124 and 125 floor <br>for 1h30</h2>
-							<div class="package__rating">
-								<div class="package__rating-stars">
-									<div class="rating">
-										<div class="rating__body">
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
+
+				<?php if ($packages != NULL) { ?>
+					<?php foreach ($packages as $package) {
+						$imgPath = Yii::$app->request->baseUrl . '/uploads/products/' . base64_encode($package->id) . '/image/' . $package->image;
+
+					?>
+						<div class="package__section-itembox wow fadeInUp">
+						
+							<a href="<?= Yii::$app->request->baseUrl; ?>/packages">
+								<img class="img-fluid" src="<?php echo $imgPath; ?>" alt="HCCA Package Burj Khalifa and Dubai Fountains">
+								<div class="overlay_shadow">
+								</div>
+								<div class="pricing-area d-flex align-items-center justify-content-center flex-column">
+									<?php $packageDates = PackagesDate::find()->where(['package_date' => date('Y-m-d'),'package_id'=>$package->id])->one();
+									if ($packageDates != NULL) {
+										$getPrices = PackagesPrice::find()->where(['package_date_id' => $packageDates->id])->all();
+										if ($getPrices != NULL) { ?>
+											<?php foreach ($getPrices as $getPrice) { ?>
+												<div class="pricing-box">
+													<?= $getPrice->min_person; ?> - <?= $getPrice->max_person; ?> People : AED <?= $getPrice->price; ?>
+												</div>
+									<?php
+											}
+										}
+									}
+									?>
+								</div>
+								<div class="package__cnt-panel">
+									<h2><?= $package->package_title;?></h2>
+									<div class="package__rating">
+										<div class="package__rating-stars">
+											<div class="rating">
+												<div class="rating__body">
+													<div class="rating__star2 rating__star--active"></div>
+													<div class="rating__star2 rating__star--active"></div>
+													<div class="rating__star2 rating__star--active"></div>
+													<div class="rating__star2 rating__star--active"></div>
+													<div class="rating__star2 rating__star--active"></div>
+												</div>
+											</div>
 										</div>
+										38 Reviews
 									</div>
 								</div>
-								38 Reviews
-							</div>
-						</div>
-						<div class="item-title">
-							Burj Khalifa and Dubai Fountains
-						</div>
-					</a>
-				</div>
-				<div class="package__section-itembox wow fadeInUp" data-wow-delay="300ms">
-					<a href="">
-						<img class="img-fluid" src="<?php echo Yii::$app->request->baseUrl; ?>/images/package/package-02.jpg" alt="HCCA Package Desert Safari">
-						<div class="overlay_shadow">
-						</div>
-						<div class="pricing-area d-flex align-items-center justify-content-center flex-column">
-							<div class="pricing-box">
-								3 - 7 People : 4.998 $
-							</div>
-							<div class="pricing-box">
-								8 – 12 People : 7.997 $
-							</div>
-							<div class="pricing-box">
-								13 – 17 People : 4.998 $
-							</div>
-						</div>
-						<div class="package__cnt-panel">
-							<h2>Red Dunes, Camels and <br>Barbecue 7h</h2>
-							<div class="package__rating">
-								<div class="package__rating-stars">
-									<div class="rating">
-										<div class="rating__body">
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2"></div>
-										</div>
-									</div>
+								<div class="item-title">
+								<?= $package->destinations->title;?>
 								</div>
-								38 Reviews
-							</div>
+							</a>
 						</div>
-						<div class="item-title">
-							Desert Safari
-						</div>
-					</a>
-				</div>
-				<div class="package__section-itembox wow fadeInUp" data-wow-delay="600ms">
-					<a href="">
-						<img class="img-fluid" src="<?php echo Yii::$app->request->baseUrl; ?>/images/package/package-03.jpg" alt="HCCA Package Burj Khalifa and Dubai Fountains">
-						<div class="overlay_shadow">
-						</div>
-						<div class="pricing-area d-flex align-items-center justify-content-center flex-column">
-							<div class="pricing-box">
-								3 - 7 People : 4.998 $
-							</div>
-							<div class="pricing-box">
-								8 – 12 People : 7.997 $
-							</div>
-							<div class="pricing-box">
-								13 – 17 People : 4.998 $
-							</div>
-						</div>
-						<div class="package__cnt-panel">
-							<h2>Speedboat in Dubai: Marina, <br>Atlantis, Palm and Burj Al…</h2>
-							<div class="package__rating">
-								<div class="package__rating-stars">
-									<div class="rating">
-										<div class="rating__body">
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
-										</div>
-									</div>
-								</div>
-								38 Reviews
-							</div>
-						</div>
-						<div class="item-title">
-							Burj Al Arab
-						</div>
-					</a>
-				</div>
-				<div class="package__section-itembox wow fadeInUp" data-wow-delay="400ms">
-					<a href="">
-						<img class="img-fluid" src="<?php echo Yii::$app->request->baseUrl; ?>/images/package/package-04.jpg" alt="HCCA Package Burj Khalifa and Dubai Fountains">
-						<div class="overlay_shadow">
-						</div>
-						<div class="pricing-area d-flex align-items-center justify-content-center flex-column">
-							<div class="pricing-box">
-								3 - 7 People : 4.998 $
-							</div>
-							<div class="pricing-box">
-								8 – 12 People : 7.997 $
-							</div>
-							<div class="pricing-box">
-								13 – 17 People : 4.998 $
-							</div>
-						</div>
-						<div class="package__cnt-panel">
-							<h2>Yacht Tour with Breakfast or<br>Barbecue 2-3 hours</h2>
-							<div class="package__rating">
-								<div class="package__rating-stars">
-									<div class="rating">
-										<div class="rating__body">
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
-										</div>
-									</div>
-								</div>
-								38 Reviews
-							</div>
-						</div>
-						<div class="item-title">
-							Dubai Marina
-						</div>
-					</a>
-				</div>
-				<div class="package__section-itembox wow fadeInUp" data-wow-delay="800ms">
-					<a href="">
-						<img class="img-fluid" src="<?php echo Yii::$app->request->baseUrl; ?>/images/package/package-05.jpg" alt="HCCA Package Desert Safari">
-						<div class="overlay_shadow">
-						</div>
-						<div class="pricing-area d-flex align-items-center justify-content-center flex-column">
-							<div class="pricing-box">
-								3 - 7 People : 4.998 $
-							</div>
-							<div class="pricing-box">
-								8 – 12 People : 7.997 $
-							</div>
-							<div class="pricing-box">
-								13 – 17 People : 4.998 $
-							</div>
-						</div>
-						<div class="package__cnt-panel">
-							<h2>4-hour Dubai Fauna and <br> Flora Tour</h2>
-							<div class="package__rating">
-								<div class="package__rating-stars">
-									<div class="rating">
-										<div class="rating__body">
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2"></div>
-										</div>
-									</div>
-								</div>
-								38 Reviews
-							</div>
-						</div>
-						<div class="item-title">
-							Miracle Garden
-						</div>
-					</a>
-				</div>
-				<div class="package__section-itembox wow fadeInUp" data-wow-delay="1200ms">
-					<a href="">
-						<img class="img-fluid" src="<?php echo Yii::$app->request->baseUrl; ?>/images/package/package-06.jpg" alt="HCCA Package Burj Khalifa and Dubai Fountains">
-						<div class="overlay_shadow">
-						</div>
-						<div class="pricing-area d-flex align-items-center justify-content-center flex-column">
-							<div class="pricing-box">
-								3 - 7 People : 4.998 $
-							</div>
-							<div class="pricing-box">
-								8 – 12 People : 7.997 $
-							</div>
-							<div class="pricing-box">
-								13 – 17 People : 4.998 $
-							</div>
-						</div>
-						<div class="package__cnt-panel">
-							<h2>2-Hour <br>Ski Session…</h2>
-							<div class="package__rating">
-								<div class="package__rating-stars">
-									<div class="rating">
-										<div class="rating__body">
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
-											<div class="rating__star2 rating__star--active"></div>
-										</div>
-									</div>
-								</div>
-								38 Reviews
-							</div>
-						</div>
-						<div class="item-title">
-							Ski Dubai
-						</div>
-					</a>
-				</div>
+					<?php } ?>
+				<?php } ?>
+				<!--  -->
 			</div>
 		</div>
 		<div class="col-12 text-center">

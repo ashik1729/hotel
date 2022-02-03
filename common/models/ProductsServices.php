@@ -63,7 +63,7 @@ class ProductsServices extends \yii\db\ActiveRecord {
             [['price', 'discount_rate'], 'number'],
             [['gallery','short_description_en', 'long_description_en'], 'string'],
             [['id', 'created_at', 'updated_at', 'created_at', 'field', 'canonical_name', 'updated_at', 'short_description_en', 'short_description_ar', 'long_description_en','meta_title', 'meta_description', 'meta_keywords',
-                'sort_order', 'image', 'gallery', 'package_title','overview','packaage_organize'], 'safe'],
+                'sort_order', 'image', 'gallery', 'package_title','overview','packaage_organize','destination'], 'safe'],
             
             [['package_title', 'canonical_name', 'meta_title'], 'string', 'max' => 255],
             [['image'], 'string', 'max' => 100],
@@ -346,6 +346,9 @@ class ProductsServices extends \yii\db\ActiveRecord {
     public function getDiscounts() {
         return $this->hasOne(Discounts::className(), ['id' => 'discount_id']);
     }
+    public function getDestinations() {
+        return $this->hasOne(PackageDestination::className(), ['id' => 'destination']);
+    }
 
     /**
      * Gets query for [[UserWishlists]].
@@ -357,4 +360,17 @@ class ProductsServices extends \yii\db\ActiveRecord {
         return Favorites::find()->select('id,user_id,favourite_for_id,favourite_type,status')->where(['and', ['favourite_for_id' => $this->id, 'user_id' => $uid]])->andWhere(['status' => 1])->andWhere('(favourite_type =1 OR favourite_type=2) AND status=1')->all();
     }
 
+
+    public function uploadBanner($file, $name, $folder) {
+
+        $targetFolder = \yii::$app->basePath . '/../uploads/' . $folder . '/';
+        if (!file_exists($targetFolder)) {
+            mkdir($targetFolder, 0777, true);
+        }
+        if ($file->saveAs($targetFolder . $name . '.' . $file->extension)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

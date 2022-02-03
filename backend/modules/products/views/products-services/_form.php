@@ -8,6 +8,7 @@ use yii\bootstrap4\Modal;
 use kartik\file\FileInput;
 use yii\helpers\ArrayHelper;
 
+use dosamigos\ckeditor\CKEditor;
 /* @var $this yii\web\View */
 /* @var $model common\models\ProductsServices */
 /* @var $form yii\widgets\ActiveForm */
@@ -50,7 +51,7 @@ JS;
 <!-- Tabs content -->
 <div class="card-body products-services-form">
 
-    <?php if (Yii::$app->session->hasFlash("success")): ?>
+    <?php if (Yii::$app->session->hasFlash("success")) : ?>
 
         <div class="alert alert-success">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -62,13 +63,13 @@ JS;
         </div>
     <?php endif; ?>
 
-    <?php if (Yii::$app->session->hasFlash("error")): ?>
+    <?php if (Yii::$app->session->hasFlash("error")) : ?>
 
         <div class="alert alert-danger">
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <i class="material-icons">close</i>
             </button>
-            <span>                <?= Yii::$app->session->getFlash("error") ?>
+            <span> <?= Yii::$app->session->getFlash("error") ?>
             </span>
         </div>
     <?php endif; ?>
@@ -102,7 +103,7 @@ JS;
             <div class="tab-content" id="pills-tabContent">
                 <!--<div class="tab-pane fade show active" id="pills-general" role="tabpanel" aria-labelledby="pills-general-tab">-->
                 <div class="tab-pane fade  show active box_item" id="pills-general" role="tabpanel" aria-labelledby="pills-general-tab">
-                    
+
                     <div class="row">
                         <?php
                         $merchant = [];
@@ -121,7 +122,7 @@ JS;
                             foreach ($get_merchants as $get_merchant) {
                                 $merchant[$get_merchant->id] = $get_merchant->business_name . '(' . $get_merchant->email . ')';
 
-//                        $merchant[$get_merchant->id] = $get_merchant->first_name . ' ' . $get_merchant->last_name . '(' . $get_merchant->country0->country_name . ')';
+                                //                        $merchant[$get_merchant->id] = $get_merchant->first_name . ' ' . $get_merchant->last_name . '(' . $get_merchant->country0->country_name . ')';
                             }
                         }
                         ?>
@@ -130,11 +131,10 @@ JS;
                         $discount = [];
                         $get_discounts = [];
                         if (!$model->isNewRecord) {
-     
                         } else {
                             $get_discounts = \common\models\Discounts::find()->where(['status' => 1, 'item_type' => 2])->andWhere("merchant_id IS NULL")->all();
                         }
-                      /*  if ($get_discounts != NULL) {
+                        /*  if ($get_discounts != NULL) {
                             foreach ($get_discounts as $get_discount) {
                                 $discount[$get_discount->id] = $get_discount->title . ' - ' . ($get_discount->discount_type == 1 ? "Flat (" . $get_discount->discount_rate . ") " : " Percantage (" . $get_discount->discount_rate . "%)");
                             }
@@ -142,19 +142,7 @@ JS;
                         ?>
                         <div class="col-sm-3">
                             <div class="form-group bmd-form-group">
-                                <?= $form->field($model, 'package_title')->textInput(['maxlength' => true]) ?>                             
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group bmd-form-group">
-                                <?= $form->field($model, 'short_description_en')->textarea(['rows' => 1]) ?>
-                            </div>
-                        </div>
-                       
-                        <div class="col-sm-4">
-
-                            <div class="form-group bmd-form-group">
-                                <?= $form->field($model, 'long_description_en')->textarea(['rows' => 1]) ?>
+                                <?= $form->field($model, 'package_title')->textInput(['maxlength' => true]) ?>
                             </div>
                         </div>
                         <div class="col-sm-3">
@@ -166,27 +154,27 @@ JS;
                                 <?php Pjax::begin(['id' => 'product_service']) ?>
                                 <?php
                                 //  $datas = [];
-//                        if (!$model->isNewRecord) {
-//                            $merchant = \common\models\Merchant::findOne(['id' => $model->merchant_id]);
-//                            if ($merchant != NULL) {
-//                                if ($merchant->category != NULL) {
-//                                    $exp_category = explode(',', $merchant->category);
-//                                    if ($exp_category != NULL) {
-////                                        $get_categorys = \common\models\Category::find()->where(['IN', 'id', $exp_category])->all();
-////                                        if ($get_categorys != NULL) {
-////                                            foreach ($get_categorys as $get_category) {
-////                                                $options[$get_category->id] = $get_category->category_name;
-////                                            }
-////                                        }
-//                                    }
-//                                }
-//                            }
-//                            $get_categorys = \common\models\Category::find()->where(['status' => 1])->all();
-//                            if ($get_categorys != NULL) {
-//                                foreach ($get_categorys as $get_category) {
-//                                    $options[$get_category->id] = $get_category->category_name;
-//                                }
-//                            }
+                                //                        if (!$model->isNewRecord) {
+                                //                            $merchant = \common\models\Merchant::findOne(['id' => $model->merchant_id]);
+                                //                            if ($merchant != NULL) {
+                                //                                if ($merchant->category != NULL) {
+                                //                                    $exp_category = explode(',', $merchant->category);
+                                //                                    if ($exp_category != NULL) {
+                                ////                                        $get_categorys = \common\models\Category::find()->where(['IN', 'id', $exp_category])->all();
+                                ////                                        if ($get_categorys != NULL) {
+                                ////                                            foreach ($get_categorys as $get_category) {
+                                ////                                                $options[$get_category->id] = $get_category->category_name;
+                                ////                                            }
+                                ////                                        }
+                                //                                    }
+                                //                                }
+                                //                            }
+                                //                            $get_categorys = \common\models\Category::find()->where(['status' => 1])->all();
+                                //                            if ($get_categorys != NULL) {
+                                //                                foreach ($get_categorys as $get_category) {
+                                //                                    $options[$get_category->id] = $get_category->category_name;
+                                //                                }
+                                //                            }
                                 $options = array();
 
                                 $datas = \common\models\Category::find()->all();
@@ -227,33 +215,91 @@ JS;
 
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
 
                             <div class="form-group bmd-form-group">
-                            
+
                                 <?= $form->field($model, 'overview')->textarea(['rows' => 1]) ?>
                             </div>
                         </div>
-                        <div class="col-sm-4">
+                        <div class="col-sm-3">
 
                             <div class="form-group bmd-form-group">
-                            
+
                                 <?= $form->field($model, 'packaage_organize')->textarea(['rows' => 1]) ?>
                             </div>
                         </div>
+                        <div class="col-sm-6">
+                            <div class="form-group bmd-form-group">
+                                <?= $form->field($model, 'short_description_en')->widget(CKEditor::className(), [
+                                    'options' => ['rows' => 6],
+                                    'preset' => 'custom'
+                                ]) ?>
+                             
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+
+                            <div class="form-group bmd-form-group">
+                                <?= $form->field($model, 'long_description_en')->widget(CKEditor::className(), [
+                                    'options' => ['rows' => 6],
+                                    'preset' => 'custom'
+                                ]) ?>
+
+                            </div>
+                        </div>
+                        
                         <div class="col-sm-3">
                             <div class="form-group bmd-form-group">
                                 <?= $form->field($model, 'status')->dropDownList(['1' => 'Enable', '0' => 'Disable']) ?>
 
                             </div>
                         </div>
+                        
+                        <div class="col-sm-3">
+                            <div class="form-group bmd-form-group">
+                            <?= $form->field($model, 'destination')->dropDownList(ArrayHelper::map(\common\models\PackageDestination::find()->all(), 'id', 'title'), ['prompt' => 'Choose a Destination ', 'class' => 'form-control checking attribute attr_name', 'id' => 'abcd']) ?>
+
+                            </div>
+                        </div>
+
 
                     </div>
 
                     <div class="row">
 
-
-
+                    <div class="col-sm-12">
+            <div class="form-group bmd-form-group">
+                <div id="imagePriview">
+                    <?php
+                    if (isset($model->id) && $model->id > 0 && isset($model->banner_image) && $model->banner_image !== "") {
+                        $imgPath = ((yii\helpers\Url::base())) . '/../uploads/product-banner/' . $model->id . '/image/' . $model->banner_image;
+                    } else {
+                        $imgPath = Yii::$app->request->baseUrl . '/img/no-image.jpg';
+                    }
+                    echo '<img width="125" style="border: 2px solid #d2d2d2;" src="' . $imgPath . '" />';
+                    ?>
+                </div>
+                <br />
+                <?php
+                echo '<label class="control-label">Upload Banner Image</label>';
+                echo FileInput::widget([
+                    'model' => $model,
+                    'attribute' => 'banner_image',
+                    'options' => [
+                        //                        'multiple' => true
+                        'id' => 'input-6',
+                    ],
+                    'pluginOptions' => [
+                        'showUpload' => false,
+                        'allowedFileExtensions' => ['jpg', 'jpeg', 'png'],
+                    ]
+                ]);
+                ?>
+                <span class="bmd-help"><?= Html::activeHint($model, 'banner_image'); ?></span>
+            </div>
+        </div>
                         <div class="col-sm-6">
                             <div class="form-group bmd-form-group">
                                 <div id="imagePriview">
@@ -263,14 +309,14 @@ JS;
                                     echo '<img width="125" style="border: 2px solid #d2d2d2;" src="' . $imgPath . '" />';
                                     ?>
                                 </div>
-                                <br/>
+                                <br />
                                 <?php
                                 echo '<label class="control-label">Upload Thumbonile Image</label>';
                                 echo FileInput::widget([
                                     'model' => $model,
                                     'attribute' => 'image',
                                     'options' => [
-//                        'multiple' => true
+                                        //                        'multiple' => true
                                         'id' => 'input-2',
                                     ],
                                     'pluginOptions' => [
@@ -307,7 +353,7 @@ JS;
                                     ?>
                                     <div class="clearfix"></div>
                                 </div>
-                                <br/>
+                                <br />
                                 <?php
                                 echo '<label class="control-label">Upload  Gallery</label>';
                                 echo FileInput::widget([
@@ -331,7 +377,7 @@ JS;
                         </div>
                     </div>
                 </div>
-                
+
 
 
                 <div class="tab-pane fade box_item" id="pills-seo" role="tabpanel" aria-labelledby="pills-seo-tab">
@@ -387,7 +433,7 @@ JS;
                         </td>
                         <td>
 
-                            <label><input type="radio" id="productattributesvalue-price_status"  name="ProductAttributesValue[price_status][]" value="1"> Price Applicable</label>
+                            <label><input type="radio" id="productattributesvalue-price_status" name="ProductAttributesValue[price_status][]" value="1"> Price Applicable</label>
                         </td>
                         <td>
 
@@ -621,7 +667,8 @@ JS;
 
     </script>
     <?php
-    $this->registerJs(<<< EOT_JS_CODE
+    $this->registerJs(
+        <<< EOT_JS_CODE
 
 
 EOT_JS_CODE
