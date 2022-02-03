@@ -6,16 +6,16 @@ use yii\helpers\ArrayHelper;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
-/* @var $searchModel common\models\CmsDataSearch */
+/* @var $searchModel common\models\EventRequestSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Cms Datas';
+$this->title = 'Event Requests';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <?php $model_path = str_replace(" ", "-", strtolower(Html::encode($this->title))) ?>
 
 
-<div class="content cms-data-index">
+<div class="content event-request-index">
     <?php $urll = str_replace(" ", "-", strtolower(Html::encode($this->title))) ?>
     <div class="container-fluid">
         <div class="row">
@@ -46,11 +46,22 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'columns' => [
                                     ['class' => 'yii\grid\SerialColumn'],
 
-                                    'id',
-                                    'page_id',
-                                    'can_name',
-                                    'title',
-                                    // 'file',
+                                    // 'id',
+                                    'date',
+                                    'no_adult',
+                                    'event_id',
+                                    [
+                                        'attribute' => 'event_id',
+                                        'header' => 'Event',
+                                       
+                                        'filter' => Html::activeDropDownList($searchModel, 'status', ArrayHelper::map(\common\models\Events::find()->all(), 'id', 'title'), ['class' => 'form-control ashik ', 'prompt' => 'All']),
+                                       
+                                        'value' => function($data) {
+                                            return   $data->event->title;
+                                            
+                                        },
+                                        'format' => 'html',
+                                    ],
                                     [
                                         'attribute' => 'status',
                                         'header' => 'Status',
@@ -65,13 +76,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                         },
                                         'format' => 'html',
                                     ],
-                                    //'gallery:ntext',
-                                    //'field_one:ntext',
-                                    //'field_two:ntext',
-                                    //'field_three:ntext',
-                                    //'field_four:ntext',
-                                    //'status',
-                                    //'sort_order',
+                                    'name',
+                                    'email:email',
+                                    'phone',
 
                                     [
                                         'header' => \Yii::t('app', 'Actions'),

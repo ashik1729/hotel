@@ -7,6 +7,7 @@ use common\models\ProductsServices;
 use common\models\ProductsServicesSearch;
 use common\models\PackagesDate;
 use common\models\PackagesPrice;
+use Exception;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -213,12 +214,17 @@ class ProductsServicesController extends Controller {
             $model->status = 1;
            // $model->title = $model->package_title ;
             $file = UploadedFile::getInstance($model, 'image');
+            $banner_image = UploadedFile::getInstance($model, 'banner_image');
             $gallery = UploadedFile::getInstances($model, 'gallery');
             //echo '<pre/>';print_r($gallery);exit;
             $name = md5(microtime());
             $profile_name = 'image' . $name;
+            $banner_name = 'banner' . $name;
             if ($file) {
                 $model->image = $profile_name . '.' . $file->extension;
+            }
+            if ($banner_image) {
+                $model->banner_image = $banner_name . '.' . $banner_image->extension;
             }
             
              $model->gallery = "";
@@ -234,6 +240,9 @@ class ProductsServicesController extends Controller {
                         if (!$model->uploadFile($file, $profile_name, 'products/' . base64_encode($model->id) . '/image')) {
                             $transaction->rollBack();
                         }
+                    }
+                    if ($banner_image) {
+                        $model->uploadBanner($banner_image, $banner_name, 'product-banner/' . $model->id . '/image');
                     }
                     if ($gallery != NULL) {
                         if (!$model->uploadMultipleImage($gallery, $model->id, $name, 'products/' . base64_encode($model->id) . '/gallery')) {
@@ -294,6 +303,7 @@ class ProductsServicesController extends Controller {
         $attribute = new \common\models\Attributes();
         $languages = \common\models\Language::find()->where(['status' => 1])->all();
         $exist_image = $model->image;
+        $exist_banner = $model->banner_image;
         $exist_gal_image = $model->gallery;
         $id = $model->id;
         if ($model->load(Yii::$app->request->post())) {
@@ -323,12 +333,20 @@ class ProductsServicesController extends Controller {
          //   $model->title = $model->package_title ;
             $file = UploadedFile::getInstance($model, 'image');
             $gallery = UploadedFile::getInstances($model, 'gallery');
+            $banner_image = UploadedFile::getInstance($model, 'banner_image');
+
             $name = md5(microtime());
             $profile_name = 'image' . $name;
+            $banner_name = 'banner' . $name;
             if ($file) {
                 $model->image = $profile_name . '.' . $file->extension;
             } else {
                 $model->image = $exist_image;
+            }
+            if ($banner_image) {
+                $model->banner_image = $banner_name . '.' . $banner_image->extension;
+            } else {
+                $model->banner_image = $exist_banner;
             }
             $model->gallery = $exist_gal_image;
 
@@ -355,6 +373,9 @@ class ProductsServicesController extends Controller {
 
                             $transaction->rollBack();
                         }
+                    }
+                    if ($banner_image) {
+                        $model->uploadBanner($banner_image, $banner_name, 'product-banner/' . $model->id . '/image');
                     }
                     if ($gallery != NULL) {
                         if (!$model->uploadMultipleImage($gallery, $model->id, $name, 'products/' . base64_encode($model->id) . '/gallery')) {

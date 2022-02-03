@@ -84,7 +84,20 @@
                                 <span class="sidebar-normal">Category</span>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= \yii\helpers\Url::to(['/products/packages-date/index']); ?>">
+                                <i class="material-icons">label_important</i>
 
+                                <span class="sidebar-normal">Package Date</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= \yii\helpers\Url::to(['/package-destination/index']); ?>">
+                                <i class="material-icons">label_important</i>
+
+                                <span class="sidebar-normal">Package Destination</span>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link" href="<?= \yii\helpers\Url::to(['/products/attributes/index']); ?>">
                                 <i class="material-icons">label_important</i>
@@ -303,6 +316,38 @@
                 </div>
             </li>
             <li class="nav-item ">
+                <a class="nav-link" data-toggle="collapse" href="#events" aria-expanded="false">
+
+                    <i class="material-icons">image</i>
+
+                    <p>Events
+                        <b class="caret"></b>
+                    </p>
+                </a>
+                <div class="collapse" id="events">
+                    <ul class="nav">
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= \yii\helpers\Url::to(['/events/index']); ?>">
+                                <i class="material-icons">shopping_cart</i>
+                                <span class="sidebar-normal">Events</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="<?= \yii\helpers\Url::to(['/event-request/index']); ?>">
+                                <i class="material-icons">shopping_cart</i>
+                                <span class="sidebar-normal">Event Requests</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?= \yii\helpers\Url::to(['/flight-request/index']); ?>">
+                    <i class="material-icons">shopping_cart</i>
+                    <span class="sidebar-normal">Flight Requests</span>
+                </a>
+            </li>
+            <li class="nav-item ">
                 <a class="nav-link" data-toggle="collapse" href="#masters" aria-expanded="false">
 
                     <i class="material-icons">shopping_cart</i>
@@ -376,11 +421,11 @@
                                 <span class="sidebar-normal">Order Status</span>
                             </a>
                         </li>
-                     
+
                     </ul>
                 </div>
             </li>
-         
+
 
 
             <li class="nav-item ">
@@ -394,8 +439,8 @@
                 </a>
                 <div class="collapse" id="configuration">
                     <ul class="nav">
-                       
-                      
+
+
                         <li class="nav-item">
                             <a class="nav-link" href="<?= \yii\helpers\Url::to(['/system-configuration/index']); ?>">
                                 <i class="material-icons">admin_panel_settings</i>
@@ -410,8 +455,8 @@
                                 <span class="sidebar-normal">Settings</span>
                             </a>
                         </li>
-                       
-                      
+
+
                     </ul>
                 </div>
             </li>

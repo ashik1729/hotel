@@ -2,149 +2,76 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
+use dosamigos\ckeditor\CKEditor;
 use kartik\file\FileInput;
 use yii\helpers\ArrayHelper;
+use kartik\select2\Select2;
 
 /* @var $this yii\web\View */
 /* @var $model common\models\Events */
 /* @var $form yii\widgets\ActiveForm */
 ?>
-<?php
-$franchise = [];
 
-$get_franchises = \common\models\Franchise::find()->where(['status' => 10])->all();
-if ($get_franchises != NULL) {
-    foreach ($get_franchises as $get_franchise) {
-        $franchise[$get_franchise->id] = $get_franchise->first_name . ' ' . $get_franchise->first_name . '(' . $get_franchise->country0->country_name . ')';
-    }
-}
-
-$cities = [];
-$get_cities_query = \common\models\City::find()->where(['status' => 1, 'country' => $model->country]);
-$get_cities = $get_cities_query->all();
-if ($get_cities != NULL) {
-    foreach ($get_cities as $get_city) {
-        $cities[$get_city->id] = $get_city->name_en;
-    }
-}
-?>
 <div class="card-body events-form">
 
-    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
 
+    <?php $form = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
     <div class="row">
 
 
-        <div class="col-sm-4">
-
+        <div class="col-sm-12">
             <div class="form-group bmd-form-group">
-                <?= $form->field($model, 'store_id')->dropDownList($franchise, ['prompt' => 'Choose A Store', 'class' => 'form-control ']); ?>
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="form-group bmd-form-group">
-                <?= $form->field($model, 'title_en')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'title')->textInput(['maxlength' => true]) ?>
 
             </div>
         </div>
 
-        <div class="col-sm-4">
+        <div class="col-sm-12">
             <div class="form-group bmd-form-group">
-                <?= $form->field($model, 'title_ar')->textInput(['maxlength' => true]) ?>
+                <?= $form->field($model, 'short_description')->textarea(['rows' => 6]) ?>
 
             </div>
         </div>
 
-        <div class="col-sm-6">
+        <div class="col-sm-12">
             <div class="form-group bmd-form-group">
-                <?= $form->field($model, 'description_en')->textarea(['rows' => 6]) ?>
+                <?= $form->field($model, 'long_description')->textarea(['rows' => 6]) ?>
 
             </div>
         </div>
 
-        <div class="col-sm-6">
-            <div class="form-group bmd-form-group">
-                <?= $form->field($model, 'description_ar')->textarea(['rows' => 6]) ?>
-
-            </div>
-        </div>
-        <?php
-        if (!$model->isNewRecord) {
-            $model->date_time = date('Y-m-d', strtotime($model->date_time)) . "T" . date('H:i', strtotime($model->date_time));
-        }
-        ?>
-        <div class="col-sm-4">
-            <div class="form-group bmd-form-group">
-                <?= $form->field($model, 'date_time')->textInput(['type' => 'datetime-local']) ?>
-
-            </div>
-        </div>
-        <div class="col-sm-4">
-            <div class="form-group bmd-form-group">
-                <?= $form->field($model, 'status')->dropDownList(['1' => 'Yes', '0' => 'No'], ['prompt' => 'Select Status']) ?>
-            </div>
-        </div>
-
-        <div class="col-sm-4">
-            <div class="form-group bmd-form-group">
-                <?= $form->field($model, 'sort_order')->textInput(['value' => '0']) ?>
-
-            </div>
-        </div>
-
-        <div class="col-sm-3">
-            <div class="form-group bmd-form-group">
-                <?= $form->field($model, 'country')->dropDownList(ArrayHelper::map(\common\models\Country::find()->all(), 'id', 'country_name'), ['prompt' => '', 'class' => 'form-control select_event_country']); ?>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="form-group bmd-form-group">
-                <?= $form->field($model, 'city')->dropDownList($cities, ['prompt' => 'Select City', 'class' => 'form-control select_city']); ?>
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="form-group bmd-form-group">
-                <?= $form->field($model, 'place')->textInput() ?>
-
-            </div>
-        </div>
-        <div class="col-sm-3">
-            <div class="form-group bmd-form-group">
-                <?= $form->field($model, 'place_ar')->textInput() ?>
-
-            </div>
-        </div>
-        <div class="col-sm-6">
+        <div class="col-sm-12">
             <div class="form-group bmd-form-group">
                 <div id="imagePriview">
                     <?php
-                    if (isset($model->id) && $model->id > 0 && isset($model->file) && $model->file !== "") {
-                        $imgPath = ((yii\helpers\Url::base())) . '/../uploads/events/' . $model->id . '/file/' . $model->file;
-                        echo '<a target="new" href="' . $imgPath . '">View File</a>';
+                    if (isset($model->id) && $model->id > 0 && isset($model->image) && $model->image !== "") {
+                        $imgPath = ((yii\helpers\Url::base())) . '/../uploads/events/' . $model->id . '/image/' . $model->image;
+                    } else {
+                        $imgPath = Yii::$app->request->baseUrl . '/img/no-image.jpg';
                     }
+                    echo '<img width="125" style="border: 2px solid #d2d2d2;" src="' . $imgPath . '" />';
                     ?>
                 </div>
-                <br/>
+                <br />
                 <?php
-                echo '<label class="control-label">Upload File (Image/Video)</label>';
+                echo '<label class="control-label">Upload category Image</label>';
                 echo FileInput::widget([
                     'model' => $model,
-                    'attribute' => 'file',
+                    'attribute' => 'image',
                     'options' => [
-//                        'multiple' => true
+                        //                        'multiple' => true
                         'id' => 'input-2',
                     ],
                     'pluginOptions' => [
                         'showUpload' => false,
-                        'allowedFileExtensions' => ['jpg', 'jpeg', 'png', 'MP4', 'MPEG-4', 'gif'],
-                    ],
+                        'allowedFileExtensions' => ['jpg', 'jpeg', 'png'],
+                    ]
                 ]);
                 ?>
                 <span class="bmd-help"><?= Html::activeHint($model, 'image'); ?></span>
-
             </div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-12">
             <div class="form-group bmd-form-group">
                 <div id="imagePriview">
                     <?php
@@ -165,7 +92,7 @@ if ($get_cities != NULL) {
                     ?>
                     <div class="clearfix"></div>
                 </div>
-                <br/>
+                <br />
                 <?php
                 echo '<label class="control-label">Upload Business Gallery (If any)</label>';
                 echo FileInput::widget([
@@ -178,11 +105,6 @@ if ($get_cities != NULL) {
                     'pluginOptions' => [
                         'showUpload' => false,
                         'allowedFileExtensions' => ['jpg', 'jpeg', 'png'],
-                        'showPreview' => true,
-                        'showCaption' => false,
-                        'showRemove' => true,
-                        'overwriteInitial' => false,
-                        'maxFileSize' => 2800
                     ]
                 ]);
                 ?>
@@ -191,7 +113,23 @@ if ($get_cities != NULL) {
             </div>
         </div>
 
+        <div class="col-sm-12">
+            <div class="form-group bmd-form-group">
+                <?= $form->field($model, 'status')->dropDownList(['1' => 'Enable', '0' => 'Disable']) ?>
 
+            </div>
+        </div>
+
+       
+
+        <div class="col-sm-12">
+            <div class="form-group bmd-form-group">
+                <?= $form->field($model, 'sort_order')->textInput() ?>
+
+            </div>
+        </div>
+
+        
     </div>
 
     <div class="card-footer ml-auto mr-auto">
@@ -202,17 +140,3 @@ if ($get_cities != NULL) {
     <?php ActiveForm::end(); ?>
 
 </div>
-
-
-<?php
-$this->registerJs(<<< EOT_JS_CODE
-        $(document).ready(function(){
-          $(function () {
-          //   $('#events-date_time').datetimepicker();
-         });
-        });
-
-
-EOT_JS_CODE
-);
-?>

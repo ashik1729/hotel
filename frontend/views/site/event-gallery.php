@@ -19,7 +19,7 @@ use yii\helpers\ArrayHelper;
 							$images = explode(',', $model->gallery);
 							if ($images != NULL) {
 								foreach ($images as $image) {
-									$result_url = Yii::$app->request->baseUrl . '/uploads/accomodation/' . $model->id . '/gallery/' . $image;
+									$result_url = Yii::$app->request->baseUrl . '/uploads/events/' . $model->id . '/gallery/' . $image;
 						?>
 									<div class="gallery-item wow fadeInUp" data-wow-delay="300ms">
 										<a rel="lightbox-demo" href="<?= $result_url; ?>">

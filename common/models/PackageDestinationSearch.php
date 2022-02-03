@@ -4,12 +4,12 @@ namespace common\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\Events;
+use common\models\PackageDestination;
 
 /**
- * EventsSearch represents the model behind the search form of `common\models\Events`.
+ * PackageDestinationSearch represents the model behind the search form of `common\models\PackageDestination`.
  */
-class EventsSearch extends Events
+class PackageDestinationSearch extends PackageDestination
 {
     /**
      * {@inheritdoc}
@@ -17,8 +17,8 @@ class EventsSearch extends Events
     public function rules()
     {
         return [
-            [['id', 'status', 'sort_order'], 'integer'],
-            [['title', 'short_description', 'long_description', 'image', 'gallery', 'can_name'], 'safe'],
+            [['id', 'status'], 'integer'],
+            [['title', 'created_at'], 'safe'],
         ];
     }
 
@@ -40,7 +40,7 @@ class EventsSearch extends Events
      */
     public function search($params)
     {
-        $query = Events::find();
+        $query = PackageDestination::find();
 
         // add conditions that should always apply here
 
@@ -60,15 +60,10 @@ class EventsSearch extends Events
         $query->andFilterWhere([
             'id' => $this->id,
             'status' => $this->status,
-            'sort_order' => $this->sort_order,
+            'created_at' => $this->created_at,
         ]);
 
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'short_description', $this->short_description])
-            ->andFilterWhere(['like', 'long_description', $this->long_description])
-            ->andFilterWhere(['like', 'image', $this->image])
-            ->andFilterWhere(['like', 'gallery', $this->gallery])
-            ->andFilterWhere(['like', 'can_name', $this->can_name]);
+        $query->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;
     }

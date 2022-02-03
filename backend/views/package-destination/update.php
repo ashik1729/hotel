@@ -1,17 +1,19 @@
+
 <?php
 
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\Events */
+/* @var $model common\models\PackageDestination */
 
-$this->title = 'Create Events';
-$this->params['breadcrumbs'][] = ['label' => 'Events', 'url' => ['index']];
-$this->params['breadcrumbs'][] = $this->title;
+$this->title = 'Update Package Destination: ' . $model->title;
+$this->params['breadcrumbs'][] = ['label' => 'Package Destinations', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $model->title, 'url' => ['view', 'id' => $model->id]];
+$this->params['breadcrumbs'][] = 'Update';
 ?>
 
 
-<div class="content events-create">
+<div class="content package-destination-create">
 
     <div class="container-fluid">
         <div class="card ">
@@ -20,7 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <i class="material-icons">account_box</i>
                 </div>
                 <h4 class="card-title">
-                    <?=  $model->isNewRecord ? 'Create Events' : 'Update Events';?>
+                    <?=  $model->isNewRecord ? 'Update Package Destination' : 'Update Package Destination';?>
                     <div class="pull-right">
 
                         <a class="btn btn-xs btn-success btn-round btn-fab" href="index" rel="tooltip" data-placement="bottom" data-original-title="Back"><b class="material-icons">keyboard_arrow_left</b><div class="ripple-container"></div></a>
@@ -34,4 +36,3 @@ $this->params['breadcrumbs'][] = $this->title;
         </div>
     </div>
 </div>
-
