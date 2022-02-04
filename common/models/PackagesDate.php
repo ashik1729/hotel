@@ -32,7 +32,7 @@ class PackagesDate extends \yii\db\ActiveRecord
         return [
             [['package_id', 'package_date','package_quantity'], 'required'],
             [['package_id', 'package_quantity'], 'integer'],
-            [['package_date', 'created_date', 'updated_date'], 'safe'],
+            [['package_date', 'created_date', 'updated_date','id','package_id'], 'safe'],
         ];
     }
 

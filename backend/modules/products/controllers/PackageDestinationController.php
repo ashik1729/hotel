@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\controllers;
+namespace backend\modules\products\controllers;
 
 use Yii;
 use common\models\PackageDestination;

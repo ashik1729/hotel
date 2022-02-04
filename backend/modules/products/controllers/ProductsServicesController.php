@@ -170,18 +170,6 @@ class ProductsServicesController extends Controller {
             }
 
         }
-
-     //echo '<pre/>';print_r($package);exit;
-
-       
-		
-// $command = $query->createCommand();
-// $data = $command->queryAll();
-
-        // $package_details = $packagedQuery->all();
-        // echo '<pre/>';print_r($package_date);exit;
-      
-       
         return $this->render('view', [
                     'model' => $this->findModel($id),
                     'package' => $package
