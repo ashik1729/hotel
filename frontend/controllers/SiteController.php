@@ -116,7 +116,7 @@ class SiteController extends Controller
         $model = CmsContent::findOne(['page_id' => 'visa']);
         $visas = Visa::find()->where(['status' => 1])->all();
 
-        return $this->render('visa', ['model' => $model, 'visa  s' => $visas]);
+        return $this->render('visa', ['model' => $model, 'visas' => $visas]);
     }
     public function actionVisaDetails()
     {

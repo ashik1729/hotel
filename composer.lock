@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ef988b3e7258e72f0015b7ac8158618",
+    "content-hash": "0e20d9af40209d8d76cc900c9ec5060d",
     "packages": [
         {
             "name": "2amigos/yii2-ckeditor-widget",
@@ -106,6 +106,22 @@
             "license": [
                 "http://opensource.org/licenses/mit-license.php"
             ]
+        },
+        {
+            "name": "bower-asset/instafeed.js",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "git@github.com:stevenschobert/instafeed.js.git",
+                "reference": "22cdc482a2a01aaa59437c0476e7e7570a026a22"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/stevenschobert/instafeed.js/zipball/22cdc482a2a01aaa59437c0476e7e7570a026a22",
+                "reference": "22cdc482a2a01aaa59437c0476e7e7570a026a22"
+            },
+            "type": "bower-asset",
+            "time": "2021-05-31T17:14:18+00:00"
         },
         {
             "name": "bower-asset/jquery",
@@ -1575,6 +1591,57 @@
                 }
             ],
             "time": "2021-02-15T16:11:48+00:00"
+        },
+        {
+            "name": "nirvana-msu/yii2-instafeed",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nirvana-msu/yii2-instafeed.git",
+                "reference": "0a3a7b12daf619dc35ba52dab55f705191997cc9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nirvana-msu/yii2-instafeed/zipball/0a3a7b12daf619dc35ba52dab55f705191997cc9",
+                "reference": "0a3a7b12daf619dc35ba52dab55f705191997cc9",
+                "shasum": ""
+            },
+            "require": {
+                "bower-asset/instafeed.js": "*",
+                "yiisoft/yii2": "*"
+            },
+            "type": "yii2-extension",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "nirvana\\instafeed\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Stepanov",
+                    "email": "student_vmk@mail.ru"
+                }
+            ],
+            "description": "Yii2 extension for instafeed Instagram javascript plugin",
+            "keywords": [
+                "instafeed",
+                "instagram",
+                "javascript",
+                "plugin",
+                "widget",
+                "yii2"
+            ],
+            "abandoned": true,
+            "time": "2016-07-29T22:22:23+00:00"
         },
         {
             "name": "npm-asset/bootstrap",
@@ -7181,7 +7248,8 @@
         "imagine/imagine": 20,
         "yiisoft/yii2-bootstrap4": 20,
         "kartik-v/yii2-widget-select2": 20,
-        "yiisoft/yii2-elasticsearch": 20
+        "yiisoft/yii2-elasticsearch": 20,
+        "nirvana-msu/yii2-instafeed": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

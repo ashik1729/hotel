@@ -49,7 +49,7 @@
 						<div class="package-more-info">
 							<ul>
 								<?php
-								$$packageDates = PackagesDate::find()->where(['package_date' => date('Y-m-d'), 'package_id' => $model->id])->one();
+								$packageDates = PackagesDate::find()->where(['package_date' => date('Y-m-d'), 'package_id' => $model->id])->one();
 								if ($packageDates != NULL) {
 									$getPrices = PackagesPrice::find()->where(['package_date_id' => $packageDates->id])->all();
 									if ($getPrices != NULL) { ?>

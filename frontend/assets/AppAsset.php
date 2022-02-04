@@ -30,7 +30,7 @@ class AppAsset extends AssetBundle {
         'js/wow.min.js',
         'js/jquery.fittext.js',
         'css/bootstrap@5.0.2/js/bootstrap.bundle.min.js', 
-        'js/instafeed.js',
+        // 'js/instafeed.js',
         'js/developer.js',
     ];
     public $depends = [

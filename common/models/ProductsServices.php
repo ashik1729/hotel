@@ -63,7 +63,7 @@ class ProductsServices extends \yii\db\ActiveRecord {
             [['price', 'discount_rate'], 'number'],
             [['gallery','short_description_en', 'long_description_en'], 'string'],
             [['id', 'created_at', 'updated_at', 'created_at', 'field', 'canonical_name', 'updated_at', 'short_description_en', 'short_description_ar', 'long_description_en','meta_title', 'meta_description', 'meta_keywords',
-                'sort_order', 'image', 'gallery', 'package_title','overview','packaage_organize','destination'], 'safe'],
+                'sort_order', 'image', 'gallery', 'package_title','overview','packaage_organize'], 'safe'],
             
             [['package_title', 'canonical_name', 'meta_title'], 'string', 'max' => 255],
             [['image'], 'string', 'max' => 100],
