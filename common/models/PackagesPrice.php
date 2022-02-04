@@ -10,7 +10,7 @@ use Yii;
  * @property int $id
  * @property int $package_id
  * @property string $package_date_id
- * @property int|null $min_person
+ * @property int|null $min_person[]
  * @property int|null $max_person
  * @property float|null $price
  * @property string $created_at
@@ -34,7 +34,7 @@ class PackagesPrice extends \yii\db\ActiveRecord
         return [
             [['package_id', 'package_date_id', 'created_at', 'updated_at'], 'required'],
             [['package_id', 'min_person', 'max_person'], 'integer'],
-            [['package_date_id', 'created_at', 'updated_at'], 'safe'],
+            [['package_date_id', 'created_at', 'updated_at','package_id'], 'safe'],
             [['price'], 'number'],
         ];
     }

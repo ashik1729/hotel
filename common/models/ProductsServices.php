@@ -218,7 +218,7 @@ class ProductsServices extends \yii\db\ActiveRecord {
      * @return \yii\db\ActiveQuery
      */
     public function getPackageDate() {
-        return $this->hasMany(PackagesDate::className(), ['package_id' => 'id']);
+        return $this->hasOne(PackagesDate::className(), ['package_id' => 'id']);
     }
 
     public function getCarts() {
