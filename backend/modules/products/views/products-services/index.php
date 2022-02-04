@@ -66,24 +66,8 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'filterModel' => $searchModel,
                                 'columns' => [
                                     ['class' => 'yii\grid\SerialColumn'],
-                                /*    [
-                                        'attribute' => 'image',
-                                        'header' => 'Image',
-                                        'value' => function($model) {
-                                            if ($model->image != "") {
-                                                $imgPath = Yii::$app->ManageRequest->getImage($model);
-                                            } else {
-                                                $imgPath = Yii::$app->request->baseUrl . '/img/no-image.jpg';
-                                            }
-                                            return $imgPath;
-                                        },
-                                        'format' => ['image', ['width' => '80', 'height' => '80']],
-                                    ], */
                                     'id',
                                     'package_title',
-//                                    'category_id',
-                                    // 'sku',
-                                    // 'title',
                                     [
                                         'attribute' => 'category_id',
                                         'header' => 'Category',
@@ -143,51 +127,6 @@ $this->params['breadcrumbs'][] = $this->title;
                                         'format' => 'html',
                                         'visible' => \Yii::$app->user->identity->interface != 'merchant' ? true : false
                                     ], 
-                                /*     [
-                                        'attribute' => 'store',
-                                        'label' => 'Store(Franchise)',
-                                        'filter' => Html::activeDropDownList($searchModel, 'store', $get_franchise, ['class' => 'form-control ashik ', 'prompt' => 'All']),
-                                        'value' => function($model) {
-                                            return "<span style=' text-transform: capitalize'>" . $model->merchant->franchise->first_name . ' ' . $model->merchant->franchise->last_name . '(' . $model->merchant->franchise->country0->country_name . ')' . "</span>";
-                                        },
-                                        'format' => 'html',
-                                    ], */
-                                    //'canonical_name',
-                                    //'image',
-                                    //'gallery:ntext',
-                                    //'sort_order',
-                                    //'price',
-                                    //'discount_type',
-                                    //'discount_rate',
-                                    //'requires_shipping',
-                                    //'new_from',
-                                    //'new_to',
-                                    //'sale_from',
-                                    //'sale_to',
-                                    //'discount_from',
-                                    //'discount_to',
-                                    //'search_tag:ntext',
-                                    //'related_products:ntext',
-                                    //'stock_availability',
-                                    //'is_featured',
-                                    //'is_admin_approved',
-                                    //'created_at',
-                                    //'updated_at',
-                                    //'updated_by',
-                                    //'created_by',
-                                    //'status',
-                                    //'meta_title',
-                                    //'meta_description:ntext',
-                                    //'meta_keywords:ntext',
-                                    //'tax_applicable',
-                                    //'tax_amount',
-                                    //'min_quantity',
-                                    //'quantity',
-                                    //'weight_class',
-                                    //'weight',
-                                    //'short_description:ntext',
-                                    //'long_description:ntext',
-                                    //'type',
                                     
                                     [
                                         'header' => \Yii::t('app', 'Actions'),
@@ -197,18 +136,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                         ],
                                         'template' => '{popup}{view} {update} {delete}',
                                         'buttons' => [
-                                           /* 'popup' => 
-                                                        function ($model)  {
-                                                            
-                                                            return Html::tag('span', '<i class="fa fa-sliders"></i>', ['class'=>'label ','data-toggle'=>"modal",
-                                                            'data-target'=>"#package_content", 'data-id'=>'1', 'data-ds'=>'123']);
-                                                        }, */
                                             'popup' => function ($url, $model) {
 
                                                     return Html::a(
-                                                        '<i class="fa fa-sliders add_pkg_content"></i>', \yii\helpers\Url::to(['packages-date/save-package-date-price', 'id' => $model->id]), [
+                                                       // '<i class="fa fa-sliders add_pkg_content"></i>', \yii\helpers\Url::to(['packages-date/save-package-date-price', 'id' => $model->id]), [
 //                                                            'rel' => "tooltip",
 //                                                            'data-original-title' => 'View this user',
+                                                    '<i class="fa fa-sliders add_pkg_content"></i>', \yii\helpers\Url::to(['packages-date/list-package-details', 'id' => $model->id]), [
                                                     'data-placement' => 'top',
                                                     'style' => 'margin-right: 10px'
                                                         ]

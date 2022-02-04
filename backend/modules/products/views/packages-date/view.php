@@ -25,34 +25,13 @@ use yii\helpers\StringHelper;
                         <?= Html::encode('Packages Dates')?>
 
                         <div class="pull-right">
-                            <?=                             Html::a(Html::tag('b', 'keyboard_arrow_left', ['class' => 'material-icons']), ['index'], [
-                            'class' => 'btn btn-xs btn-success btn-round btn-fab',
-                            'rel' => "tooltip",
-                            'data' => [
-                            'placement' => 'bottom',
-                            'original-title' => 'Back'
-                            ],
-                            ])
-                            ?>
-                            <?=                             Html::a(Html::tag('b', 'create', ['class' => 'material-icons']), ['update', 'id' => $model->id], [
-                            'class' => 'btn btn-xs btn-success btn-round btn-fab',
-                            'rel' => "tooltip",
-                            'data' => [
-                            'placement' => 'bottom',
-                            'original-title' => 'Edit User'
-                            ],
-                            ])
-                            ?>
-                            <?=                             Html::a(Html::tag('b', 'delete', ['class' => 'material-icons']), ['delete', 'id' => $model->id], [
-                            'class' => 'btn btn-xs btn-danger btn-round btn-fab',
-                            'rel' => "tooltip",
-                            'onclick' => "return confirm('Are you sure you want to delete this item?')",
-                            'data' => [
-                            'confirm' => \Yii::t('app', 'Are you sure you want to delete this item?'),
-                            'method' => 'post',
-                            'placement' => 'bottom',
-                            'original-title' => 'Delete User'
-                            ],
+                            <?=  Html::a(Html::tag('b', 'keyboard_arrow_left', ['class' => 'material-icons']), ['index'], [
+                                'class' => 'btn btn-xs btn-success btn-round btn-fab',
+                                'rel' => "tooltip",
+                                'data' => [
+                                'placement' => 'bottom',
+                                'original-title' => 'Back'
+                                ],
                             ])
                             ?>
                         </div>
@@ -64,11 +43,11 @@ use yii\helpers\StringHelper;
                     'model' => $model,
                     'attributes' => [
                                 'id',
-            'package_id',
-            'package_date',
-            'package_quantity',
-            'created_at',
-            'updated_at',
+                    'package_id',
+                    'package_date',
+                    'package_quantity',
+                    'created_at',
+                    'updated_at',
                     ],
                     ]) ?>
 

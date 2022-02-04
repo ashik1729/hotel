@@ -32,8 +32,7 @@ $this->params['breadcrumbs'][] = 'Update';
 
             <?= $this->render('_form', [
             'model' => $model,
-            'pkg_price' => $pkg_price,
-            'package_id' => $package_id
+            'pkg_price' => $pkg_price
             ]) ?>
         </div>
     </div>

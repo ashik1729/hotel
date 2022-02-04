@@ -5,6 +5,7 @@ namespace backend\modules\products\controllers;
 use Yii;
 use common\models\PackagesDate;
 use common\models\PackagesDateSearch;
+use common\models\PackagesPriceSearch;
 use common\models\PackagesPrice;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -112,7 +113,7 @@ class PackagesDateController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate()
+    public function actionCreate($pkg_id)
     {
         $model = new PackagesDate();
         $pkg_price   = new PackagesPrice();
@@ -126,7 +127,7 @@ class PackagesDateController extends Controller
         return $this->render('create', [
             'model'        => $model,
             'pkg_price'    => $pkg_price,
-            'package_id'   => $package_id
+            'pkg_id'       => $pkg_id
         ]);
     }
 
@@ -137,16 +138,18 @@ class PackagesDateController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionUpdate($id)
+    public function actionUpdate($pkgDateId,$pkgPrcId)
     {
-        $model = $this->findModel($id);
+        $model = $this->findModel($pkgDateId);
+        $pkg_price   = PackagesPrice::find()->where(['id' => $pkgPrcId])->one();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index', 'id' => $model->id]);
         }
 
         return $this->render('update', [
             'model' => $model,
+            'pkg_price'    => $pkg_price,
         ]);
     }
 
@@ -170,19 +173,35 @@ class PackagesDateController extends Controller
         $searchModel  = new PackagesDateSearch();
         $pkg_price    = new PackagesPrice();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $package_id = isset($_GET['id']) ? $_GET['id'] : 0;
+       
         $log = [];
         if ($model->load(Yii::$app->request->post())) {
-            if (isset($_GET['id'])) {
-                $model->package_id  = $package_id;
-            }
+            $package_details    = Yii::$app->request->post();
+            $package_data       = $package_details['PackagesPrice'];
+            $package_id         = isset($package_details['PackagesDate']['package_id'])?$package_details['PackagesDate']['package_id']:"0";
+            //echo '<pre/>';print_r(Yii::$app->request->post());exit;
+            if(isset($model->id)) {
+               $exst_data =  $model::find()->where(['id' => $model->id])->one();
+               $exst_data->package_quantity = $model->package_quantity;
+               $exst_data->updated_at = date('Y-m-d H:i:s');
+               if($exst_data->save()) {
+                    $exst_pkg_prc =  $pkg_price::find()->where(['package_date_id' => $model->id])->one();
+                    $exst_pkg_prc->min_person  = isset($package_data['min_person'])?$package_data['min_person']:"0";
+                    $exst_pkg_prc->max_person  = isset($package_data['max_person'])?$package_data['max_person']:"0";
+                    $exst_pkg_prc->price       = isset($package_data['price'])?$package_data['price']:"0";
+                    $exst_pkg_prc->updated_at  = date('Y-m-d H:i:s');
+                    $exst_pkg_prc->save();
+                   // $exst_pkg_prc_data->min_person = 
+               }
+
+            } else {       
             $model->created_at = date('Y-m-d H:i:s');
             $model->updated_at = date('Y-m-d H:i:s');
-
+            
             if ($model->save()) {
                 $pkg_date_id        = $model->id;
-                $package_details    = Yii::$app->request->post();
-                $package_data = $package_details['PackagesPrice'];
+              
+               
                 if (isset($package_data['min_person'])) {
                     $min_pern_data = $package_data['min_person'];
                     $max_per_data  = isset($package_data['max_person']) ? $package_data['max_person'] : "";
@@ -194,28 +213,41 @@ class PackagesDateController extends Controller
                         $pkg_price->package_date_id = $pkg_date_id;
                         $pkg_price->min_person  = isset($min_pern_data[$i]) ? $min_pern_data[$i] : "";
                         $pkg_price->max_person  = isset($max_per_data[$i]) ? $max_per_data[$i] : "";
-                        $pkg_price->price       = isset($price[$i]) ? $price[$i] : "";
+                        $pkg_price->price       = isset($price[$i]) ? $price[$i] : "0";
                         $pkg_price->created_at  = date('Y-m-d H:i:s');
                         $pkg_price->updated_at  = date('Y-m-d H:i:s');
                         if ($pkg_price->save()) {
+                        } else {
+                            echo '<pre/>';print_r($pkg_price);
+                            echo '<pre/>';print_r($pkg_price->errors);exit;
                         }
                     }
                 }
+              
 
-                return $this->render('index', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider
-                ]);
             } else {
                 echo '<pre/>';
                 print_r($model->errors);
                 exit;
             }
         }
+        
+            return $this->redirect(Yii::$app->request->baseUrl.'/products/products-services');
+        }
         return $this->render('create', [
             'model'        => $model,
             'pkg_price'    => $pkg_price,
             'package_id'   => $package_id
+        ]);
+    }
+
+    public function actionListPackageDetails($id) {
+        $searchModel  = new PackagesPriceSearch();
+        $dataProvider = $searchModel->searchList(Yii::$app->request->queryParams,$id);
+      
+        return $this->render('pakage-details-list', [
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider
         ]);
     }
 
