@@ -19,6 +19,7 @@ class AppAsset extends AssetBundle {
         'css/style.css',
         'css/responsive.css',
         'css/developer.css',
+        'css/lib/main.css',
     ];
     public $js = [
         'https://kit.fontawesome.com/df7cb1b087.js',
@@ -31,6 +32,7 @@ class AppAsset extends AssetBundle {
         'js/jquery.fittext.js',
         'css/bootstrap@5.0.2/js/bootstrap.bundle.min.js', 
         // 'js/instafeed.js',
+        'css/lib/main.js',
         'js/developer.js',
     ];
     public $depends = [

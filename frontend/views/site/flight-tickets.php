@@ -107,8 +107,6 @@ $middleDataOne = CmsData::findOne(['page_id' => $model->id, 'can_name' => 'fligh
 										<!-- <input type="number" class="input-number__input form-control2 form-control-lg" min="1" max="100" step="1" value="1"> -->
 
 										<?= $form->field($flgihtRequest, 'no_adult')->textInput(['maxlength' => true, 'min' => "1", "max" => 1, "value" => 1, "step" => 1, 'class' => 'input-number__input form-control2 form-control-lg', 'type' => 'number'])->label(false) ?>
-
-										<input type="number" class="input-number__input form-control2 form-control-lg" min="1" max="100" step="1" value="1">
 										<a class="btn btn-quantity-up">
 											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus">
 												<line x1="12" y1="5" x2="12" y2="19"></line>
@@ -166,5 +164,3 @@ $middleDataOne = CmsData::findOne(['page_id' => $model->id, 'can_name' => 'fligh
 		</div>
 	</div>
 </section>
-
-

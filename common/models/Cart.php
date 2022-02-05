@@ -38,7 +38,7 @@ class Cart extends \yii\db\ActiveRecord {
             [['user_id', 'product_id', 'quantity', 'status'], 'required', 'on' => 'create_cart'],
             [['product_id', 'quantity', 'status'], 'required', 'on' => 'admin_create_cart'],
             [['user_id', 'product_id', 'quantity', 'created_by', 'updated_by', 'status'], 'integer'],
-            [['created_by', 'created_at', 'updated_by', 'updated_at', 'created_by_type', 'updated_by_type', 'date', 'booking_slot', 'options', 'session_id'], 'safe'],
+            [['created_by', 'created_at', 'updated_by', 'updated_at', 'created_by_type', 'updated_by_type', 'date', 'booking_slot', 'options', 'session_id','no_adults','no_children','price','coupon_code','coupon_price'], 'safe'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductsServices::className(), 'targetAttribute' => ['product_id' => 'id']],
             ['options', 'checkAttributeSelect'],

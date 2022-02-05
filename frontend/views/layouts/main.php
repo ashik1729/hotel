@@ -39,6 +39,21 @@ AppAsset::register($this);
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+
+    <script type="text/javascript">
+            var baseurl = "<?php print \yii\helpers\Url::base(); ?>";
+
+            var basepath = "<?php print \yii\helpers\Url::base(); ?>";
+
+            var slug = function (str) {
+                var $slug = '';
+                var trimmed = $.trim(str);
+                $slug = trimmed.replace(/[^a-z0-9-]/gi, '-').
+                        replace(/-+/g, '-').
+                        replace(/^-|-$/g, '');
+                return $slug.toLowerCase();
+            };
+        </script>
 </head>
 
 <body>
@@ -140,13 +155,13 @@ AppAsset::register($this);
 
 <?php
 
-echo Instafeed::widget([
-    'pluginOptions' => [
-        'get' => 'user',
-        'userId' => '49836101753',     // your Instagram account id, not username!
-        'accessToken' => 'IGQVJYRG9kclk5THJrXzI0VXhCTlpiWU5HRVZAVMmN4bFRFM0NmYkktYjZAMbjFpMGtvOTVjQ3dyckdDQkE3bzVzRTNiMFNRVElwMVZAqdzc3LWF5TUdDNlp3eUZA5TDgzUjZAtalVMZAXpCcUs2em5RRlpTdAZDZD',
-    ],
-]);
+// echo Instafeed::widget([
+//     'pluginOptions' => [
+//         'get' => 'user',
+//         'userId' => '49836101753',     // your Instagram account id, not username!
+//         'accessToken' => 'IGQVJYRG9kclk5THJrXzI0VXhCTlpiWU5HRVZAVMmN4bFRFM0NmYkktYjZAMbjFpMGtvOTVjQ3dyckdDQkE3bzVzRTNiMFNRVElwMVZAqdzc3LWF5TUdDNlp3eUZA5TDgzUjZAtalVMZAXpCcUs2em5RRlpTdAZDZD',
+//     ],
+// ]);
 ?>
     <footer>
         <div class="container">

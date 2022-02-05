@@ -182,3 +182,68 @@ $(".period").change(function() {
 
     $("#time_sort").submit();
 });
+
+function calculcateData() {
+    var no_adults = $(".no_adult_data").val();
+    $.ajax({
+
+        url: basepath + "/calculate-price",
+
+        type: "POST",
+
+        data: { no_adults: no_adults, package_id: package_id, date: date },
+
+        success: function(data) {
+            var obj = JSON.parse(data);
+            if (obj.status == 200) {
+                $(".subtotal").html(obj.subtotal);
+                $(".total").html(obj.total);
+            } else {
+                $('.displayError').html("Something Went Wrong");
+            }
+
+            //location.reload();
+        },
+
+        error: function() {
+
+            alert("Something went wrong. Please submit your form again");
+
+        }
+
+    });
+}
+$(document).ready(function() {
+
+    calculcateData();
+    var html = $('.travel_data').html();
+    $(".adult_up").click(function() {
+        $('.travel_data').append(html);
+        $('.item_data').each(function() {
+            var index = $(this).index();
+            var postion = Number(index) + 1;
+            $(this).find('.row_count').html(postion);
+
+        });
+        calculcateData();
+
+    });
+    $(".adult_down").click(function() {
+        $(".item_data").last().remove();
+        $('.item_data').each(function() {
+            var index = $(this).index();
+            var postion = Number(index) + 1;
+            $(this).find('.row_count').html(postion);
+
+        });
+    });
+    $(document.body).on("click", ".delete_data", function() {
+        $(this).closest(".item_data").remove();
+        $('.item_data').each(function() {
+            var index = $(this).index();
+            var postion = Number(index) + 1;
+            $(this).find('.row_count').html(postion);
+
+        });
+    });
+});

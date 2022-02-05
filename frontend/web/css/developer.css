@@ -69,3 +69,24 @@
     margin-bottom: 40px !important;
     margin-top: 40px !important;
 }
+
+
+/* .package__form-travel {
+    margin: 20px 0 0 0;
+    padding: 20px 60px 10px 20px;
+    border-radius: 10px;
+    background: #ededed;
+    position: relative;
+    display: flex !important;
+    justify-content: space-between !important;
+} */
+
+.package__form-travel .show-more-btn {
+    position: unset !important;
+    bottom: 30px;
+    right: 20px;
+}
+
+p:first-child {
+    display: none;
+}

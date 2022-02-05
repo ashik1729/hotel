@@ -4,8 +4,10 @@ namespace frontend\controllers;
 
 use common\models\Accomodation;
 use common\models\AccomodationRequest;
+use common\models\BookingTravellers;
 use common\models\Brands;
 use common\models\Cars;
+use common\models\Cart;
 use common\models\Category;
 use common\models\CmsContent;
 use common\models\Enquiry;
@@ -23,6 +25,9 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use common\models\LoginForm;
 use common\models\PackageDestination;
+use common\models\PackagesDate;
+use common\models\PackagesPrice;
+use common\models\ProductReview;
 use common\models\ProductsServices;
 use common\models\RentalEnquiry;
 use common\models\TypeOfCar;
@@ -80,36 +85,178 @@ class SiteController extends Controller
      */
     public function actionPackages()
     {
-        $query = ProductsServices::find()->where(['status'=>1]);
+        $query = ProductsServices::find()->where(['status' => 1]);
         if (isset($_REQUEST['search_key']) && $_REQUEST['search_key'] != "") {
             $query->andWhere(['LIKE', 'package_title', $_REQUEST['search_key']]);
             $query->orWhere(['LIKE', 'short_description_en', $_REQUEST['search_key']]);
             $query->orWhere(['LIKE', 'long_description_en', $_REQUEST['search_key']]);
         }
         if (isset($_REQUEST['destination']) && $_REQUEST['destination'] != "") {
-            $query->andWhere(['destination'=> $_REQUEST['destination']]);
+            $query->andWhere(['destination' => $_REQUEST['destination']]);
         }
         if (isset($_REQUEST['category']) && $_REQUEST['category'] != "") {
-            $query->andWhere(['category_id'=> $_REQUEST['category']]);
+            $query->andWhere(['category_id' => $_REQUEST['category']]);
         }
         $packages = $query->all();
-        $destinations = PackageDestination::find()->where(['status'=>1])->all();
-        $cateory = Category::find()->where(['status'=>1])->all();
+        $destinations = PackageDestination::find()->where(['status' => 1])->all();
+        $cateory = Category::find()->where(['status' => 1])->all();
         $model = CmsContent::findOne(['page_id' => 'packages']);
         return $this->render(
             'packages',
             [
                 'model' => $model,
-                'packages'=>$packages,
-                'destinations'=>$destinations,
-                'cateory'=>$cateory
+                'packages' => $packages,
+                'destinations' => $destinations,
+                'cateory' => $cateory
             ]
         );
     }
     public function actionPackageDetails()
     {
         $model = ProductsServices::findOne(['canonical_name' => $_GET['can'], 'status' => 1]);
-        return $this->render('package-details',['model'=>$model]);
+        $packageReviews = ProductReview::find()->where(['review_type' => 1, 'review_for_id' => $model->id, 'approvel' => 1])->all();
+        return $this->render('package-details', ['model' => $model, 'packageReviews' => $packageReviews]);
+    }
+    public function actionCart()
+    {
+        $models = Cart::find()->where(['user_id' => Yii::$app->user->id, 'status' => 1])->all();
+
+        if (!Yii::$app->user->isGuest) {
+            return $this->render('cart', ['models' => $models]);
+        } else {
+            return  $this->redirect(['index']);
+        }
+    }
+    public function actionDeleteCart($id)
+    {
+        if (!Yii::$app->user->isGuest) {
+            $getCart = Cart::findOne(['id' => $id, 'user_id' => Yii::$app->user->id]);
+            if ($getCart != NULL) {
+                if ($getCart->delete()) {
+                    Yii::$app->session->setFlash('success', "Package Deleted Successfully.");
+                } else {
+                    Yii::$app->session->setFlash('error', "Following Error While Delete to your package." . json_encode($getCart->errors));
+                }
+            } else {
+                Yii::$app->session->setFlash('error', "Invlaid cart Info");
+            }
+
+            return  $this->redirect(['cart']);
+        } else {
+            return  $this->redirect(['index']);
+        }
+    }
+    public function actionBookPackage()
+    {
+        $model = ProductsServices::findOne(['canonical_name' => $_GET['can'], 'status' => 1]);
+        $cart = new Cart();
+        if ($cart->load(Yii::$app->request->post())) {
+            if (!Yii::$app->user->isGuest) {
+                $checkCart = Cart::find()->where(['user_id'=>Yii::$app->user->id,'date'=>$_POST['Cart']['date'],'product_id'=>$model->id])->one();
+                if($checkCart != NULL){
+                    $cart = $checkCart;
+                }
+                $cart->id = strtoupper(uniqid('HCCA'));
+                $cart->user_id = Yii::$app->user->id;
+                $cart->product_id = $model->id;
+                $cart->quantity = 1;
+                $cart->status = 1;
+                if ($cart->save()) {
+                    Yii::$app->session->setFlash('success', "Package Added  Successfully.");
+                    return  $this->redirect(['book-package-details/' . $cart->id]);
+                } else {
+                    Yii::$app->session->setFlash('error', "Following Error While Adding to your package." . json_encode($cart->errors));
+                    return  $this->redirect(['book-package/' . $_GET['can']]);
+                }
+            } else {
+                Yii::$app->session->setFlash('error', "Please Login before making Booking request.");
+                return  $this->redirect(['book-package/' . $_GET['can']]);
+            }
+        }
+        return $this->render('book-package', ['model' => $model, 'cart' => $cart]);
+    }
+    public function actionCalculatePrice()
+    {
+        $request = Yii::$app->request;
+        if ($request->isAjax) {
+            $no_adults = $_POST['no_adults'];
+            $package_id = $_POST['package_id'];
+            $date = $_POST['date'];
+            $package = ProductsServices::find()->where(['id' => $package_id])->one();
+            $result = [];
+            $result['status'] = 400;
+            if ($package != NULL) {
+                $packageDate = PackagesDate::find()->where(['package_date' => $date, 'package_id' => $package_id])->one();
+                if ($packageDate != NULL) {
+                    $packagePrice = \common\models\PackagesPrice::find()->where(['package_date_id' => $packageDate])->andWhere("min_person <= '" . $no_adults . "' AND max_person >= '" . $no_adults . "' ")->one();
+                    if ($packagePrice != NULL) {
+                        $totalPrice = $no_adults * $packagePrice->price;
+                        $result['price'] = $packagePrice->price;
+                        $result['subtotal'] = "AED " . $totalPrice;
+                        $result['total'] = "AED " . $totalPrice;
+                        $result['status'] = 200;
+                        $result['message'] = "success";
+                    } else {
+                        $result['status'] = 201;
+                        $result['message'] = "Empty Price";
+                    }
+                } else {
+                    $result['status'] = 202;
+                    $result['message'] = "Empty Package Date";
+                }
+            } else {
+                $result['status'] = 202;
+                $result['message'] = "Empty Package";
+            }
+            echo json_encode($result);
+            exit;
+        }
+    }
+    public function actionBookPackageDetails()
+    {
+
+        $booking_travellers = new BookingTravellers();
+        $cart =  Cart::findOne(['id' => $_GET['cart_id'], 'user_id' => Yii::$app->user->id]);
+        if ($cart != NULL) {
+            $model = ProductsServices::findOne(['id' => $cart->product_id, 'status' => 1]);
+            if ($booking_travellers->load(Yii::$app->request->post())) {
+                if (!Yii::$app->user->isGuest) {
+                    if (isset($_POST['BookingTravellers']['first_name'])) {
+                        $transaction = Yii::$app->db->beginTransaction();
+                        $count = count($_POST['BookingTravellers']['first_name']);
+                        if ($count > 0) {
+                            $errors = [];
+                            for ($i = 0; $i < $count; $i++) {
+                                $booking_travellers->user_id = Yii::$app->user->id;
+                                $booking_travellers->cart_id = $$_GET['cart_id'];
+                                $booking_travellers->first_name = $_POST['BookingTravellers']['first_name'][$i];
+                                $booking_travellers->last_name = $_POST['BookingTravellers']['last_name'][$i];
+                                $booking_travellers->status = 1;
+                                if ($booking_travellers->save()) {
+                                } else {
+                                    $errors[] = $booking_travellers->errors;
+                                }
+                            }
+                            if ($errors != NULL) {
+                                $transaction->rollBack();
+                                Yii::$app->session->setFlash('error', "Following Error While Adding to your package." . json_encode($errors));
+                                return  $this->redirect(['book-package-details/' . $$_GET['cart_id']]);
+                            } else {
+                                $transaction->commit();
+                                Yii::$app->session->setFlash('success', "Booking Updated Successfully  Successfully.");
+                                return  $this->redirect(['cart']);
+                            }
+                        }
+                    }
+                } else {
+                    Yii::$app->session->setFlash('error', "Please Login before making Booking request.");
+                    return  $this->redirect(['book-package/' . $_GET['can']]);
+                }
+            }
+            return $this->render('book-package-details', ['booking_travellers' => $booking_travellers, 'cart' => $cart, 'model' => $model]);
+        } else {
+            return  $this->redirect(['error']);
+        }
     }
     public function actionVisa()
     {
@@ -133,22 +280,19 @@ class SiteController extends Controller
                 } else {
                     Yii::$app->session->setFlash('error', "Following Error While Senting your Enquiry." . json_encode($visaRequest->errors));
                 }
-                return  $this->redirect(['visa-details/'.$_GET['can']]);
-
-            }else{
+                return  $this->redirect(['visa-details/' . $_GET['can']]);
+            } else {
                 Yii::$app->session->setFlash('error', "Please Login before making visa request.");
-                return $this->redirect(['visa-details/'.$_GET['can']]);
-
-
+                return $this->redirect(['visa-details/' . $_GET['can']]);
             }
         }
 
-        return $this->render('visa-details', ['visa' => $visa, 'visafaq' => $visafaq,'visaRequest'=>$visaRequest]);
+        return $this->render('visa-details', ['visa' => $visa, 'visafaq' => $visafaq, 'visaRequest' => $visaRequest]);
     }
     public function actionIndex()
     {
-        $packages = ProductsServices::find()->where(['status'=>1])->all();
-        return $this->render('index',['packages'=>$packages]);
+        $packages = ProductsServices::find()->where(['status' => 1])->all();
+        return $this->render('index', ['packages' => $packages]);
     }
     public function actionAccomodationGallery()
     {
@@ -243,8 +387,8 @@ class SiteController extends Controller
             'events',
             [
                 'model' => $model,
-                'eventData'=>$eventData,
-                'eventRequest'=>$eventRequest
+                'eventData' => $eventData,
+                'eventRequest' => $eventRequest
             ]
         );
     }
@@ -266,7 +410,7 @@ class SiteController extends Controller
             'flight-tickets',
             [
                 'model' => $model,
-                'flgihtRequest'=>$flgihtRequest
+                'flgihtRequest' => $flgihtRequest
             ]
         );
     }
