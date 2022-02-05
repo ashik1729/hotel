@@ -29,7 +29,8 @@
         "yiisoft/yii2-bootstrap4": "^1.0@dev",
         "kartik-v/yii2-widget-select2": "dev-master",
         "yiisoft/yii2-elasticsearch": "^2.1@dev",
-        "kmarenov/yii2-instagram-widget": "*"
+        "kmarenov/yii2-instagram-widget": "*",
+        "nirvana-msu/yii2-instafeed": "1.0.*@dev"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

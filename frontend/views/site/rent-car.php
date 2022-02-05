@@ -29,8 +29,8 @@ use yii\helpers\ArrayHelper;
 									<div class="filter-items-area">
 										<?php if ($typeOfCars != NULL) { ?>
 											<?php foreach ($typeOfCars as $typeOfCar) { ?>
-												<input <?= $_GET['type_of_car'] != NULL ? in_array($typeOfCar->id, $_GET['type_of_car']) ? "checked" : "" : "" ?> type="checkbox" class="type_of_car_checkbox" id="type_<?= $typeOfCar->id; ?>" value="<?= $typeOfCar->id; ?>" name="type_of_car[]">
-												<label class="type_of_car <?= $_GET['type_of_car'] != NULL ? in_array("$typeOfCar->id", $_GET['type_of_car']) ? "checkedd" : "" : "" ?>" for="type_<?= $typeOfCar->id; ?>"><?= $typeOfCar->title; ?></label>
+												<input <?= (isset($_GET['type_of_car']) && $_GET['type_of_car'] != NULL) ? in_array($typeOfCar->id, $_GET['type_of_car']) ? "checked" : "" : "" ?> type="checkbox" class="type_of_car_checkbox" id="type_<?= $typeOfCar->id; ?>" value="<?= $typeOfCar->id; ?>" name="type_of_car[]">
+												<label class="type_of_car <?= (isset($_GET['type_of_car']) && $_GET['type_of_car'] != NULL) ? in_array("$typeOfCar->id", $_GET['type_of_car']) ? "checkedd" : "" : "" ?>" for="type_<?= $typeOfCar->id; ?>"><?= $typeOfCar->title; ?></label>
 												<!-- <a class="filter-items" href="<?php echo Yii::$app->request->baseUrl; ?>/rent-car?type=<?= $typeOfCar->id; ?>"><?= $typeOfCar->title; ?></a> -->
 											<?php } ?>
 										<?php } ?>
@@ -51,7 +51,7 @@ use yii\helpers\ArrayHelper;
 									</div>
 									<?php foreach ($brands as $brand) { ?>
 										<div class="form-group">
-											<input <?= $_GET['brand'] != NULL ? in_array($brand->id, $_GET['brand']) ? "checked" : "" : "" ?> type="checkbox" id="brand-<?= $brand->id; ?>" value="<?= $brand->id; ?>" name="brand[]">
+											<input <?=  (isset($_GET['brand']) && $_GET['brand']  != NULL) ? in_array($brand->id, $_GET['brand']) ? "checked" : "" : "" ?> type="checkbox" id="brand-<?= $brand->id; ?>" value="<?= $brand->id; ?>" name="brand[]">
 											<label for="brand-<?= $brand->id; ?>"><?= $brand->title; ?></label>
 										</div>
 
@@ -86,8 +86,8 @@ use yii\helpers\ArrayHelper;
 											<div class="filter-items-area">
 												<?php if ($typeOfCars != NULL) { ?>
 													<?php foreach ($typeOfCars as $typeOfCar) { ?>
-														<input <?= $_GET['type_of_car'] != NULL ? in_array($typeOfCar->id, $_GET['type_of_car']) ? "checked" : "" : "" ?> type="checkbox" class="type_of_car_checkbox" id="type_<?= $typeOfCar->id; ?>" value="<?= $typeOfCar->id; ?>" name="type_of_car[]">
-														<label class="type_of_car <?= $_GET['type_of_car'] != NULL ? in_array("$typeOfCar->id", $_GET['type_of_car']) ? "checkedd" : "" : "" ?>" for="type_<?= $typeOfCar->id; ?>"><?= $typeOfCar->title; ?></label>
+														<input <?= (isset($_GET['type_of_car']) && $_GET['type_of_car'] != NULL) ? in_array($typeOfCar->id, $_GET['type_of_car']) ? "checked" : "" : "" ?> type="checkbox" class="type_of_car_checkbox" id="type_<?= $typeOfCar->id; ?>" value="<?= $typeOfCar->id; ?>" name="type_of_car[]">
+														<label class="type_of_car <?= (isset($_GET['type_of_car']) && $_GET['type_of_car'] != NULL) ? in_array("$typeOfCar->id", $_GET['type_of_car']) ? "checkedd" : "" : "" ?>" for="type_<?= $typeOfCar->id; ?>"><?= $typeOfCar->title; ?></label>
 
 														<!-- <a class="filter-items" href="<?php echo Yii::$app->request->baseUrl; ?>/rent-car?type=<?= $typeOfCar->id; ?>"><?= $typeOfCar->title; ?></a> -->
 													<?php } ?>
@@ -110,7 +110,7 @@ use yii\helpers\ArrayHelper;
 											</div>
 											<?php foreach ($brands as $brand) { ?>
 												<div class="form-group">
-													<input <?= $_GET['brand'] != NULL ? in_array($brand->id, $_GET['brand']) ? "checked" : "ashik" : "ali" ?> type="checkbox" id="brand-<?= $brand->id; ?>" value="<?= $brand->id; ?>" name="brand[]">
+													<input <?= (isset($_GET['brand']) && $_GET['brand'] != NULL)  ? in_array($brand->id, $_GET['brand']) ? "checked" : "ashik" : "ali" ?> type="checkbox" id="brand-<?= $brand->id; ?>" value="<?= $brand->id; ?>" name="brand[]">
 
 													<label for="brand-<?= $brand->id; ?>"><?= $brand->title; ?></label>
 												</div>
@@ -148,8 +148,8 @@ use yii\helpers\ArrayHelper;
 									<h6>Sort By</h6>
 									<form class="sort_form" method="GET" action="">
 										<select name="sorting" class="form-control select-form cart_sort_filter">
-											<option value="1" <?= $_GET['sorting'] == 1 ? "selected" : "" ?>>Model Year - New to Old</option>
-											<option value="2" <?= $_GET['sorting'] == 2 ? "selected" : "" ?>>Model Year - Old to New</option>
+											<option value="1" <?= (isset($_GET['sorting']) && $_GET['sorting'] == 1) ? "selected" : "" ?>>Model Year - New to Old</option>
+											<option value="2" <?= (isset($_GET['sorting']) && $_GET['sorting'] == 2) ? "selected" : "" ?>>Model Year - Old to New</option>
 										</select>
 									</form>
 								</div>

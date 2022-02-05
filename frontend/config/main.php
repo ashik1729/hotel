@@ -117,8 +117,14 @@ return [
                 'package-history'=>'my-account/package-history',
                 'event-gallery/<can:\w+(-\w+)*>' => 'site/event-gallery',
                 'package-details/<can:\w+(-\w+)*>' => 'site/package-details',
+                'book-package/<can:\w+(-\w+)*>' => 'site/book-package',
+                'book-package-details/<cart_id:\w+(-\w+)*>' => 'site/book-package-details',
                 'events'=>'site/events',
                 'flight-tickets'=>'site/flight-tickets',
+                'cart'=>'site/cart',
+                'delte-cart'=>'site/delte-cart',
+                'calculate-price'=>'site/calculate-price',
+                'checkout'=>'checkout/index',
 
 
 

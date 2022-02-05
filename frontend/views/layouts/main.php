@@ -14,6 +14,7 @@ use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
 use frontend\models\PasswordResetRequestForm;
+use nirvana\instafeed\Instafeed;
 use yii\widgets\ActiveForm;
 use yii\helpers\ArrayHelper;
 
@@ -38,6 +39,21 @@ AppAsset::register($this);
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+
+    <script type="text/javascript">
+            var baseurl = "<?php print \yii\helpers\Url::base(); ?>";
+
+            var basepath = "<?php print \yii\helpers\Url::base(); ?>";
+
+            var slug = function (str) {
+                var $slug = '';
+                var trimmed = $.trim(str);
+                $slug = trimmed.replace(/[^a-z0-9-]/gi, '-').
+                        replace(/-+/g, '-').
+                        replace(/^-|-$/g, '');
+                return $slug.toLowerCase();
+            };
+        </script>
 </head>
 
 <body>
@@ -134,13 +150,18 @@ AppAsset::register($this);
     <?= $content ?>
     <?php $footerData =  CmsContent::find()->where(['page_id'=>'about-us'])->one();
     $config = Settings::find()->where(['status' => 1])->one();
+  
     ?>
-    <?php
-    //  echo  \kmarenov\instagram\InstagramWidget::widget([
-    //     'clientId'      => '1884142681770933',
-    //     'userName'      => 'ashik_1729',
-    //     'isShowToolbar' => false
-    // ]);
+
+<?php
+
+// echo Instafeed::widget([
+//     'pluginOptions' => [
+//         'get' => 'user',
+//         'userId' => '49836101753',     // your Instagram account id, not username!
+//         'accessToken' => 'IGQVJYRG9kclk5THJrXzI0VXhCTlpiWU5HRVZAVMmN4bFRFM0NmYkktYjZAMbjFpMGtvOTVjQ3dyckdDQkE3bzVzRTNiMFNRVElwMVZAqdzc3LWF5TUdDNlp3eUZA5TDgzUjZAtalVMZAXpCcUs2em5RRlpTdAZDZD',
+//     ],
+// ]);
 ?>
     <footer>
         <div class="container">
@@ -363,8 +384,9 @@ AppAsset::register($this);
 
 
     <a href="#" onclick="goToByScroll('home-u')"> <i class="fas fa-arrow-up go-top"></i> </a>
-
+<!-- <p>asasa</p> -->
     <?php $this->endBody() ?>
+    
     <?php
     $this->registerJs(
         <<< EOT_JS_CODE

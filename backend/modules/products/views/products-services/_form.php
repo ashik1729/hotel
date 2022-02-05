@@ -249,6 +249,16 @@ JS;
 
                             </div>
                         </div>
+                        <div class="col-sm-12">
+
+                            <div class="form-group bmd-form-group">
+                                <?= $form->field($model, 'terms_condition')->widget(CKEditor::className(), [
+                                    'options' => ['rows' => 6],
+                                    'preset' => 'custom'
+                                ]) ?>
+
+                            </div>
+                        </div>
                         
                         <div class="col-sm-3">
                             <div class="form-group bmd-form-group">

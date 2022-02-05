@@ -49,7 +49,7 @@
 						<div class="package-more-info">
 							<ul>
 								<?php
-								$$packageDates = PackagesDate::find()->where(['package_date' => date('Y-m-d'), 'package_id' => $model->id])->one();
+								$packageDates = PackagesDate::find()->where(['package_date' => date('Y-m-d'), 'package_id' => $model->id])->one();
 								if ($packageDates != NULL) {
 									$getPrices = PackagesPrice::find()->where(['package_date_id' => $packageDates->id])->all();
 									if ($getPrices != NULL) { ?>
@@ -79,14 +79,14 @@
 								<?php if ($expDatas != NULL) { ?>
 									<?php foreach ($expDatas as $expData) { ?>
 										<li>
-											<i class="fas fa-check-circle"></i> <?= $expData;?>
+											<i class="fas fa-check-circle"></i> <?= $expData; ?>
 										</li>
 									<?php } ?>
 								<?php } ?>
-								
+
 							</ul>
 						</div>
-<!-- 
+						<!-- 
 						<div class="package-more-info">
 							<h4>Itinerary</h4>
 							<div class="itinerary-box">
@@ -102,68 +102,85 @@
 
 						<div class="package-more-info">
 							<h4 class="reviews-heading">Customer Reviews</h4>
-							<div class="reviews-area">
-								<div class="top-rating">
-									<h1>4.8</h1>
-									<div class="num-star">
-										<div class="package__rating">
-											<div class="package__rating-stars">
-												<div class="rating">
-													<div class="rating__body">
-														<div class="rating__star2 rating__star--active"></div>
-														<div class="rating__star2 rating__star--active"></div>
-														<div class="rating__star2 rating__star--active"></div>
-														<div class="rating__star2 rating__star--active"></div>
-														<div class="rating__star2 rating__star--active"></div>
-													</div>
-												</div>
-											</div>
-											34,966 Ratings
-										</div>
-									</div>
-								</div>
-								<div class="single-reviews ">
-									<div class="d-flex">
-										<div class="single-reviews-profile">
-											T
-										</div>
-										<div class="single-reviews-head">
-											<div class="name">Thomas <span>Helpful Reviewer</span> </div>
-											<div class="package__rating d-flex">
+							<?php if ($packageReviews != NULL) {
+								$totalReviews = 0;
+							?>
+								<?php foreach ($packageReviews as $packageReview) {
+
+									$totalReviews += $packageReview->rating;
+								} ?>
+								<?php
+								$averageReviews = round($totalReviews / count($packageReviews));
+								?>
+
+								<div class="reviews-area  mb-5">
+									<div class="top-rating">
+										<h1><?= $averageReviews; ?></h1>
+										<div class="num-star">
+											<div class="package__rating">
 												<div class="package__rating-stars">
 													<div class="rating">
 														<div class="rating__body">
-															<div class="rating__star2 rating__star--active"></div>
-															<div class="rating__star2 rating__star--active"></div>
-															<div class="rating__star2 rating__star--active"></div>
-															<div class="rating__star2 rating__star--active"></div>
-															<div class="rating__star2 rating__star--active"></div>
+															<?php for ($i = 1; $i <= 5; $i++) { ?>
+																<?php if ($i <= $averageReviews) { ?>
+																	<div class="rating__star2 rating__star--active"></div>
+																<?php } else { ?>
+																	<div class="rating__star2 "></div>
+																<?php } ?>
+															<?php } ?>
 														</div>
 													</div>
 												</div>
-												<div class="date">September 14, 2021</div>
+												<?php echo count($packageReviews); ?> Ratings
 											</div>
 										</div>
 									</div>
-									<p>
-										Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-									</p>
+									<?php
+									foreach ($packageReviews as $packageReview) { ?>
+
+										<div class="single-reviews ">
+											<div class="d-flex">
+												<div class="single-reviews-profile">
+													<?php echo strtoupper(substr($packageReview->user->first_name, 0, 1)); ?>
+												</div>
+												<div class="single-reviews-head">
+													<div class="name"><?= $packageReview->user->first_name; ?> <span><?= $packageReview->designation != "" ? $packageReview->designation : "Customer"; ?></span> </div>
+													<div class="package__rating d-flex">
+														<div class="package__rating-stars">
+															<div class="rating">
+																<div class="rating__body">
+																	<?php for ($i = 1; $i <= 5; $i++) { ?>
+																		<?php if ($i <= $packageReview->rating) { ?>
+																			<div class="rating__star2 rating__star--active"></div>
+																		<?php } else { ?>
+																			<div class="rating__star2 "></div>
+																		<?php } ?>
+																	<?php } ?>
+																</div>
+															</div>
+														</div>
+														<div class="date"><?php echo date("M d, Y", strtotime($packageReview->created_at)); ?></div>
+													</div>
+												</div>
+											</div>
+											<p>
+												<?php echo $packageReview->comment; ?>
+											</p>
+										</div>
+
+									<?php } ?>
 								</div>
-							</div>
+							<?php } ?>
+
 						</div>
 
 						<div class="package-more-info">
 							<h4>Terms and conditions</h4>
 							<div class="itinerary-box">
-								<p>
-									Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
-								</p>
-								<p>
-									Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
-								</p>
-								<a class="wow fadeInUp" href="" style="visibility: visible; animation-name: fadeInUp;">
+								<?php echo $model->terms_condition; ?>
+								<!-- <a class="wow fadeInUp" href="" style="visibility: visible; animation-name: fadeInUp;">
 									<div class="goto-more">Read More <i class="fas fa-arrow-right" aria-hidden="true"></i></div>
-								</a>
+								</a> -->
 							</div>
 						</div>
 
@@ -198,6 +215,14 @@
 								<a class="other-page-link" href="<?php echo Yii::$app->request->baseUrl; ?>/visa">Get Travel Visa</a>
 								<a class="other-page-link" href="<?php echo Yii::$app->request->baseUrl; ?>/flight-tickets">Book Flight Ticket</a>
 								<a class="other-page-link" href="<?php echo Yii::$app->request->baseUrl; ?>/events">Organize Event</a>
+								<?php
+								if (!Yii::$app->user->isGuest) { ?>
+									<a class="other-page-link" href="<?php echo Yii::$app->request->baseUrl; ?>/book-package/<?= $model->canonical_name;?>">Book The Package</a>
+								<?php    } else { ?>
+									<a class="other-page-link" href="" data-bs-toggle="modal" data-bs-target="#LoginEnquiry">Book The Package</a>
+								<?php    }
+								?>
+
 							</div>
 						</div>
 					</div>
