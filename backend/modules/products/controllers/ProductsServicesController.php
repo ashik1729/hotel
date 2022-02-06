@@ -191,7 +191,6 @@ class ProductsServicesController extends Controller {
         $related_products   = "";
        
         if ($model->load(Yii::$app->request->post())) {
-           //echo '<pre/>';print_r(Yii::$app->request->post());exit;
            if(!empty($model->category->category_name)) {
                $cat_name = $model->category->category_name;
 
@@ -205,11 +204,9 @@ class ProductsServicesController extends Controller {
             $model->created_by = yii::$app->user->identity->id;
             $model->updated_by = yii::$app->user->identity->id;
             $model->status = 1;
-           // $model->title = $model->package_title ;
             $file = UploadedFile::getInstance($model, 'image');
             $banner_image = UploadedFile::getInstance($model, 'banner_image');
             $gallery = UploadedFile::getInstances($model, 'gallery');
-            echo '<pre/>';print_r($gallery);
             $name = md5(microtime());
             $profile_name = 'image' . $name;
             $banner_name = 'banner' . $name;
@@ -243,13 +240,13 @@ class ProductsServicesController extends Controller {
                     } 
                     if (Yii::$app->request->post('ProductAttributesValue') && Yii::$app->request->post('ProductAttributesValue') != NULL) {
                         $manageAttribute = $this->newmanageAttribute($model, Yii::$app->request->post('ProductAttributesValue'));
+
                         if ($manageAttribute['status'] == 411) {
                             $product_attribute->addError('error', $manageAttribute['error']);
                             $transaction->rollBack();
                         } else {
                             $transaction->commit();
                         }
-                        exit;
                     } else {
                         $transaction->commit();
                     }
@@ -316,9 +313,7 @@ class ProductsServicesController extends Controller {
             if ($implode_search_tag != '') {
                 $model->search_tag = $implode_search_tag;
             }
-            // if ($related_products != '') {
-            //     $model->related_products = $related_products;
-            // }
+          
             $model->created_by = yii::$app->user->identity->id;
             $model->updated_by = yii::$app->user->identity->id;
             $model->status = 1;
@@ -390,7 +385,7 @@ class ProductsServicesController extends Controller {
                         $transaction->commit();
                     }
 
-                  //  Yii::$app->session->setFlash('success', "Packages updated successfully.");
+                    Yii::$app->session->setFlash('success', "Packages updated successfully.");
 
                     return $this->redirect(['index']);
                 } else {
