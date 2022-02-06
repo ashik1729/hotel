@@ -17,7 +17,7 @@ class ProductsServicesSearch extends ProductsServices {
     public function rules() {
         return [
            // [['id', 'category_id', 'merchant_id', 'sort_order', 'discount_type', 'requires_shipping', 'stock_availability', 'is_featured', 'is_admin_approved', 'updated_by', 'created_by', 'status', 'tax_applicable', 'min_quantity', 'quantity', 'weight_class', 'type'], 'integer'],
-            [['id', 'package_title', 'canonical_name', 'image', 'gallery', 'new_from', 'new_to', 'sale_from', 'sale_to', 'discount_from', 'discount_to', 'search_tag', 'related_products', 'created_at', 'updated_at', 'meta_title', 'meta_description', 'meta_keywords', 'short_description_en', 'long_description_en', 'title', 'discount_id', 'store','status'], 'safe'],
+            [['id', 'package_title','category_id', 'canonical_name', 'image', 'gallery', 'new_from', 'new_to', 'sale_from', 'sale_to', 'discount_from', 'discount_to', 'search_tag', 'related_products', 'created_at', 'updated_at', 'meta_title', 'meta_description', 'meta_keywords', 'short_description_en', 'long_description_en', 'title', 'discount_id', 'store','status'], 'safe'],
             [['price', 'discount_rate'], 'number'],
         ];
     }

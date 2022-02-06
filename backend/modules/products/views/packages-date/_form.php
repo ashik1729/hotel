@@ -9,13 +9,18 @@ use yii\widgets\ActiveForm;
 ?>
 <div class="card-body packages-date-form">
     <?php $form = ActiveForm::begin(['action' => 'save-package-date-price','options' => ['class' => 'form_pkg_content']]); ?>
-   
+    <?php if($model->isNewRecord) { 
+        $disbaled = false;
+    }  else {
+        $disbaled = true;
+    }
+    ?>
         <div class="col-sm-12">
             <div class="row">
                 <div class="col-sm-2">
 
                     <div class="form-group bmd-form-group">
-                        <?= $form->field($model, 'package_date')->textInput(['type' => 'date', 'id' => 'calenders', 'class' => 'form-control']) ?>
+                        <?= $form->field($model, 'package_date')->textInput(['type' => 'date', 'id' => 'calenders', 'class' => 'form-control','disabled' => $disbaled]) ?>
                     </div>
                 </div>
                 <div class="col-sm-2">
@@ -36,14 +41,14 @@ use yii\widgets\ActiveForm;
                             <div class="row"> 
                                 <div class="col-sm-3 mt-3">
                                     <div class="attr_price">
-                                        <?= $form->field($pkg_price, 'min_person[]')->textInput([]) ?>
+                                        <?= $form->field($pkg_price, 'min_person[]')->textInput(['class' => 'pkg_min form-control']) ?>
                                     </div>
                                 </div>
                                 <div class="col-sm-3 mt-3">
-                                        <?= $form->field($pkg_price, 'max_person[]')->textInput([]) ?>
+                                        <?= $form->field($pkg_price, 'max_person[]')->textInput(['class' => 'pkg_max form-control']) ?>
                                 </div>
                                 <div class="col-sm-3 mt-3">
-                                    <?= $form->field($pkg_price, 'price[]')->textInput([]) ?>
+                                    <?= $form->field($pkg_price, 'price[]')->textInput(['class' => 'pkg_price form-control']) ?>
                                 </div>
                             
                                     <div class="col-sm-2 repeat-action">
@@ -57,7 +62,7 @@ use yii\widgets\ActiveForm;
                                     
                 </div>
             </div>
-            <?= $form->field($model, 'package_id')->hiddenInput(['value' => $pkg_id])->label(false) ?>
+           
         <?php } else {?>
             <div class="row price_repeat_sctn">  
                 <div class="col-sm-12">
@@ -66,14 +71,14 @@ use yii\widgets\ActiveForm;
                             <div class="row"> 
                                 <div class="col-sm-3 mt-3">
                                     <div class="attr_price">
-                                        <?= $form->field($pkg_price, 'min_person')->textInput([]) ?>
+                                        <?= $form->field($pkg_price, 'min_person')->textInput(['class' => 'pkg_min form-control']) ?>
                                     </div>
                                 </div>
                                 <div class="col-sm-3 mt-3">
-                                        <?= $form->field($pkg_price, 'max_person')->textInput([]) ?>
+                                        <?= $form->field($pkg_price, 'max_person')->textInput(['class' => 'pkg_max form-control']) ?>
                                 </div>
                                 <div class="col-sm-3 mt-3">
-                                    <?= $form->field($pkg_price, 'price')->textInput() ?>
+                                    <?= $form->field($pkg_price, 'price')->textInput(['class' => 'pkg_price form-control']) ?>
                                 </div>
                             
                               
@@ -84,8 +89,11 @@ use yii\widgets\ActiveForm;
                                     
                 </div>
             </div>
-            <?= $form->field($model, 'id')->hiddenInput([])->label(false) ?>
+            <?= $form->field($model, 'id')->hiddenInput([])->label(false)  // package_date table id?>
+            <?= $form->field($pkg_price, 'id')->hiddenInput([])->label(false)  // package_price table id?>
         <?php }?>
+        
+        <?= $form->field($model, 'package_id')->hiddenInput(['value' => $pkg_id])->label(false) ?>
         <div class="modal-footer">
             <button type="Submit" class="btn btn-primary save-package-details">Save </button>
         </div>
@@ -110,13 +118,51 @@ use yii\widgets\ActiveForm;
         });
         
       
-    });    
+    });   
+    
+    $(document.body).on("click",".save-package-details",function(e){ 
+        e.preventDefault();
+        var error = 0;
+       
+        $( ".pkg_min" ).each(function( index ) {
+            if($(this).val() == "") {
+                $(this).closest('.field-packagesprice-min_person').find('.help-block').text("Min Person  cannot be blank");
+                error++;
+            }
+        });
+        $( ".pkg_max" ).each(function( index ) {
+            if($(this).val() == "") {
+                $(this).closest('.field-packagesprice-max_person').find('.help-block').text("Max Person  cannot be blank");
+                error++;
+            }
+        });
+        $( ".pkg_price" ).each(function( index ) {
+            if($(this).val() == "") {
+                $(this).closest('.field-packagesprice-price').find('.help-block').text("Price cannot be blank");
+                error++;
+            }
+        });
+        if(error == 0) {
+            $('.save-package-details').submit();
+        }
+
+
+    });
+    
+    
     $(document.body).on("click",".remove_pkg",function(e){
         $(this).closest('.added-section').remove();
     });
     $(document.body).on("click",".remove_pkg",function(e){
         $(this).closest('.added-section').remove();
     });
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, '0');
+    var mm = String(today.getMonth() + 1).padStart(2, '0');
+    var yyyy = today.getFullYear();
+
+    today = yyyy + '-' + mm + '-' + dd;
+    $('#calenders').attr('min',today);
 
     
 EOT_JS_CODE

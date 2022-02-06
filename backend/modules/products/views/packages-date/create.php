@@ -23,7 +23,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     <?=  $model->isNewRecord ? 'Create Packages Date' : 'Update Packages Date';?>
                     <div class="pull-right">
 
-                        <a class="btn btn-xs btn-success btn-round btn-fab" href="index" rel="tooltip" data-placement="bottom" data-original-title="Back"><b class="material-icons">keyboard_arrow_left</b><div class="ripple-container"></div></a>
+                        <a class="btn btn-xs btn-success btn-round btn-fab" href="<?php echo \yii\helpers\Url::to(['products-services/index']); ?>" rel="tooltip" data-placement="bottom" data-original-title="Back"><b class="material-icons">keyboard_arrow_left</b><div class="ripple-container"></div></a>
                     </div>
                 </h4>
             </div>
