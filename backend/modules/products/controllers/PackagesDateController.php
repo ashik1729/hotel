@@ -113,7 +113,7 @@ class PackagesDateController extends Controller
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($pkg_id)
+    public function actionCreate($pkgId)
     {
         $model = new PackagesDate();
         $pkg_price   = new PackagesPrice();
@@ -127,7 +127,7 @@ class PackagesDateController extends Controller
         return $this->render('create', [
             'model'        => $model,
             'pkg_price'    => $pkg_price,
-            'pkg_id'       => $pkg_id
+            'pkg_id'       => $pkgId
         ]);
     }
 
@@ -150,6 +150,7 @@ class PackagesDateController extends Controller
         return $this->render('update', [
             'model' => $model,
             'pkg_price'    => $pkg_price,
+            'pkg_id' => $model->id
         ]);
     }
 
@@ -160,11 +161,19 @@ class PackagesDateController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-    public function actionDelete($id)
+    public function actionDelete($pkgDateId,$pkgPrcId)
     {
-        $this->findModel($id)->delete();
+        $pkg_price       = PackagesPrice::find()->where(['id' => $pkgPrcId])->one();
+        $pkg_price_all   = PackagesPrice::find()->where(['package_date_id' => $pkgDateId])->count();
 
-        return $this->redirect(['index']);
+        if(!empty( $pkg_price)) {
+            $pkg_price->delete(); // Deleting date price tab from package_price table
+            if($pkg_price_all == 1) { // if no price tab for the selected date, date is deleting from package_date table
+                $this->findModel($pkgDateId)->delete();
+            }
+        }
+
+        return $this->redirect(Yii::$app->request->baseUrl.'/products/products-services');
     }
 
     public function actionSavePackageDatePrice()
@@ -178,30 +187,42 @@ class PackagesDateController extends Controller
         if ($model->load(Yii::$app->request->post())) {
             $package_details    = Yii::$app->request->post();
             $package_data       = $package_details['PackagesPrice'];
-            $package_id         = isset($package_details['PackagesDate']['package_id'])?$package_details['PackagesDate']['package_id']:"0";
-            //echo '<pre/>';print_r(Yii::$app->request->post());exit;
             if(isset($model->id)) {
                $exst_data =  $model::find()->where(['id' => $model->id])->one();
                $exst_data->package_quantity = $model->package_quantity;
                $exst_data->updated_at = date('Y-m-d H:i:s');
                if($exst_data->save()) {
-                    $exst_pkg_prc =  $pkg_price::find()->where(['package_date_id' => $model->id])->one();
-                    $exst_pkg_prc->min_person  = isset($package_data['min_person'])?$package_data['min_person']:"0";
-                    $exst_pkg_prc->max_person  = isset($package_data['max_person'])?$package_data['max_person']:"0";
-                    $exst_pkg_prc->price       = isset($package_data['price'])?$package_data['price']:"0";
-                    $exst_pkg_prc->updated_at  = date('Y-m-d H:i:s');
-                    $exst_pkg_prc->save();
-                   // $exst_pkg_prc_data->min_person = 
+                    $exst_pkg_prc =  $pkg_price::find()->where(['id' => $package_data['id']])->one();
+                    if(!empty($exst_pkg_prc)) {
+                        $exst_pkg_prc->min_person  = isset($package_data['min_person'])?$package_data['min_person']:"0";
+                        $exst_pkg_prc->max_person  = isset($package_data['max_person'])?$package_data['max_person']:"0";
+                        $exst_pkg_prc->price       = isset($package_data['price'])?$package_data['price']:"0";
+                        $exst_pkg_prc->updated_at  = date('Y-m-d H:i:s');
+                        $exst_pkg_prc->save();
+                    }
                }
 
             } else {       
-            $model->created_at = date('Y-m-d H:i:s');
-            $model->updated_at = date('Y-m-d H:i:s');
+
+                $exst_data =  $model::find()->where(['package_date' => date('Y-m-d',strtotime($model->package_date))])->one();
+                if(!empty($exst_data)) {
+                    $exst_data->package_quantity = $model->package_quantity;
+                    $exst_data->updated_at       = date('Y-m-d H:i:s');
+                    $exst_data->save();
+                    $pkg_date_id        = $exst_data->id;
+
+                } else {
             
-            if ($model->save()) {
-                $pkg_date_id        = $model->id;
-              
-               
+                    $model->created_at = date('Y-m-d H:i:s');
+                    $model->updated_at = date('Y-m-d H:i:s');
+                    $model->save();
+                    if ($model->save()) {
+                    } else {
+                    // echo '<pre/>';print_r($model);
+                        echo '<pre/>';print_r($model->errors);exit;
+                    }
+                    $pkg_date_id   = $model->id;
+                }
                 if (isset($package_data['min_person'])) {
                     $min_pern_data = $package_data['min_person'];
                     $max_per_data  = isset($package_data['max_person']) ? $package_data['max_person'] : "";
@@ -209,7 +230,7 @@ class PackagesDateController extends Controller
 
                     for ($i = 0; $i < count($min_pern_data); $i++) {
                         $pkg_price    = new PackagesPrice();
-                        $pkg_price->package_id      = $package_id;
+                        $pkg_price->package_id      = $model->package_id;
                         $pkg_price->package_date_id = $pkg_date_id;
                         $pkg_price->min_person  = isset($min_pern_data[$i]) ? $min_pern_data[$i] : "";
                         $pkg_price->max_person  = isset($max_per_data[$i]) ? $max_per_data[$i] : "";
@@ -223,22 +244,10 @@ class PackagesDateController extends Controller
                         }
                     }
                 }
-              
-
-            } else {
-                echo '<pre/>';
-                print_r($model->errors);
-                exit;
             }
         }
+        return $this->redirect(Yii::$app->request->baseUrl.'/products/products-services');
         
-            return $this->redirect(Yii::$app->request->baseUrl.'/products/products-services');
-        }
-        return $this->render('create', [
-            'model'        => $model,
-            'pkg_price'    => $pkg_price,
-            'package_id'   => $package_id
-        ]);
     }
 
     public function actionListPackageDetails($id) {

@@ -31,7 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="pull-right">
                             <?php $pkg_id = isset($_GET['id'])?$_GET['id']:"0"?>
 
-                                <a class="btn btn-xs btn-primary btn-round btn-fab" href="<?= \yii\helpers\Url::to(['create?pkg_id='.$pkg_id]);?>" rel="tooltip" data-placement="bottom" data-original-title="Add <?= Html::encode($this->title) ?>"><b class="material-icons">add</b></a>
+                                <a class="btn btn-xs btn-primary btn-round btn-fab" href="<?= \yii\helpers\Url::to(['create?pkgId='.$pkg_id]);?>" rel="tooltip" data-placement="bottom" data-original-title="Add <?= Html::encode($this->title) ?>"><b class="material-icons">add</b></a>
                             </div>
                         </h4>
                     </div>
@@ -69,9 +69,9 @@ $this->params['breadcrumbs'][] = $this->title;
                                     
                                         'update' => function ($url, $model) {
                                         return Html::a(
-                                        '<i class="fa fa-edit"></i>', \yii\helpers\Url::to(['update', 'pkgDateId' => $model->	package_date_id,'pkgPrcId' => $model->id]), [
+                                        '<i class="fa fa-edit"></i>', \yii\helpers\Url::to(['update', 'pkgId' => $model->package_id,'pkgDateId' => $model->package_date_id,'pkgPrcId' => $model->id]), [
                                         'rel' => "tooltip",
-                                        'data-original-title' => 'Edit this user',
+                                        'data-original-title' => 'Edit',
                                         'data-placement' => 'top',
                                         'style' => 'margin-right: 10px'
                                         ]
@@ -80,12 +80,12 @@ $this->params['breadcrumbs'][] = $this->title;
                                 'delete' => function ($url, $model) {
                                 return Html::a(
 
-                                        '<i class="fa fa-trash-o"></i>', \yii\helpers\Url::to(['delete', 'id' => $model->id]), [
+                                        '<i class="fa fa-trash-o"></i>', \yii\helpers\Url::to(['delete','pkgDateId' => $model->package_date_id, 'pkgPrcId' => $model->id]), [
                                         'rel' => "tooltip",
-                                        'data-original-title' => 'Delete this user?',
+                                        'data-original-title' => 'Delete',
                                         'data-placement' => 'top',
                                         'data-pjax' => '0',
-                                        'data-confirm' => 'Are you sure you want to delete this item?',
+                                        'data-confirm' => 'Are you sure you want to delete this package date?',
                                         'data-method' => 'post',
                                         'style' => 'margin-right: 10px'
                                         ]

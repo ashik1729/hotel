@@ -28,6 +28,7 @@ class PackageDestination extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
+            [['title','status'], 'required'],
             [['status'], 'integer'],
             [['created_at'], 'safe'],
             [['title'], 'string', 'max' => 200],

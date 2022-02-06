@@ -197,6 +197,7 @@ use yii\helpers\ArrayHelper;
         if ($model->isNewRecord) {
             $search_data = [];
         } else {
+            $search_data = [];
             if ($model->search_tag != '') {
                 $search_datas = explode(',', $model->search_tag);
                 foreach ($search_datas as $search_dt) {

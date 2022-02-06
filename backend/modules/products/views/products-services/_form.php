@@ -80,25 +80,14 @@ JS;
                 <li class="nav-item">
                     <a class="nav-link active" id="pills-general-tab" data-toggle="pill" href="#pills-general" role="tab" aria-controls="pills-general" aria-selected="true">General</a>
                 </li>
-                <!--        <li class="nav-item">
-                            <a class="nav-link" id="pills-gallery-tab" data-toggle="pill" href="#pills-gallery" role="tab" aria-controls="pills-gallery" aria-selected="false">Gallery</a>
-                        </li>-->
-                <!-- <li class="nav-item">
-                    <a class="nav-link" id="pills-price-tab" data-toggle="pill" href="#pills-price" role="tab" aria-controls="pills-price" aria-selected="false">Price & Quantity</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-attributes-tab" data-toggle="pill" href="#pills-attributes" role="tab" aria-controls="pills-attributes" aria-selected="false">Price & Quantity</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="pills-seo-tab" data-toggle="pill" href="#pills-seo" role="tab" aria-controls="pills-seo" aria-selected="false">SEO & Settings</a>
-                </li> -->
+               
             </ul>
         </div>
         <div class="col-sm-12 col-lg-10">
 
             <div class="clearfix">
                 <?= $form->errorSummary($model); ?>
-                <?= $form->errorSummary($product_attribute); ?>
+                <?php // $form->errorSummary($product_attribute); ?>
             </div>
             <div class="tab-content" id="pills-tabContent">
                 <!--<div class="tab-pane fade show active" id="pills-general" role="tabpanel" aria-labelledby="pills-general-tab">-->
@@ -143,38 +132,23 @@ JS;
                         <div class="col-sm-3">
                             <div class="form-group bmd-form-group">
                                 <?= $form->field($model, 'package_title')->textInput(['maxlength' => true]) ?>
+                               
                             </div>
                         </div>
+                    <?php /*    <div class="col-sm-3">
+                            <div class="form-group bmd-form-group">
+                                
+                                <?php $form->field($model, 'category_id')->textInput(['maxlength' => true])->label('Category') ?>
+                            </div>
+                        </div> */?>
                         <div class="col-sm-3">
                             <div class="form-group bmd-form-group">
 
-                                <label class="control-label" for="productsservices-merchant_id">Category
+                                <label class="control-label" for="productsservices-category_id">Category
                                 </label>
-                                <i class="fa fa-plus add_cat"></i>
-                                <?php Pjax::begin(['id' => 'product_service']) ?>
-                                <?php
-                                //  $datas = [];
-                                //                        if (!$model->isNewRecord) {
-                                //                            $merchant = \common\models\Merchant::findOne(['id' => $model->merchant_id]);
-                                //                            if ($merchant != NULL) {
-                                //                                if ($merchant->category != NULL) {
-                                //                                    $exp_category = explode(',', $merchant->category);
-                                //                                    if ($exp_category != NULL) {
-                                ////                                        $get_categorys = \common\models\Category::find()->where(['IN', 'id', $exp_category])->all();
-                                ////                                        if ($get_categorys != NULL) {
-                                ////                                            foreach ($get_categorys as $get_category) {
-                                ////                                                $options[$get_category->id] = $get_category->category_name;
-                                ////                                            }
-                                ////                                        }
-                                //                                    }
-                                //                                }
-                                //                            }
-                                //                            $get_categorys = \common\models\Category::find()->where(['status' => 1])->all();
-                                //                            if ($get_categorys != NULL) {
-                                //                                foreach ($get_categorys as $get_category) {
-                                //                                    $options[$get_category->id] = $get_category->category_name;
-                                //                                }
-                                //                            }
+                                <!-- <i class="fa fa-plus add_cat"></i> -->
+                                <?php //Pjax::begin(['id' => 'product_service']) ?>
+                               <?php
                                 $options = array();
 
                                 $datas = \common\models\Category::find()->all();
@@ -211,7 +185,7 @@ JS;
                                     ],
                                 ]);
                                 ?>
-                                <?php Pjax::end() ?>
+                                <?php //Pjax::end() ?>
 
                             </div>
                         </div>
@@ -351,11 +325,11 @@ JS;
                                             if (isset($model->id) && $model->id > 0 && isset($model->gallery) && $model->gallery !== "") {
                                                 $imgPath = ((yii\helpers\Url::base())) . '/../uploads/products/' . base64_encode($model->id) . '/gallery/' . $image;
                                                 $result_html .= '<div class ="img_gallery">                    <a href="' . $imgPath . '" class="thumbnail"><img src="' . $imgPath . '" alt="Image Alt" /></a>
-<a href="' . $delete_url . '"><i class="fa fa-trash trash_file"></i></a></div>';
-                                            } else {
-                                                $imgPath = Yii::$app->request->baseUrl . '/img/no-image.jpg';
-                                                $result_html .= '<div class ="img_gallery">                    <a href="' . $imgPath . '" class="thumbnail"><img src="' . $imgPath . '" alt="Image Alt" /></a>
-</div>';
+                                                    <a href="' . $delete_url . '"><i class="fa fa-trash trash_file"></i></a></div>';
+                                                                                                } else {
+                                                                                                    $imgPath = Yii::$app->request->baseUrl . '/img/no-image.jpg';
+                                                                                                    $result_html .= '<div class ="img_gallery">                    <a href="' . $imgPath . '" class="thumbnail"><img src="' . $imgPath . '" alt="Image Alt" /></a>
+                                                    </div>';
                                             }
                                         }
                                         echo $result_html;
@@ -387,290 +361,19 @@ JS;
                         </div>
                     </div>
                 </div>
-
-
-
-                <div class="tab-pane fade box_item" id="pills-seo" role="tabpanel" aria-labelledby="pills-seo-tab">
-
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <div class="form-group bmd-form-group">
-                                <?= $form->field($model, 'meta_title')->textarea(['rows' => 3]) ?>
-
-                            </div>
-                        </div>
-
-                        <div class="col-sm-4">
-                            <div class="form-group bmd-form-group">
-                                <?= $form->field($model, 'meta_description')->textarea(['rows' => 3]) ?>
-
-                            </div>
-                        </div>
-
-                        <div class="col-sm-4">
-                            <div class="form-group bmd-form-group">
-                                <?= $form->field($model, 'meta_keywords')->textarea(['rows' => 3]) ?>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="card-footer ml-auto mr-auto">
 
                     <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
                 </div>
-
                 <?php ActiveForm::end(); ?>
-                <?php $formattr = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
-
-                <table class="actions" style="display: none">
-                    <tr>
-                        <td>
-                            <?= $formattr->field($product_attribute, 'attribute_id[]')->dropDownList(ArrayHelper::map(\common\models\Attributes::find()->all(), 'name', 'name'), ['prompt' => 'Choose a Attribute ', 'class' => 'form-control checking attribute attr_name', 'id' => 'abcd']) ?>
-                            <div class="help-block"></div>
-
-
-                        </td>
-
-                        <td>
-                            <?= $formattr->field($product_attribute, 'attributes_value_id[]')->dropDownList([], ['prompt' => 'Choose a Attribute Value', 'class' => 'form-control checking attribute attr_value', 'id' => 'efgh']) ?>
-
-
-                        </td>
-
-                        <td>
-                            <?= $formattr->field($product_attribute, 'quantity')->textInput() ?>
-                        </td>
-                        <td>
-
-                            <label><input type="radio" id="productattributesvalue-price_status" name="ProductAttributesValue[price_status][]" value="1"> Price Applicable</label>
-                        </td>
-                        <td>
-
-                            <?= $formattr->field($product_attribute, 'price')->textInput() ?>
-                        </td>
-                        <td>
-                            <?= $formattr->field($product_attribute, 'sort_order')->textInput() ?>
-                        </td>
-                        <td>
-                            <!--<a class="add" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE03B;</i></a>-->
-                            <!--<a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>-->
-                            <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
-                        </td>
-                    </tr>
-                </table>
             </div>
         </div>
     </div>
-
-
-
-
-    <?php ActiveForm::end(); ?>
-
     <div class="temp_name">
 
     </div>
     <div class="temp_value">
 
-    </div>
-    <div class="modal fade" id="addcatModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Category</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p class="cat_error"></p>
-                    <form>
-                        <?php $formone = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group bmd-form-group">
-
-                                    <?php
-                                    echo Select2::widget([
-                                        'model' => $modelcat,
-                                        'attribute' => 'parent',
-                                        'data' => $options,
-                                        'theme' => Select2::THEME_MATERIAL,
-                                        'options' => ['placeholder' => 'Select a  Category.', 'class' => 'parentcat'],
-                                        'pluginOptions' => [
-                                            'allowClear' => true,
-                                            'tokenSeparators' => [',', ' '],
-                                            'maximumInputLength' => 20
-                                        ],
-                                    ]);
-                                    ?>
-                                    <div class="help-block"></div>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-12">
-                                <div class="form-group bmd-form-group">
-                                    <?= $form->field($modelcat, 'category_name')->textInput(['maxlength' => true, 'class' => 'form-control  cat_name']) ?>
-                                </div>
-                            </div>
-                        </div>
-
-                        <?php ActiveForm::end(); ?>
-
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary save_cat">Save </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="addattributeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Attributes</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p class="attr_error"></p>
-                    <form>
-                        <?php $formattribute = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="form-group bmd-form-group">
-
-                                    <?php
-                                    echo Select2::widget([
-                                        'model' => $attribute,
-                                        'attribute' => 'id',
-                                        'data' => ArrayHelper::map(\common\models\Attributes::find()->where(['status' => 1])->all(), 'id', 'name'),
-                                        'theme' => Select2::THEME_MATERIAL,
-                                        'options' => ['placeholder' => 'Select a  Attributes.', 'class' => 'attribute add_attr_name'],
-                                        'pluginOptions' => [
-                                            'tags' => true,
-                                            'closeOnSelect' => true,
-                                            'allowClear' => true,
-                                            'tokenSeparators' => [','],
-                                            'maximumInputLength' => 40
-                                        ],
-                                    ]);
-                                    ?>
-                                    <div class="help-block"></div>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-12">
-
-                                <div class="form-group bmd-form-group">
-                                    <label>Attribute Values</label>
-                                    <?php
-                                    echo Select2::widget([
-                                        'name' => 'attr_value',
-                                        'data' => [],
-                                        'value' => [], // initial value (will be ordered accordingly and pushed to the top)
-                                        'theme' => Select2::THEME_MATERIAL,
-                                        'options' => ['placeholder' => 'Search Attribute Values ...', 'multiple' => true, 'class' => ' add_attr_value'],
-                                        'maintainOrder' => true,
-                                        'pluginOptions' => [
-                                            'tags' => true,
-                                            'allowClear' => true,
-                                            'tokenSeparators' => [','],
-                                            'maximumInputLength' => 20
-                                        ],
-                                    ]);
-                                    ?>
-                                    <div class="help-block"></div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <?php ActiveForm::end(); ?>
-
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary save_attr">Save </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="editAttributeValueModal" tabindex="-1" role="dialog" aria-labelledby="editAttributeValueModal" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="editAttributeValueModalTitle">Update Product Attributes</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <p class="attr_error"></p>
-                    <form id="update_attr_form">
-                        <?php $formattributeedit = ActiveForm::begin(['options' => ['enctype' => 'multipart/form-data']]); ?>
-                        <div class="row update_attr_modal">
-
-
-                            <div class="col-sm-6">
-                                <div class="form-group bmd-form-group">
-                                    <?= $formattributeedit->field($product_attribute, 'attribute_id')->dropDownList(ArrayHelper::map(\common\models\Attributes::find()->where(['status' => 1])->all(), 'id', 'name'), ['prompt' => 'Choose a Attribute', 'class' => 'form-control checking attribute_update update_attr_name', 'id' => 'input_update_attr']) ?>
-                                    <?= $formattributeedit->field($product_attribute, 'id')->textInput(['id' => 'input_update_attr_id']) ?>
-                                    <div class="help-block"></div>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-6">
-                                <div class="form-group bmd-form-group">
-                                    <?= $formattributeedit->field($product_attribute, 'attributes_value_id')->dropDownList([], ['prompt' => 'Choose a Attribute Value', 'class' => 'form-control checking attribute_update update_attr_value', 'id' => 'input_update_attr_value']) ?>
-
-                                    <div class="help-block"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group bmd-form-group">
-                                    <?= $formattributeedit->field($product_attribute, 'quantity')->textInput(['id' => 'input_update_attr_qty']) ?>
-                                    <div class="help-block"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group bmd-form-group">
-                                    <?= $formattributeedit->field($product_attribute, 'price')->textInput(['id' => 'input_update_attr_price']) ?>
-                                    <div class="help-block"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group bmd-form-group">
-                                    <?= $formattributeedit->field($product_attribute, 'price_status')->radio(['id' => 'input_update_attr_price_status']) ?>
-                                    <div class="help-block"></div>
-                                </div>
-                            </div>
-                            <div class="col-sm-4">
-                                <div class="form-group bmd-form-group">
-                                    <?= $formattributeedit->field($product_attribute, 'sort_order')->textInput(['id' => 'input_update_attr_sort']) ?>
-                                    <div class="help-block"></div>
-                                </div>
-                            </div>
-
-
-
-                        </div>
-
-                        <?php ActiveForm::end(); ?>
-
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary save_update_attr">Save </button>
-                </div>
-            </div>
-        </div>
     </div>
     <script>
 
