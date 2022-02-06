@@ -189,22 +189,24 @@ class ProductsServicesController extends Controller {
         $languages = \common\models\Language::find()->where(['status' => 1])->all();
         $implode_search_tag = "";
         $related_products   = "";
-
+       
         if ($model->load(Yii::$app->request->post())) {
-           // echo '<pre/>';print_r(Yii::$app->request->post());exit;
-       //    echo '<pre/>';print_r($model->category);exit;
-            $canon_name = strtolower($model->package_title  . ' ' . $model->category->category_name);
+           if(!empty($model->category->category_name)) {
+               $cat_name = $model->category->category_name;
+
+           } else {
+                $cat_name =  "";
+           }
+            $canon_name = strtolower($model->package_title  . ' ' . $cat_name);
             $canonical_name = str_replace(' ', '-', $canon_name); // Replaces all spaces with hyphens.
             $canonical_name = preg_replace('/[^A-Za-z0-9\-]/', '', $canonical_name); // Removes special chars.
             $model->canonical_name = preg_replace('/-+/', '-', $canonical_name);
             $model->created_by = yii::$app->user->identity->id;
             $model->updated_by = yii::$app->user->identity->id;
             $model->status = 1;
-           // $model->title = $model->package_title ;
             $file = UploadedFile::getInstance($model, 'image');
             $banner_image = UploadedFile::getInstance($model, 'banner_image');
             $gallery = UploadedFile::getInstances($model, 'gallery');
-            //echo '<pre/>';print_r($gallery);exit;
             $name = md5(microtime());
             $profile_name = 'image' . $name;
             $banner_name = 'banner' . $name;
@@ -221,7 +223,6 @@ class ProductsServicesController extends Controller {
 
                 
                 if ($model->save()) {
-
                   //  $model->sku = Yii::$app->params['sku_prefix'] . 'M' . $model->merchant_id . 'PS' . $model->id;
                     $model->save(FALSE);
                     if ($file) {
@@ -312,9 +313,7 @@ class ProductsServicesController extends Controller {
             if ($implode_search_tag != '') {
                 $model->search_tag = $implode_search_tag;
             }
-            // if ($related_products != '') {
-            //     $model->related_products = $related_products;
-            // }
+          
             $model->created_by = yii::$app->user->identity->id;
             $model->updated_by = yii::$app->user->identity->id;
             $model->status = 1;
@@ -386,9 +385,9 @@ class ProductsServicesController extends Controller {
                         $transaction->commit();
                     }
 
-                    Yii::$app->session->setFlash('success', "Products updated successfully.");
+                    Yii::$app->session->setFlash('success', "Packages updated successfully.");
 
-                    return $this->redirect(['create', 'id' => $model->id]);
+                    return $this->redirect(['index']);
                 } else {
                     $transaction->rollBack();
                     print_r($model->errors);

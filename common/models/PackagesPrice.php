@@ -32,9 +32,9 @@ class PackagesPrice extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['package_id', 'package_date_id', 'created_at', 'updated_at'], 'required'],
+            [['package_id', 'package_date_id', 'created_at', 'updated_at','min_person','max_person','price'], 'required'],
             [['package_id', 'min_person', 'max_person'], 'integer'],
-            [['package_date_id', 'created_at', 'updated_at','package_id'], 'safe'],
+            [['package_date_id', 'created_at', 'updated_at','package_id','id'], 'safe'],
             [['price'], 'number'],
         ];
     }

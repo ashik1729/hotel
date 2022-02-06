@@ -57,10 +57,10 @@ class ProductsServices extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            // [['category_id', 'merchant_id', 'price', 'requires_shipping', 'updated_by', 'created_by', 'quantity', 'type', 'package_title ', 'product_name_ar'], 'required'],
-            [['category_id', 'sort_order', 'discount_type', 'is_featured',  'updated_by', 'created_by', 'status', 'quantity'], 'integer'],
+            [['package_title','category_id' ,'destination', 'updated_by', 'created_by'], 'required'],
+            [['category_id', 'sort_order','updated_by', 'created_by', 'status', 'quantity'], 'integer'],
             [['gallery', 'search_tag', 'meta_description', 'meta_keywords', 'short_description_en', 'long_description_en'], 'string'],
-            [['price', 'discount_rate'], 'number'],
+            [['price'], 'number'],
             [['gallery','short_description_en', 'long_description_en'], 'string'],
             [['id', 'created_at', 'updated_at', 'created_at', 'field', 'canonical_name', 'updated_at', 'short_description_en', 'short_description_ar', 'long_description_en','meta_title', 'meta_description', 'meta_keywords',
                 'sort_order', 'image', 'gallery', 'package_title','overview','packaage_organize','terms_condition'], 'safe'],

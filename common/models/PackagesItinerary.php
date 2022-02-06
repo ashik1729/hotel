@@ -30,7 +30,7 @@ class PackagesItinerary extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['package_id', 'created_at', 'updated_at'], 'required'],
+            [['package_id','title','description', 'created_at', 'updated_at'], 'required'],
             [['package_id'], 'integer'],
             [['description'], 'string'],
             [['created_at', 'updated_at'], 'safe'],
