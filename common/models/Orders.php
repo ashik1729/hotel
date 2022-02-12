@@ -45,7 +45,7 @@ class Orders extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['user_id', 'ship_address', 'bill_address', 'total_amount', 'payment_method', 'payment_status', 'status', 'created_by', 'updated_by', 'shipping_charge', 'created_by_type', 'updated_by_type'], 'required'],
+            [['user_id', 'ship_address', 'bill_address', 'total_amount', 'payment_method', 'payment_status', 'status', 'created_by', 'updated_by', 'created_by_type', 'updated_by_type'], 'required'],
             [['user_id', 'ship_address', 'bill_address', 'total_amount', 'payment_method', 'payment_status', 'status', 'created_by', 'updated_by', 'shipping_charge', 'created_by_type', 'updated_by_type'], 'required', 'on' => 'create_order_backend'],
             [['user_id', 'ship_address', 'bill_address', 'payment_method', 'payment_status', 'status', 'created_by', 'updated_by'], 'integer'],
             [['customer_comment', 'admin_comment'], 'string'],

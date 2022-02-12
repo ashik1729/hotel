@@ -40,7 +40,7 @@ class OrderInvoice extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['order_id', 'merchant_id', 'created_by', 'updated_by', 'created_by_type', 'updated_by_type'], 'required'],
+            [['order_id', 'created_by', 'updated_by', 'created_by_type', 'updated_by_type'], 'required'],
             [['order_id', 'merchant_id', 'status', 'created_by', 'updated_by', 'created_by_type', 'updated_by_type', 'sent_to_customer', 'sent_to_customer_count'], 'integer'],
             [['invoice_date', 'created_at', 'updated_at'], 'safe'],
             [['invoice'], 'string', 'max' => 30],

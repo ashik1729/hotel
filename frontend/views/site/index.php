@@ -63,13 +63,13 @@ $homesliders = Banner::find()->where(['status' => 1])->all();
 
 					?>
 						<div class="package__section-itembox wow fadeInUp">
-						
+
 							<a href="<?= Yii::$app->request->baseUrl; ?>/packages">
 								<img class="img-fluid" src="<?php echo $imgPath; ?>" alt="HCCA Package Burj Khalifa and Dubai Fountains">
 								<div class="overlay_shadow">
 								</div>
 								<div class="pricing-area d-flex align-items-center justify-content-center flex-column">
-									<?php $packageDates = PackagesDate::find()->where(['package_date' => date('Y-m-d'),'package_id'=>$package->id])->one();
+									<?php $packageDates = PackagesDate::find()->where(['package_date' => date('Y-m-d'), 'package_id' => $package->id])->one();
 									if ($packageDates != NULL) {
 										$getPrices = PackagesPrice::find()->where(['package_date_id' => $packageDates->id])->all();
 										if ($getPrices != NULL) { ?>
@@ -84,7 +84,7 @@ $homesliders = Banner::find()->where(['status' => 1])->all();
 									?>
 								</div>
 								<div class="package__cnt-panel">
-									<h2><?= $package->package_title;?></h2>
+									<h2><?= $package->package_title; ?></h2>
 									<div class="package__rating">
 										<div class="package__rating-stars">
 											<div class="rating">
@@ -101,7 +101,7 @@ $homesliders = Banner::find()->where(['status' => 1])->all();
 									</div>
 								</div>
 								<div class="item-title">
-								<?= $package->destinations->title;?>
+									<?= $package->destinations->title; ?>
 								</div>
 							</a>
 						</div>
@@ -238,42 +238,26 @@ $homesliders = Banner::find()->where(['status' => 1])->all();
 			<div class="col-lg-8 offset-lg-2 col-12 wow fadeInUp" data-wow-delay="300ms">
 				<section id="demos">
 					<div class="home-client__slider owl-carousel owl-theme">
-						<div class="item text-center">
-							<p>
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-								tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-								quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-								consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-								cillum dolore eu fugiat nulla pariatur.
-							</p>
-							<h3>
-								Amy Johnson
-							</h3>
-							<h6>
-								Traveler
-							</h6>
-							<div class="client-image">
-								<img src="<?php echo Yii::$app->request->baseUrl; ?>/images/cilents-say/client-say-01.png" alt="HCCA Client">
-							</div>
-						</div>
-						<div class="item text-center">
-							<p>
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-								tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-								quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-								consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-								cillum dolore eu fugiat nulla pariatur.
-							</p>
-							<h3>
-								Amy Johnson
-							</h3>
-							<h6>
-								Traveler
-							</h6>
-							<div class="client-image">
-								<img src="<?php echo Yii::$app->request->baseUrl; ?>/images/cilents-say/client-say-01.png" alt="HCCA Client">
-							</div>
-						</div>
+						<?php if ($reviews != NULL) { ?>
+							<?php foreach ($reviews as $review) { ?>
+								<div class="item text-center">
+									<p>
+										<?php echo $review->comment;?>
+									</p>
+									<h3>
+									<?php echo $review->author;?>
+									</h3>
+									<h6>
+									<?php echo $review->designation;?>,<?=  $review->review_type == 1 ? "Package Service" : "Visa Service" ;?>
+
+									</h6>
+									<div class="client-image">
+										<img src="<?php echo Yii::$app->request->baseUrl; ?>/images/cilents-say/client-say-01.png" alt="HCCA Client">
+									</div>
+								</div>
+							<?php } ?>
+						<?php } ?>
+						
 					</div>
 				</section>
 			</div>

@@ -60,13 +60,15 @@
                             </table>
                             <div class="form-group">
                                 <label class="radio-box">Cash On Delivery
-                                    <input type="radio" value="1" checked name="pay,ent_method">
+                                    <?php // echo $form->field($order, 'payment_method')->radio(['value' => 1, 'uncheck' => null])->label(false) ?>
+
+                                    <input type="radio" value="1" checked name="Orders[payment_method]">
                                     <span class="checkmark"></span>
                                 </label>
                             </div>
                             <div class="form-group">
                                 <label class="radio-box">Credit / Debit Card
-                                    <input type="radio" value="2" name="pay,ent_method">
+                                    <input type="radio" value="2" name="Orders[payment_method]">
                                     <span class="checkmark"></span>
                                 </label>
                             </div>

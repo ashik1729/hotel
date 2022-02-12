@@ -39,10 +39,10 @@ class OrderProducts extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['order_id', 'user_id', 'product_id', 'merchant_id', 'quantity', 'amount', 'status', 'created_by', 'updated_by', 'created_by_type', 'updated_by_type'], 'required'],
+            [['order_id', 'user_id', 'product_id', 'quantity', 'amount', 'status', 'created_by', 'updated_by', 'created_by_type', 'updated_by_type'], 'required'],
             [['order_id', 'user_id', 'product_id', 'merchant_id', 'quantity', 'status', 'created_by', 'updated_by'], 'integer'],
             [['amount'], 'number'],
-            [['created_at', 'updated_at', 'options', 'date', 'booking_slot', 'invoice', 'invoice_date'], 'safe'],
+            [['created_at', 'updated_at', 'options', 'date', 'booking_slot', 'invoice', 'invoice_date','no_adults','no_children','coupon_code','coupon_price'], 'safe'],
             [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => Orders::className(), 'targetAttribute' => ['order_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
             [['product_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProductsServices::className(), 'targetAttribute' => ['product_id' => 'id']],
