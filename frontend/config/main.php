@@ -125,6 +125,10 @@ return [
                 'delte-cart'=>'site/delte-cart',
                 'calculate-price'=>'site/calculate-price',
                 'checkout'=>'checkout/index',
+                'book-success'=>'checkout/book-success',
+                'checkout/book-success'=>'checkout/book-success',
+                'book-failed'=>'checkout/book-failed',
+                'cancel-booking'=>'my-account/cancel-booking',
 
 
 

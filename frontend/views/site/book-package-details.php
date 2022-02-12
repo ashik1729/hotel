@@ -8,21 +8,31 @@ $packageDates = PackagesDate::find()->where(['package_date' => date('Y-m-d'), 'p
 
 ?>
 <script>
-
-	var date = "<?php echo $cart->date;?>";
-	var package_id = "<?php echo $model->id;?>";
-	
+	var date = "<?php echo $cart->date; ?>";
+	var package_id = "<?php echo $model->id; ?>";
 </script>
 <section class="book-package-section">
 	<div class="container">
 		<div class="row">
 			<div class="col-12">
+				<?php if (Yii::$app->session->hasFlash("success")) : ?>
+					<div class="alert alert-success alert-dismissible">
+						<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+						<span> <?= Yii::$app->session->getFlash("success") ?></span>
+					</div>
+				<?php endif; ?>
+				<?php if (Yii::$app->session->hasFlash("error")) : ?>
+					<div class="alert alert-danger alert-dismissible">
+						<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+						<span> <?= Yii::$app->session->getFlash("error") ?></span>
+					</div>
+				<?php endif; ?>
 				<div class="d-flex flex-lg-row justify-content-between flex-column">
 					<div class="book-package-section-form">
 						<h2>
 							<?php echo $cart->product->package_title; ?>
 						</h2>
-						<?php $form = ActiveForm::begin(["id"=>"adtocart",'options' => ['enctype' => 'multipart/form-data', 'enableClientScript' => false, 'class' => 'row']]); ?>
+						<?php $form = ActiveForm::begin(["id" => "adtocart", 'options' => ['enctype' => 'multipart/form-data', 'enableClientScript' => false, 'class' => 'row']]); ?>
 
 						<div class="package__form-head d-flex flex-md-row justify-content-start flex-column">
 							<div class="form-group">
@@ -121,14 +131,14 @@ $packageDates = PackagesDate::find()->where(['package_date' => date('Y-m-d'), 'p
 								</tbody>
 							</table>
 							<!-- <form> -->
-								<!-- <div class="form-group coupon-box">
+							<!-- <div class="form-group coupon-box">
 									<input class="form-control" type="text" name="" placeholder="Coupon code if any">
 									<button class="coupon-btn" type="submit">Apply</button>
 								</div> -->
 
-								<div class="form-group">
-									<button type="submit" form="adtocart" for="adtocart" class="checkout-btn">Proceed To Payment</button>
-								</div>
+							<div class="form-group">
+								<button type="submit" form="adtocart" for="adtocart" class="checkout-btn">Proceed To Payment</button>
+							</div>
 							<!-- </form> -->
 						</div>
 						<div class="call-area">

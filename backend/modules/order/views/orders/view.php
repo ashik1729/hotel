@@ -1,5 +1,6 @@
 <?php
 
+use common\models\BookingTravellers;
 use yii\helpers\Inflector;
 use yii\helpers\StringHelper;
 use yii\helpers\ArrayHelper;
@@ -70,6 +71,7 @@ JS;
     .summary {
         display: none;
     }
+
     table.table.table-striped.table-bordered {
         margin-bottom: 0px !important;
     }
@@ -86,7 +88,7 @@ JS;
                 </div>
 
                 <h4 class="card-title">
-                    <?= Html::encode('Orders') ?>
+                    <?= Html::encode('Booking') ?>
                     <div class="pull-right">
                         <?=
                         Html::a(Html::tag('b', 'keyboard_arrow_left', ['class' => 'material-icons']), ['index'], [
@@ -111,14 +113,14 @@ JS;
 
                         <?php
                         //echo
-//                        Html::a(Html::tag('b', 'create', ['class' => 'material-icons']), ['update', 'id' => $model->id], [
-//                            'class' => 'btn btn-xs btn-success btn-round btn-fab',
-//                            'rel' => "tooltip",
-//                            'data' => [
-//                                'placement' => 'bottom',
-//                                'original-title' => 'Edit Order'
-//                            ],
-//                        ])
+                        //                        Html::a(Html::tag('b', 'create', ['class' => 'material-icons']), ['update', 'id' => $model->id], [
+                        //                            'class' => 'btn btn-xs btn-success btn-round btn-fab',
+                        //                            'rel' => "tooltip",
+                        //                            'data' => [
+                        //                                'placement' => 'bottom',
+                        //                                'original-title' => 'Edit Order'
+                        //                            ],
+                        //                        ])
                         ?>
                         <?=
                         Html::a(Html::tag('b', 'delete', ['class' => 'material-icons']), ['delete', 'id' => $model->id], [
@@ -135,7 +137,7 @@ JS;
                         ?>
                     </div>
                 </h4>
-                <h4 class="card-title font-weight-bolder order_title mt-5">Order ID : <?php echo "#" . $model->id; ?> <span class="float-right"><?php echo $model->orderStatus->name; ?></span></h4>
+                <h4 class="card-title font-weight-bolder order_title mt-5">Booking ID : <?php echo "#" . $model->id; ?> <span class="float-right"><?php echo $model->orderStatus->name; ?></span></h4>
 
             </div>
             <div class="row mt-5">
@@ -143,7 +145,7 @@ JS;
                     <div class="card-body">
 
                         <div class="card-header card-header-rose text-center m-0 p-1 font-weight-bold">
-                            <h4 class="card-title">Order Details <span target=".ship_text" class="float-right ml-2 pointer" data-toggle="modal" data-target="#order_edit" ><i  class="fa fa-edit"></i></span></h4>
+                            <h4 class="card-title">Booking Details <span target=".ship_text" class="float-right ml-2 pointer" data-toggle="modal" data-target="#order_edit"><i class="fa fa-edit"></i></span></h4>
 
                         </div>
                         <?=
@@ -170,14 +172,14 @@ JS;
                                     },
                                     'format' => 'html'
                                 ],
-                                [
-                                    'attribute' => 'amount_paid',
-                                    'label' => 'Amount Paid',
-                                    'value' => function ($data) {
-                                        return Yii::$app->Currency->convert($data->amount_paid, $data->store);
-                                    },
-                                    'format' => 'html'
-                                ],
+                                // [
+                                //     'attribute' => 'amount_paid',
+                                //     'label' => 'Amount Paid',
+                                //     'value' => function ($data) {
+                                //         return Yii::$app->Currency->convert($data->amount_paid, $data->store);
+                                //     },
+                                //     'format' => 'html'
+                                // ],
                                 [
                                     'attribute' => 'payment_method',
                                     'label' => 'Payment Method',
@@ -189,16 +191,7 @@ JS;
                                     'format' => 'html'
                                 ],
                                 'transaction_id',
-                                [
-                                    'attribute' => 'shipping_charge',
-                                    'label' => 'Shipping ',
-                                    'value' => function ($data) {
-                                        $result = Yii::$app->Currency->convert($data->shipping_charge, $data->store) . ' ';
-                                        $result .= ' - ' . ($data->shipping_method == 1 ? "Home Delivery" : "Pickup From Store");
-                                        return $result;
-                                    },
-                                    'format' => 'html'
-                                ],
+
                             ],
                         ])
                         ?>
@@ -214,7 +207,7 @@ JS;
                         DetailView::widget([
                             'model' => $model,
                             'attributes' => [
-//                        'id',
+                                //                        'id',
                                 [
                                     'attribute' => 'user_id',
                                     'value' => function ($data) {
@@ -269,154 +262,26 @@ JS;
                             <h4 class="card-title">Options </h4>
 
                         </div>
-                        <table id="w1" class="table table-striped table-bordered detail-view"><tbody>
+                        <table id="w1" class="table table-striped table-bordered detail-view">
+                            <tbody>
                                 <tr>
                                     <th>Invoice</th>
                                     <td>
                                         <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#invoiceModal"> <i class="material-icons">download</i></button>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <th>Delivery Slip</th>
-                                    <td>
-                                        <a href="<?= \yii\helpers\Url::to(['/order/orders/download-delivery-slip?id=' . base64_encode($model->id)]); ?>" target="_blank" class="btn btn-primary btn-sm ">  <i class="material-icons">download</i></a>
-                                    </td>
-                                </tr>
 
-                            </tbody></table>
+                            </tbody>
+                        </table>
 
                     </div>
                 </div>
 
-                <div class="col-sm-6">
+
+                <div class="col-sm-12">
                     <div class="card-body">
                         <div class="card-header card-header-rose text-center m-0 p-1 font-weight-bold hash_bg">
-                            <h4 class="card-title "><span target=".ship_text" class="float-left ml-2 copy_bord"><i  class="fa fa-copy"></i></span> Shipping Address <span target=".ship_text" class="float-right ml-2 edit_ship_address" address_id="<?php echo $model->ship_address; ?>" order_id="<?php echo $model->id; ?>"><i  class="fa fa-edit"></i></span></h4>
-                        </div>
-                        <p class="ship_text" style="display: none">
-                            <?php
-                            if ($model->ship_address != 0) {
-                                echo $model->shipAddress->first_name . ' ' . $model->shipAddress->last_name . '<br/>';
-                                echo $model->shipAddress->streat_address . '<br/>';
-                                echo $model->shipAddress->city0->name_en . '<br/>';
-                                echo $model->shipAddress->state0->state_name . '<br/>';
-                                echo $model->shipAddress->country0->country_name . '<br/>';
-                                echo $model->shipAddress->postcode;
-                            }
-                            ?>
-                        </p>
-                        <?=
-                        DetailView::widget([
-                            'model' => $model,
-                            'attributes' => [
-//                        'id',
-                                [
-                                    'attribute' => 'ship_address',
-                                    'label' => 'Name',
-                                    'value' => function ($data) {
-                                        if ($data->ship_address != 0) {
-                                            return $data->shipAddress->first_name . ' ' . $data->shipAddress->last_name;
-                                        } else {
-                                            return '';
-                                        }
-                                    },
-                                    'format' => 'html'
-                                ],
-                                [
-                                    'attribute' => 'ship_address',
-                                    'label' => 'Country',
-                                    'value' => function ($data) {
-                                        if ($data->ship_address != 0) {
-                                            return $data->shipAddress->country0->country_name;
-                                        } else {
-                                            return '';
-                                        }
-                                    },
-                                    'format' => 'html'
-                                ],
-                                [
-                                    'attribute' => 'ship_address',
-                                    'label' => 'State',
-                                    'value' => function ($data) {
-                                        if ($data->ship_address != 0) {
-                                            return $data->shipAddress->state0->state_name;
-                                        } else {
-                                            return '';
-                                        }
-                                    },
-                                    'format' => 'html'
-                                ],
-                                [
-                                    'attribute' => 'ship_address',
-                                    'label' => 'City',
-                                    'value' => function ($data) {
-                                        if ($data->ship_address != 0) {
-                                            return $data->shipAddress->city0->name_en;
-                                        } else {
-                                            return '';
-                                        }
-                                    },
-                                    'format' => 'html'
-                                ],
-                                [
-                                    'attribute' => 'ship_address',
-                                    'label' => 'Streat Address',
-                                    'value' => function ($data) {
-                                        if ($data->ship_address != 0) {
-                                            return $data->shipAddress->streat_address;
-                                        } else {
-                                            return '';
-                                        }
-                                    },
-                                    'format' => 'html'
-                                ],
-                                [
-                                    'attribute' => 'ship_address',
-                                    'label' => 'Post Code',
-                                    'value' => function ($data) {
-                                        if ($data->ship_address != 0) {
-                                            return $data->shipAddress->postcode;
-                                        } else {
-                                            return '';
-                                        }
-                                    },
-                                    'format' => 'html'
-                                ],
-                                [
-                                    'attribute' => 'ship_address',
-                                    'label' => 'Phone Number',
-                                    'value' => function ($data) {
-                                        if ($data->ship_address != 0) {
-                                            return $data->shipAddress->phone_number;
-                                        } else {
-                                            return '';
-                                        }
-                                    },
-                                    'format' => 'html'
-                                ],
-                                [
-                                    'attribute' => 'ship_address',
-                                    'label' => 'Email',
-                                    'value' => function ($data) {
-                                        if ($data->ship_address != 0) {
-                                            return $data->shipAddress->email;
-                                        } else {
-                                            return '';
-                                        }
-                                    },
-                                    'format' => 'html'
-                                ],
-                            ],
-                        ])
-                        ?>
-
-
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="card-body">
-                        <div class="card-header card-header-rose text-center m-0 p-1 font-weight-bold hash_bg">
-                            <h4 class="card-title"><span target=".bill_text" class="float-left ml-2 copy_bord"><i  class="fa fa-copy"></i></span> Billing Address <span target=".ship_text" class="float-right ml-2 edit_bill_address" address_id="<?php echo $model->bill_address; ?>" order_id="<?php echo $model->id; ?>"><i  class="fa fa-edit"></i></span></h4>
+                            <h4 class="card-title"><span target=".bill_text" class="float-left ml-2 copy_bord"><i class="fa fa-copy"></i></span> Billing Address <span target=".ship_text" class="float-right ml-2 edit_bill_address" address_id="<?php echo $model->bill_address; ?>" order_id="<?php echo $model->id; ?>"><i class="fa fa-edit"></i></span></h4>
 
                         </div>
                         <p class="bill_text" style="display: none">
@@ -435,7 +300,7 @@ JS;
                         DetailView::widget([
                             'model' => $model,
                             'attributes' => [
-//                        'id',
+                                //                        'id',
                                 [
                                     'attribute' => 'bill_address',
                                     'label' => 'Name',
@@ -460,54 +325,54 @@ JS;
                                     },
                                     'format' => 'html'
                                 ],
-                                [
-                                    'attribute' => 'bill_address',
-                                    'label' => 'State',
-                                    'value' => function ($data) {
-                                        if ($data->bill_address != 0) {
-                                            return $data->billAddress->state0->state_name;
-                                        } else {
-                                            return '';
-                                        }
-                                    },
-                                    'format' => 'html'
-                                ],
-                                [
-                                    'attribute' => 'bill_address',
-                                    'label' => 'City',
-                                    'value' => function ($data) {
-                                        if ($data->bill_address != 0) {
-                                            return $data->billAddress->city0->name_en;
-                                        } else {
-                                            return '';
-                                        }
-                                    },
-                                    'format' => 'html'
-                                ],
-                                [
-                                    'attribute' => 'bill_address',
-                                    'label' => 'Streat Address',
-                                    'value' => function ($data) {
-                                        if ($data->bill_address != 0) {
-                                            return $data->billAddress->streat_address;
-                                        } else {
-                                            return '';
-                                        }
-                                    },
-                                    'format' => 'html'
-                                ],
-                                [
-                                    'attribute' => 'bill_address',
-                                    'label' => 'Post Code',
-                                    'value' => function ($data) {
-                                        if ($data->bill_address != 0) {
-                                            return $data->billAddress->postcode;
-                                        } else {
-                                            return '';
-                                        }
-                                    },
-                                    'format' => 'html'
-                                ],
+                                // [
+                                //     'attribute' => 'bill_address',
+                                //     'label' => 'State',
+                                //     'value' => function ($data) {
+                                //         if ($data->bill_address != 0) {
+                                //             return $data->billAddress->state0->state_name;
+                                //         } else {
+                                //             return '';
+                                //         }
+                                //     },
+                                //     'format' => 'html'
+                                // ],
+                                // [
+                                //     'attribute' => 'bill_address',
+                                //     'label' => 'City',
+                                //     'value' => function ($data) {
+                                //         if ($data->bill_address != 0) {
+                                //             return $data->billAddress->city0->name_en;
+                                //         } else {
+                                //             return '';
+                                //         }
+                                //     },
+                                //     'format' => 'html'
+                                // ],
+                                // [
+                                //     'attribute' => 'bill_address',
+                                //     'label' => 'Streat Address',
+                                //     'value' => function ($data) {
+                                //         if ($data->bill_address != 0) {
+                                //             return $data->billAddress->streat_address;
+                                //         } else {
+                                //             return '';
+                                //         }
+                                //     },
+                                //     'format' => 'html'
+                                // ],
+                                // [
+                                //     'attribute' => 'bill_address',
+                                //     'label' => 'Post Code',
+                                //     'value' => function ($data) {
+                                //         if ($data->bill_address != 0) {
+                                //             return $data->billAddress->postcode;
+                                //         } else {
+                                //             return '';
+                                //         }
+                                //     },
+                                //     'format' => 'html'
+                                // ],
                                 [
                                     'attribute' => 'bill_address',
                                     'label' => 'Phone Number',
@@ -547,17 +412,18 @@ JS;
 
                         </div>
                         <div class="material-datatables">
-                            <?php // echo $this->render('_search', ['model' => $searchModel]);              ?>
+                            <?php // echo $this->render('_search', ['model' => $searchModel]);              
+                            ?>
 
                             <?=
                             GridView::widget([
                                 'dataProvider' => $dataProvider,
-//                                'filterModel' => $searchModel,
+                                //                                'filterModel' => $searchModel,
                                 'columns' => [
                                     ['class' => 'yii\grid\SerialColumn'],
-//                                    'id',
-//                                    'order_id',
-                                /*    [
+                                    //                                    'id',
+                                    //                                    'order_id',
+                                    /*    [
                                         'attribute' => 'product_id',
                                         'value' => function ($data) {
                                             if ($data->product_id != 0) {
@@ -570,66 +436,18 @@ JS;
                                     ], */
                                     [
                                         'attribute' => 'product_id',
-                                        'label' => 'Options',
+                                        'header' => 'Package Name',
+                                        'label' => 'Deliery Date',
                                         'value' => function ($data) {
-                                            if ($data->product_id != 0) {
-
-                                                $get_options = explode(',', $data->options);
-                                                $html = "";
-                                                if ($get_options != NULL) {
-                                                    foreach ($get_options as $get_option) {
-                                                        $option_details = $data->getAttr($get_option);
-                                                        if ($option_details != NULL) {
-                                                            $html .= '<dl style="margin:0;padding:0"><dt><strong>' . $option_details->attributesValue->attributes0->name . ': </strong>
-                                                                    <span style="margin:0;padding:0 0 0 9px">' . $option_details->attributesValue->value . '</span></dt></dl>';
-                                                        }
-                                                    }
-                                                }
-                                                if ($html != "") {
-
-                                                    return $html;
-                                                } else {
-                                                    return "--";
-                                                }
+                                            if ($data->product_id) {
+                                                return $data->product->package_title;
                                             } else {
-                                                return '';
+                                                return '--';
                                             }
                                         },
                                         'format' => 'raw'
                                     ],
-                                  /*   [
-                                       'attribute' => 'product_id',
-                                        'label' => 'Sku',
-                                        'value' => function ($data) {
-                                            if ($data->product_id != 0) {
-                                                return $data->product->product_id;
-                                            } else {
-                                                return '';
-                                            }
-                                        },
-                                        'format' => 'raw'
-                                    ], */
-                              /*      [
-                                        'attribute' => 'product_id',
-                                        'label' => 'Item Type',
-                                        'value' => function ($data) {
-                                            if ($data->product_id != 0) {
-                                                return $data->product->type == 1 ? "Product" : ($data->product->type == 2 ? "Shop Service" : ($data->product->type == 3 ? "Home Service" : "--"));
-                                            } else {
-                                                return '';
-                                            }
-                                        },
-                                        'format' => 'raw'
-                                    ], */
-                                    [
-                                        'attribute' => 'merchant_id',
-                                        'label' => 'Merchant',
-                                        'value' => function ($data) {
-                                            return Html::a($data->merchant->first_name . ' ' . $data->merchant->last_name, Url::toRoute(['/users/merchant/view', 'id' => $data->merchant_id]), ['target' => '_blank', 'class' => 'font-weight-bolder']);
-                                        },
-                                        'format' => 'raw'
-                                    ],
-                                    'quantity',
+                                    // 'quantity',
                                     [
                                         'attribute' => 'date',
                                         'label' => 'Deliery Date',
@@ -643,17 +461,28 @@ JS;
                                         'format' => 'raw'
                                     ],
                                     [
-                                        'attribute' => 'booking_slot',
-                                        'label' => 'Time',
+                                        'attribute' => 'no_adults',
+                                        'label' => 'Adults',
                                         'value' => function ($data) {
-                                            if ($data->booking_slot) {
-                                                return $data->booking_slot;
+                                            $html = "";
+                                            if ($data->no_adults) {
+                                                $getTravelers = BookingTravellers::find()->where(['order_product_id'=>$data->id])->all();
+                                                $html .= "<h5>Total " . $data->no_adults . " Adults</h5>";
+                                                $html .= "<ul>";
+                                                if ($getTravelers != NULL) {
+                                                    foreach ($getTravelers as $getTraveler) {
+                                                        $html .= "<li>".$getTraveler->first_name." ".$getTraveler->last_name."</li>";
+                                                    }
+                                                }
+                                                $html .= "</ul>";
+                                                return $html;
                                             } else {
                                                 return '--';
                                             }
                                         },
-                                        'format' => 'raw'
+                                        'format' => 'html'
                                     ],
+                                    'no_children',
                                     [
                                         'attribute' => 'status',
                                         'label' => 'Order Status',
@@ -683,7 +512,7 @@ JS;
                                         'attribute' => 'amount',
                                         'label' => 'Total',
                                         'value' => function ($data) {
-                                            return Yii::$app->Currency->convert(($data->amount * $data->quantity), $data->order->store);
+                                            return Yii::$app->Currency->convert(($data->amount * $data->no_adults), $data->order->store);
                                         },
                                         'format' => 'html'
                                     ],
@@ -691,17 +520,17 @@ JS;
                                     //'updated_at',
                                     //'created_by',
                                     //'updated_by',
-//                                    [
-//                                        'class' => 'yii\grid\ActionColumn',
-//                                        'header' => 'History ',
-//                                        'template' => '{my_button_twelve}',
-//                                        'buttons' => [
-//                                            'my_button_twelve' => function ($url, $orderproductmodel, $key) {
-//
-//                                                return '<i order_product_id="' . $orderproductmodel->id . '"  class = "fa fa-history add_history"></i>';
-//                                            },
-//                                        ]
-//                                    ],
+                                    //                                    [
+                                    //                                        'class' => 'yii\grid\ActionColumn',
+                                    //                                        'header' => 'History ',
+                                    //                                        'template' => '{my_button_twelve}',
+                                    //                                        'buttons' => [
+                                    //                                            'my_button_twelve' => function ($url, $orderproductmodel, $key) {
+                                    //
+                                    //                                                return '<i order_product_id="' . $orderproductmodel->id . '"  class = "fa fa-history add_history"></i>';
+                                    //                                            },
+                                    //                                        ]
+                                    //                                    ],
                                     [
                                         'header' => \Yii::t('app', 'Actions'),
                                         'class' => '\yii\grid\ActionColumn',
@@ -718,57 +547,57 @@ JS;
 
                                                 return '<i  order_product_id="' . $orderproductmodel->id . '"  class = "fa fa-edit load_item"></i>';
                                             },
-//                                            'history' => function ($url, $model) {
-//                                                return Html::a(
-//                                                                '<i class = "fa fa-history"></i>', \yii\helpers\Url::to("#"), [
-//                                                            'rel' => "tooltip",
-//                                                            'data-original-title' => 'Add Order History',
-//                                                            'data-placement' => 'top',
-//                                                            'data-pjax' => '0',
-//                                                            'data-method' => 'post',
-//                                                            'data-method' => 'post',
-//                                                            'class' => 'add_history',
-//                                                            'style' => 'margin-right: 10px'
-//                                                                ]
-//                                                );
-//                                            },
-//                                            'view' => function ($url, $model) {
-//                                                return Html::a(
-//                                                                '<i class = "fa fa-eye"></i>', \yii\helpers\Url::to(['view', 'id' => $model->id]), [
-//                                                            'rel' => "tooltip",
-//                                                            'data-original-title' => 'View this user',
-//                                                            'data-placement' => 'top',
-//                                                            'style' => 'margin-right: 10px'
-//                                                                ]
-//                                                );
-//                                            },
-//                                            'update' => function ($url, $model) {
-//                                                return Html::a(
-//                                                                '<i class = "fa fa-edit"></i>', \yii\helpers\Url::to(['update', 'id' => $model->id]), [
-//                                                            'rel' => "tooltip",
-//                                                            'data-original-title' => 'Edit this user',
-//                                                            'data-placement' => 'top',
-//                                                            'style' => 'margin-right: 10px'
-//                                                                ]
-//                                                );
-//                                            },
+                                            //                                            'history' => function ($url, $model) {
+                                            //                                                return Html::a(
+                                            //                                                                '<i class = "fa fa-history"></i>', \yii\helpers\Url::to("#"), [
+                                            //                                                            'rel' => "tooltip",
+                                            //                                                            'data-original-title' => 'Add Order History',
+                                            //                                                            'data-placement' => 'top',
+                                            //                                                            'data-pjax' => '0',
+                                            //                                                            'data-method' => 'post',
+                                            //                                                            'data-method' => 'post',
+                                            //                                                            'class' => 'add_history',
+                                            //                                                            'style' => 'margin-right: 10px'
+                                            //                                                                ]
+                                            //                                                );
+                                            //                                            },
+                                            //                                            'view' => function ($url, $model) {
+                                            //                                                return Html::a(
+                                            //                                                                '<i class = "fa fa-eye"></i>', \yii\helpers\Url::to(['view', 'id' => $model->id]), [
+                                            //                                                            'rel' => "tooltip",
+                                            //                                                            'data-original-title' => 'View this user',
+                                            //                                                            'data-placement' => 'top',
+                                            //                                                            'style' => 'margin-right: 10px'
+                                            //                                                                ]
+                                            //                                                );
+                                            //                                            },
+                                            //                                            'update' => function ($url, $model) {
+                                            //                                                return Html::a(
+                                            //                                                                '<i class = "fa fa-edit"></i>', \yii\helpers\Url::to(['update', 'id' => $model->id]), [
+                                            //                                                            'rel' => "tooltip",
+                                            //                                                            'data-original-title' => 'Edit this user',
+                                            //                                                            'data-placement' => 'top',
+                                            //                                                            'style' => 'margin-right: 10px'
+                                            //                                                                ]
+                                            //                                                );
+                                            //                                            },
                                             'delete' => function ($url, $orderproductmodel, $key) {
 
                                                 return '<i  order_product_id="' . $orderproductmodel->id . '"  class = "fa fa-trash-o delete_item"></i>';
                                             },
-//                                            'delete' => function ($url, $model) {
-//                                                return Html::a(
-//                                                                '<i class = "fa fa-trash-o "></i>', \yii\helpers\Url::to(['delete', 'id' => $model->id]), [
-////                                                            'rel' => "tooltip",
-//                                                            'data-original-title' => 'Delete this Item From Order?',
-//                                                            'data-placement' => 'top',
-//                                                            'data-pjax' => '0',
-//                                                            'data-confirm' => 'Are you sure you want to delete this item?',
-//                                                            'data-method' => 'post',
-//                                                            'style' => 'margin-right: 10px'
-//                                                                ]
-//                                                );
-//                                            },
+                                            //                                            'delete' => function ($url, $model) {
+                                            //                                                return Html::a(
+                                            //                                                                '<i class = "fa fa-trash-o "></i>', \yii\helpers\Url::to(['delete', 'id' => $model->id]), [
+                                            ////                                                            'rel' => "tooltip",
+                                            //                                                            'data-original-title' => 'Delete this Item From Order?',
+                                            //                                                            'data-placement' => 'top',
+                                            //                                                            'data-pjax' => '0',
+                                            //                                                            'data-confirm' => 'Are you sure you want to delete this item?',
+                                            //                                                            'data-method' => 'post',
+                                            //                                                            'style' => 'margin-right: 10px'
+                                            //                                                                ]
+                                            //                                                );
+                                            //                                            },
                                         ]
                                     ],
                                 ],
@@ -791,20 +620,20 @@ JS;
                                     </tr>
                                 </tbody>
                             </table>
-                            <table class="table table-striped table-bordered ">
+                            <!-- <table class="table table-striped table-bordered ">
                                 <tbody>
                                     <tr data-key="5">
                                         <td colspan="7" class="text-right">
                                             <div class="card-body">
                                                 <button class="btn btn-primary" data-toggle="modal" data-target="#addProductModal">Add products</button>
-                                                <button class="btn btn-primary">Update Shipping</button>
+                                                <!-- <button class="btn btn-primary">Update Shipping</button>
                                                 <button class="btn btn-primary">Add Coupons</button>
-                                                <button class="btn btn-primary">Refund</button>
+                                                <button class="btn btn-primary">Refund</button> -->
                                             </div>
                                         </td>
                                     </tr>
                                 </tbody>
-                            </table>
+                            </table> -->
                         </div>
                     </div>
                 </div>
@@ -861,7 +690,7 @@ JS;
                 <?php Pjax::begin(['id' => 'invoice_order']) ?>
                 <?php $orderProductsDataInvoiceCount = common\models\OrderInvoice::find()->where(['order_id' => $model->id])->andWhere("invoice IS NOT NULL")->count(); ?>
                 <div class="card-body">
-                    <button <?= $orderProductsDataInvoiceCount == 0 ? "disabled" : ""; ?> class="btn btn-primary btn-sm download_all_invoice invoice_download" order_id="<?php echo $model->id; ?>" merchant_id="0">  Download All Invoice <i class="material-icons">download</i></button>
+                    <button <?= $orderProductsDataInvoiceCount == 0 ? "disabled" : ""; ?> class="btn btn-primary btn-sm download_all_invoice invoice_download" order_id="<?php echo $model->id; ?>" merchant_id="0"> Download All Invoice <i class="material-icons">download</i></button>
                 </div>
                 <div class="clearfix"></div>
                 <?php
@@ -877,7 +706,7 @@ JS;
                                 $order_merchant_invoice = common\models\OrderInvoice::find()->where(['order_id' => $model->id, 'merchant_id' => $merchant_list])->andWhere("invoice IS NOT NULL")->one();
                                 $merchant = common\models\Merchant::findOne(['id' => $merchant_list]);
                                 $orderProductsDatas = \common\models\OrderProducts::find()->where(['order_id' => $model->id, 'merchant_id' => $merchant_list])->all();
-                                ?>
+                            ?>
                                 <div class="card-collapse ">
                                     <div class="card-header" role="tab" id="invoiceaccor_<?php echo $merchant->id; ?>">
                                         <h5 class="mb-0">
@@ -895,11 +724,12 @@ JS;
                                                     <p>Invoice Date : <?= $order_merchant_invoice ? date('Y-m-d H:i A', strtotime($order_merchant_invoice->invoice_date)) : ""; ?></p>
                                                 </div>
                                                 <div class="col-sm-6 mb-3">
-                                                    <button order_id="<?php echo $model->id; ?>" merchant_id="<?php echo $merchant->id; ?>" class="btn btn-primary btn-sm invoice_download float-right" <?= $order_merchant_invoice->invoice ? "" : "disabled"; ?>>   <i class="material-icons">download</i></button>
+                                                    <button order_id="<?php echo $model->id; ?>" merchant_id="<?php echo $merchant->id; ?>" class="btn btn-primary btn-sm invoice_download float-right" <?= $order_merchant_invoice->invoice ? "" : "disabled"; ?>> <i class="material-icons">download</i></button>
                                                 </div>
                                                 <div class="col-sm-12">
                                                     <?php if ($orderProductsDatas != NULL) { ?>
-                                                        <table id="invoice_order_products" class="table table-striped table-bordered detail-view invoice_order_products"><tbody>
+                                                        <table id="invoice_order_products" class="table table-striped table-bordered detail-view invoice_order_products">
+                                                            <tbody>
                                                                 <tr>
                                                                     <th>Item</th>
                                                                     <th>SKU</th>
@@ -908,8 +738,8 @@ JS;
                                                                 </tr>
                                                                 <?php foreach ($orderProductsDatas as $orderProductsData) { ?>
                                                                     <tr>
-                                                                      <?php /*  <td><?= $orderProductsData->product->product_name_en; ?> </td>
-                                                                        <td><?= $orderProductsData->product->sku; ?></td>  */?>
+                                                                        <?php /*  <td><?= $orderProductsData->product->product_name_en; ?> </td>
+                                                                        <td><?= $orderProductsData->product->sku; ?></td>  */ ?>
                                                                         <td><?= $orderProductsData->quantity; ?></td>
 
                                                                     </tr>
@@ -987,7 +817,7 @@ JS;
                         </div>
                     </div>
                     <div class=" col-sm-12">
-                        <div class="booking_date "  style="display:none" >
+                        <div class="booking_date " style="display:none">
                             <?= $fromaddProduct->field($order_products, 'date')->textInput(['type' => 'date', 'id' => 'calenders', 'class' => 'change_date form-control']) ?>
 
                         </div>
@@ -1072,7 +902,8 @@ JS;
 
 </script>
 <?php
-$this->registerJs(<<< EOT_JS_CODE
+$this->registerJs(
+    <<< EOT_JS_CODE
     $(document).ready(function () {
 
          $(document.body).on('click', '.delete_item', function (e) {

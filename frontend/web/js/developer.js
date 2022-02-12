@@ -182,6 +182,13 @@ $(".period").change(function() {
 
     $("#time_sort").submit();
 });
+$('.cancel-booking').click(function() {
+    if (confirm("Are Confirm to Cancel the Booking") == true) {
+        $("#cancel_form").submit();
+    } else {
+        // text = "You canceled!";
+    }
+});
 
 function calculcateData() {
     var no_adults = $(".no_adult_data").val();

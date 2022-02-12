@@ -815,20 +815,18 @@ class OrdersController extends Controller {
         $request = Yii::$app->request;
         if ($request->isAjax) {
             $id = $_POST['order_id'];
-            $merchant_id = $_POST['merchant_id'];
-            $merchant = \common\models\Merchant::findOne(['id' => $merchant_id]);
-            $orderinvoice = \common\models\OrderInvoice::find()->where(['order_id' => $id, 'merchant_id' => $merchant_id])->one();
+            
+            $orderinvoice = \common\models\OrderInvoice::find()->where(['order_id' => $id])->one();
 
             if ($orderinvoice != NULL) {
                 $neworderinvoice = $orderinvoice;
-                $neworderinvoice->invoice = ($merchant->franchise->invoice_prefix ? $merchant->franchise->invoice_prefix : "") . ($merchant->invoice_prefix ? $merchant->invoice_prefix : '') . 'M' . $merchant->id . 'O' . ($id + 2000);
+                $neworderinvoice->invoice = 'HCCAO' . ($id + 2000);
                 $neworderinvoice->invoice_date = date('Y-m-d H:i:s');
             } else {
                 $neworderinvoice = new \common\models\OrderInvoice();
-                $neworderinvoice->invoice = ($merchant->franchise->invoice_prefix ? $merchant->franchise->invoice_prefix : "") . ($merchant->invoice_prefix ? $merchant->invoice_prefix : '') . 'M' . $merchant->id . 'O' . ($id + 2000);
+                $neworderinvoice->invoice = 'HCCAO' . ($id + 2000);
                 $neworderinvoice->invoice_date = date('Y-m-d H:i:s');
                 $neworderinvoice->order_id = $id;
-                $neworderinvoice->merchant_id = $merchant_id;
                 $neworderinvoice->created_by = yii::$app->user->identity->id;
                 $neworderinvoice->updated_by = yii::$app->user->identity->id;
                 $neworderinvoice->updated_by_type = 2;

@@ -35,7 +35,7 @@ class CheckoutController extends Controller
                 'class' => AccessControl::className(),
                 'rules' => [
                     [
-                        'actions' => ['login', 'index', 'error', 'register', 'verify-email', 'log-out', 'forgot-password', 'reset-password', 'reset-password-success'],
+                        'actions' => ['index', 'book-success', 'book-failed'],
                         'allow' => true,
                     ],
                     [
@@ -88,21 +88,30 @@ class CheckoutController extends Controller
                     $orderProducts->order_id = $order->id;
                     $orderProducts->user_id = $order->user_id;
                     $orderProducts->product_id = $cart->product_id;
-                    $orderProducts->merchant_id = $cart->product->merchant_id;
+                    // $orderProducts->merchant_id = $cart->product->merchant_id;
                     $orderProducts->quantity = $cart->quantity;
                     $orderProducts->options = $cart->options;
                     $orderProducts->date = $cart->date;
                     $orderProducts->booking_slot = $cart->booking_slot;
-                    $orderProducts->amount = Yii::$app->Products->price($cart->product);
+                    $orderProducts->amount = $cart->price;
+                    $orderProducts->no_adults = $cart->no_adults;
+                    $orderProducts->no_children = $cart->no_children;
+                    $orderProducts->coupon_code = $cart->coupon_code;
+                    $orderProducts->coupon_price = $cart->coupon_price;
                     $orderProducts->status = 1;   // 0- Abonded/Deleted, 1- Pending, 2-ORder Placed, 3- Shipped, 4-Delivered, 5- Returned , 6-Cancelled
                     $orderProducts->created_by = $order->user_id;
                     $orderProducts->updated_by = $order->user_id;
                     $orderProducts->updated_by_type = 1; //1-User , 2- Admin, 3-Merchant, 4-Franchise
                     $orderProducts->created_by_type = 1; //1-User , 2- Admin, 3-Merchant, 4-Franchise
                     if ($orderProducts->save()) {
+                        $booking_travellers = $this->bookingTravellers($orderProducts, $cart_lists);
                         $order_product_history = $this->addToHistory($orderProducts);
                         if ($order_product_history != NULL) {
                             $errors[] = $order_product_history;
+                        }
+                        if($booking_travellers != NULL){
+                            $errors[] = $booking_travellers;
+
                         }
                     } else {
                         $errors[] = $orderProducts->errors;
@@ -112,7 +121,32 @@ class CheckoutController extends Controller
         }
         return $errors;
     }
-    public function subTotal($carts) { // Calculate Order Amount
+    public function bookingTravellers($order, $cart_lists)
+    { // Calculate Order Amount
+        $errors = [];
+        if ($cart_lists != NULL) {
+            foreach ($cart_lists as $cart) {
+                if ($cart != NULL) {
+                    $getTravellers = \common\models\BookingTravellers::find()->where(['cart_id' => $cart->id, 'status' => 1, 'user_id' => Yii::$app->user->id])->all();
+                    if ($getTravellers != NULL) {
+                        foreach ($getTravellers as $getTraveller) {
+
+                            
+                            $getTraveller->order_product_id = $order->id;
+                            if ($getTraveller->save()) {
+                               
+                            } else {
+                                $errors[] = $getTraveller->errors;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $errors;
+    }
+    public function subTotal($carts)
+    { // Calculate Order Amount
         $total_amount = 0;
         if ($carts != NULL) {
             foreach ($carts as $carts) {
@@ -125,14 +159,32 @@ class CheckoutController extends Controller
 
         return floatval($total_amount);
     }
-
-    public function grandTotal($carts, $shipping_charge, $coupon, $tax = 0) { // Calculate Order Amount
+    public function addToHistory($orderProducts)
+    { // Calculate Order Amount
+        $order_history_error = [];
+        $order_history = new \common\models\OrderHistory();
+        $order_history->order_id = $orderProducts->order_id;
+        $order_history->order_product_id = $orderProducts->id;
+        $order_history->order_status = 1;
+        $order_history->status = 1;
+        $order_history->created_by = $orderProducts->user_id;
+        $order_history->updated_by = $orderProducts->user_id;
+        $order_history->updated_by_type = 1; //1-User , 2- Admin, 3-Merchant, 4-Franchise
+        $order_history->created_by_type = 1; //1-User , 2- Admin, 3-Merchant, 4-Franchise
+        if ($order_history->save()) {
+        } else {
+            $order_history_error[] = $order_history->errors;
+        }
+        return $order_history_error;
+    }
+    public function grandTotal($carts, $shipping_charge, $coupon, $tax = 0)
+    { // Calculate Order Amount
         $subtotal_amount = 0;
         if ($carts != NULL) {
             foreach ($carts as $carts) {
                 $cart = \common\models\Cart::findOne(['id' => $carts]);
                 if ($cart != NULL) {
-                    $subtotal_amount += ($cart->quantity * Yii::$app->Products->price($cart->product));
+                    $subtotal_amount += ($cart->no_adults * $carts->price);
                 }
             }
         }
@@ -141,8 +193,43 @@ class CheckoutController extends Controller
 
         return $granttotal_amount > 0 ? round($granttotal_amount, 2) : floatval(0);
     }
+    public function getAddress($address)
+    { // Calculate Order Amount
+        $id = 0;
+        if ($address != NULL) {
+            $model  = new UserAddress();
+            $model->first_name = $address['first_name'];
+            $model->last_name = $address['first_name'];
+            $model->user_id = Yii::$app->user->id;
+            $model->country = $address['country'];
+            $model->phone_number = $address['phone_number'];
+            $model->email = $address['email'];
+            $model->default_billing_address = 1;
+            $model->default_shipping_address = 1;
+            $model->created_by = Yii::$app->user->id;
+            $model->updated_by = Yii::$app->user->id;
+            if ($model->save()) {
+                $id = $model->id;
+            }
+        }
+        return $id;
+    }
+    public function actionBookSuccess()
+
+    {
+        return $this->render('success');
+    }
+
+    public function actionBookFailed()
+
+    {
+        return $this->render('error');
+    }
     public function actionIndex()
     {
+        if (Yii::$app->user->isGuest) {
+            return  $this->redirect(['site/index']);
+        }
         $models = Cart::find()->where(['user_id' => Yii::$app->user->id, 'status' => 1])->all();
         $order = new Orders();
         $userAddress = new UserAddress();
@@ -169,7 +256,7 @@ class CheckoutController extends Controller
             $order->store = 3;
             $order->ship_address = $address;
             $order->bill_address = $address;
-            $order->payment_method = $_POST['payment_method'];  //1-Card/Online,2-cash
+            $order->payment_method = $_POST['Orders']['payment_method'];  //1-Card/Online,2-cash
             $order->payment_status = 0; // 0-Pending, 1-Success,2-Failed
             $order->status = 1;   // 0- Abonded/Deleted, 1- Pending, 2-ORder Placed, 3- Shipped, 4-Delivered, 5-Completed, 6- Returned , 7-Cancelled
             $order->created_by = Yii::$app->user->id;;
@@ -177,15 +264,26 @@ class CheckoutController extends Controller
             $order->updated_by_type = 1; //1-User , 2- Admin, 3-Merchant, 4-Franchise
             $order->created_by_type = 1; //1-User , 2- Admin, 3-Merchant, 4-Franchise
             $order->total_amount = $total_amount;
+            $tid = 827432432;
             if ($order->save()) { // Creating Order is success
                 $order_product = $this->orderProducts($order, $getCartslist);
-                if ($order_product != NULL) {
-                    $transaction->commit();
+               
+                if ($order_product == NULL) {
+                  
+                        if (\common\models\Cart::deleteAll(['AND', 'user_id = :user_id'], [':user_id' =>  Yii::$app->user->id])) {
+                            $transaction->commit();
+                        }
+                        return  $this->redirect(['book-success?status=1&order_id=' . $order->id . '&tid=' . $tid]);
+                   
                 } else {
                     $transaction->rollBack();
+                    Yii::$app->session->setFlash('error', "Following Error While Adding to your package.Order Products " . json_encode($order_product));
+                    return  $this->redirect(['checkout']);
                 }
             } else {
                 $transaction->rollBack();
+                Yii::$app->session->setFlash('error', "Following Error While Adding to your package." . json_encode($order->errors));
+                // return  $this->redirect(['checkout']);
             }
             // if (!Yii::$app->user->isGuest) {
             //     $checkCart = Cart::find()->where(['user_id'=>Yii::$app->user->id,'date'=>$_POST['Cart']['date'],'product_id'=>$model->id])->one();

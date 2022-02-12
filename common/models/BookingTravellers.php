@@ -36,7 +36,7 @@ class BookingTravellers extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cart_id', 'order_product_id', 'status', 'user_id'], 'integer'],
+            [[ 'order_product_id', 'status', 'user_id'], 'integer'],
             [['first_name', 'last_name'], 'required'],
             [['created_at'], 'safe'],
             [['first_name', 'last_name'], 'string', 'max' => 200],

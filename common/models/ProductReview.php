@@ -35,7 +35,7 @@ class ProductReview extends \yii\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['user_id', 'review_for_id', 'rating', 'review_type', 'created_by', 'updated_by'], 'required'],
+            [['user_id', 'review_for_id', 'rating', 'review_type', 'created_by', 'updated_by','author'], 'required'],
             [['user_id', 'review_for_id', 'rating', 'approvel', 'created_by', 'updated_by'], 'integer'],
             [['comment'], 'string'],
             [['created_at', 'updated_at', 'comment', 'created_at', 'updated_at', 'designation'], 'safe'],

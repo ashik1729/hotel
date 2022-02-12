@@ -152,8 +152,8 @@ class SiteController extends Controller
         $cart = new Cart();
         if ($cart->load(Yii::$app->request->post())) {
             if (!Yii::$app->user->isGuest) {
-                $checkCart = Cart::find()->where(['user_id'=>Yii::$app->user->id,'date'=>$_POST['Cart']['date'],'product_id'=>$model->id])->one();
-                if($checkCart != NULL){
+                $checkCart = Cart::find()->where(['user_id' => Yii::$app->user->id, 'date' => $_POST['Cart']['date'], 'product_id' => $model->id])->one();
+                if ($checkCart != NULL) {
                     $cart = $checkCart;
                 }
                 $cart->id = strtoupper(uniqid('HCCA'));
@@ -212,6 +212,27 @@ class SiteController extends Controller
             exit;
         }
     }
+    public function CalculatePrice($no_adults, $package_id, $date)
+    {
+
+        $package = ProductsServices::find()->where(['id' => $package_id])->one();
+        if ($package != NULL) {
+            $packageDate = PackagesDate::find()->where(['package_date' => $date, 'package_id' => $package_id])->one();
+            if ($packageDate != NULL) {
+                $packagePrice = \common\models\PackagesPrice::find()->where(['package_date_id' => $packageDate])->andWhere("min_person <= '" . $no_adults . "' AND max_person >= '" . $no_adults . "' ")->one();
+                if ($packagePrice != NULL) {
+                
+                    return $packagePrice->price;
+                } else {
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    }
     public function actionBookPackageDetails()
     {
 
@@ -227,8 +248,9 @@ class SiteController extends Controller
                         if ($count > 0) {
                             $errors = [];
                             for ($i = 0; $i < $count; $i++) {
+                                $booking_travellers = new BookingTravellers();
                                 $booking_travellers->user_id = Yii::$app->user->id;
-                                $booking_travellers->cart_id = $$_GET['cart_id'];
+                                $booking_travellers->cart_id = $_GET['cart_id'];
                                 $booking_travellers->first_name = $_POST['BookingTravellers']['first_name'][$i];
                                 $booking_travellers->last_name = $_POST['BookingTravellers']['last_name'][$i];
                                 $booking_travellers->status = 1;
@@ -240,11 +262,24 @@ class SiteController extends Controller
                             if ($errors != NULL) {
                                 $transaction->rollBack();
                                 Yii::$app->session->setFlash('error', "Following Error While Adding to your package." . json_encode($errors));
-                                return  $this->redirect(['book-package-details/' . $$_GET['cart_id']]);
+                                return  $this->redirect(['book-package-details/' . $_GET['cart_id']]);
                             } else {
-                                $transaction->commit();
-                                Yii::$app->session->setFlash('success', "Booking Updated Successfully  Successfully.");
-                                return  $this->redirect(['cart']);
+                                if ($cart->load(Yii::$app->request->post())) {
+                                    $cart->price = $this->CalculatePrice($cart->no_adults, $model->id, $cart->date);
+                                    if ($cart->save()) {
+                                        $transaction->commit();
+                                        Yii::$app->session->setFlash('success', "Booking Updated Successfully  Successfully.");
+                                        return  $this->redirect(['cart']);
+                                    } else {
+                                        $transaction->rollBack();
+                                        Yii::$app->session->setFlash('error', "Following Error While updating to your package." . json_encode($cart->errors));
+                                        return  $this->redirect(['book-package-details/' . $_GET['cart_id']]);
+                                    }
+                                } else {
+                                    $transaction->rollBack();
+                                    Yii::$app->session->setFlash('error', "Invalid Cart Details");
+                                    return  $this->redirect(['book-package-details/' . $_GET['cart_id']]);
+                                }
                             }
                         }
                     }
@@ -292,7 +327,8 @@ class SiteController extends Controller
     public function actionIndex()
     {
         $packages = ProductsServices::find()->where(['status' => 1])->all();
-        return $this->render('index', ['packages' => $packages]);
+        $reviews = ProductReview::find()->where(['approvel' => 1])->all();
+        return $this->render('index', ['packages' => $packages, 'reviews' => $reviews]);
     }
     public function actionAccomodationGallery()
     {

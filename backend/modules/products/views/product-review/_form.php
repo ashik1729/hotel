@@ -12,71 +12,32 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
     <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group bmd-form-group">
+                <?= $form->field($model, 'author')->textInput(['disabled' => true]) ?>
+            </div>
+        </div>
 
-        
-                <div class="col-sm-12">
-                    <div class="form-group bmd-form-group">
-                            <?= $form->field($model, 'user_id')->textInput() ?>
+        <div class="col-sm-12">
+            <div class="form-group bmd-form-group">
+                <?= $form->field($model, 'rating')->textInput() ?>
 
-                    </div>
-                </div>
-                
-                <div class="col-sm-12">
-                    <div class="form-group bmd-form-group">
-                            <?= $form->field($model, 'product_id')->textInput() ?>
+            </div>
+        </div>
 
-                    </div>
-                </div>
-                
-                <div class="col-sm-12">
-                    <div class="form-group bmd-form-group">
-                            <?= $form->field($model, 'rating')->textInput() ?>
+        <div class="col-sm-12">
+            <div class="form-group bmd-form-group">
+                <?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
 
-                    </div>
-                </div>
-                
-                <div class="col-sm-12">
-                    <div class="form-group bmd-form-group">
-                            <?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
+            </div>
+        </div>
 
-                    </div>
-                </div>
-                
-                <div class="col-sm-12">
-                    <div class="form-group bmd-form-group">
-                            <?= $form->field($model, 'approvel')->textInput() ?>
-
-                    </div>
-                </div>
-                
-                <div class="col-sm-12">
-                    <div class="form-group bmd-form-group">
-                            <?= $form->field($model, 'created_at')->textInput() ?>
-
-                    </div>
-                </div>
-                
-                <div class="col-sm-12">
-                    <div class="form-group bmd-form-group">
-                            <?= $form->field($model, 'created_by')->textInput() ?>
-
-                    </div>
-                </div>
-                
-                <div class="col-sm-12">
-                    <div class="form-group bmd-form-group">
-                            <?= $form->field($model, 'updated_at')->textInput() ?>
-
-                    </div>
-                </div>
-                
-                <div class="col-sm-12">
-                    <div class="form-group bmd-form-group">
-                            <?= $form->field($model, 'updated_by')->textInput() ?>
-
-                    </div>
-                </div>
-                    </div>
+        <div class="col-sm-12">
+            <div class="form-group bmd-form-group">
+                <?= $form->field($model, 'approvel')->dropDownList(['1' => 'Enable', '0' => 'Disable']) ?>
+            </div>
+        </div>
+    </div>
 
     <div class="card-footer ml-auto mr-auto">
 

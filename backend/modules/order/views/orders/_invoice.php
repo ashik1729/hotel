@@ -123,7 +123,7 @@
                                                 ?>
                                                 <tr>
                                                     <td align="left" valign="top" style="font-size:11px;padding:3px 9px;padding-top:10px;">
-                                                        <strong style="font-size:11px;text-transform: uppercase;"><?php echo $orderProduct->product->product_name_en; ?></strong>
+                                                        <strong style="font-size:11px;text-transform: uppercase;"><?php echo $orderProduct->product->package_title; ?></strong>
 
                                                         <?php
                                                         $get_options = explode(',', $orderProduct->options);
@@ -143,7 +143,7 @@
                                                             <?php } ?>
                                                         <?php } ?>
                                                     </td>
-                                                    <td align="left" valign="top" style="font-size:11px;padding:3px 9px;padding-top:10px; "><?php echo $orderProduct->product->sku; ?></td>
+                                                    <td align="left" valign="top" style="font-size:11px;padding:3px 9px;padding-top:10px; "><?php echo $orderProduct->product->id; ?></td>
                                                     <td align="center" valign="top" style="font-size:11px;padding:3px 9px;padding-top:10px; "><?php echo $orderProduct->amount; ?></td>
                                                     <td align="center" valign="top" style="font-size:11px;padding:3px 9px;padding-top:10px; "><?php echo $orderProduct->quantity; ?></td>
                                                     <td align="right" valign="top" style="font-size:11px;padding:3px 9px;padding-top:10px; ">

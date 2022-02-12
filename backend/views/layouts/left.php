@@ -99,17 +99,10 @@
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="<?= \yii\helpers\Url::to(['/products/attributes/index']); ?>">
-                                <i class="material-icons">label_important</i>
-
-                                <span class="sidebar-normal">Product Attributes</span>
-                            </a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link" href="<?= \yii\helpers\Url::to(['/products/product-review/index']); ?>">
                                 <i class="material-icons">reviews</i>
 
-                                <span class="sidebar-normal">Products Review</span>
+                                <span class="sidebar-normal">Reviews</span>
                             </a>
                         </li>
                         <li class="nav-item">

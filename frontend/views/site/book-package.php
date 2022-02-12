@@ -56,7 +56,7 @@ $packageDates = PackagesDate::find()->where(['package_date' => date('Y-m-d'), 'p
 								var calendarEl = document.getElementById('calendar');
 
 								var calendar = new FullCalendar.Calendar(calendarEl, {
-									initialDate: '2022-01-19',
+									initialDate: '<?php echo date('Y-m-d');?>',
 									editable: true,
 									selectable: true,
 									businessHours: true,
